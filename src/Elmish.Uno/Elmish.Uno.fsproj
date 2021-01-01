@@ -31,6 +31,9 @@
       <PackagePath></PackagePath>
     </None>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Elmish.Uno.Mobile</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Elmish.Uno.Tests</_Parameter1>
     </AssemblyAttribute>
     <Compile Include="InternalUtils.fs" />
@@ -39,9 +42,6 @@
     <Compile Include="Binding.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="ViewModel.fs" />
-    <Compile Include="ViewModelModule.fs" />
-    <Compile Include="Cmd.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.6.2" />
+    <PackageReference Update="FSharp.Core" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
