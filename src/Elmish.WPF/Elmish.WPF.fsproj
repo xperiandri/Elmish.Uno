@@ -15,7 +15,7 @@
     <Authors>jsacks, cmeeren, TysonMN</Authors>
     <Description>F# bindings for using Elmish in WPF</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/elmish/Elmish.WPF</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/elmish/Elmish.Uno</PackageProjectUrl>
     <PackageTags>WPF F# fsharp Elmish Elm</PackageTags>
     <PackageIcon>elmish-wpf-logo-128x128.png</PackageIcon>
     <Version>3.5.8</Version>
@@ -34,7 +34,7 @@
       <PackagePath></PackagePath>
     </None>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Elmish.WPF.Tests</_Parameter1>
+      <_Parameter1>Elmish.Uno.Tests</_Parameter1>
     </AssemblyAttribute>
     <Compile Include="InternalUtils.fs" />
     <Compile Include="InternalTypes.fs" />

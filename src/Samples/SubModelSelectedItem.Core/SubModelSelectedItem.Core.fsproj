@@ -14,7 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.WPF\Elmish.WPF.fsproj" />
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
   </ItemGroup>
   
 </Project>

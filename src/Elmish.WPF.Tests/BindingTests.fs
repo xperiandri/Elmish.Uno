@@ -1,9 +1,9 @@
-﻿module Elmish.WPF.Tests.BindingTests
+﻿module Elmish.Uno.Tests.BindingTests
 
 open Xunit
 open Hedgehog
 open Swensen.Unquote
-open Elmish.WPF
+open Elmish.Uno
 
 
 [<AutoOpen>]

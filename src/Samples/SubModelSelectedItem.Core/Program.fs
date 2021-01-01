@@ -1,8 +1,8 @@
-﻿module Elmish.WPF.Samples.SubModelSelectedItem.Program
+﻿module Elmish.Uno.Samples.SubModelSelectedItem.Program
 
 open System
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 type Entity =
   { Id: int

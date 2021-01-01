@@ -54,7 +54,7 @@
 
 #### 3.2.0
 
-* Added proper dialog/window support using `Binding.subModelWin`. See [the readme](https://github.com/elmish/Elmish.WPF/tree/feature-windows-binding#can-i-open-new-windowsdialogs) for more and the [NewWindow sample](https://github.com/elmish/Elmish.WPF/tree/master/src/Samples) for an example.
+* Added proper dialog/window support using `Binding.subModelWin`. See [the readme](https://github.com/elmish/Elmish.Uno/tree/feature-windows-binding#can-i-open-new-windowsdialogs) for more and the [NewWindow sample](https://github.com/elmish/Elmish.Uno/tree/master/src/Samples) for an example.
 * Deprecated `Cmd.showWindow` (use `Binding.subModelWin` instead)
 
 #### 3.1.0
@@ -65,12 +65,12 @@
 
 * The most massive (and hopefully useful) update yet!
 * Breaking: Overload-based syntax for `Binding`. The old `Binding` module is deprecated and renamed to `BindingFn`.  The new `Binding` is a static class with static methods, providing many overloads for flexibility. To migrate, replace all occurrences of `Binding.` with `BindingFn.` and follow the deprecation warnings.
-* Breaking: The `Elmish.WPF.Internal` namespace has been removed and everything in it that should actually be internal has been marked `internal`. This includes `ViewModel`.
-* Breaking: `Elmish.WPF.Internal.BindingSpec<_,_>` has been moved/renamed to `Elmish.WPF.Binding<_,_>`. It should thus be more pleasant to use in type annotations.
-* Breaking: `Elmish.WPF.Utilities.ViewModel.designInstance` has been moved to `Elmish.WPF.ViewModel`. Furthermore, it returns `obj` since `ViewModel` is internal.
+* Breaking: The `Elmish.Uno.Internal` namespace has been removed and everything in it that should actually be internal has been marked `internal`. This includes `ViewModel`.
+* Breaking: `Elmish.Uno.Internal.BindingSpec<_,_>` has been moved/renamed to `Elmish.Uno.Binding<_,_>`. It should thus be more pleasant to use in type annotations.
+* Breaking: `Elmish.Uno.Utilities.ViewModel.designInstance` has been moved to `Elmish.Uno.ViewModel`. Furthermore, it returns `obj` since `ViewModel` is internal.
 * Breaking: Removed `twoWayIfValid`. It hasn’t worked for a while due to core Elmish internals, and was of suspect utility anyway.
 * New: Many more helpful `Binding` signatures available due to the new overload-based syntax.
-* New: More general `Binding.subModel` and `Binding.subModelSeq` overloads that allow a more idiomatic Elm architecture even with static views. For background information, see [#86](https://github.com/elmish/Elmish.WPF/issues/86) (the issue is otherwise outdated).
+* New: More general `Binding.subModel` and `Binding.subModelSeq` overloads that allow a more idiomatic Elm architecture even with static views. For background information, see [#86](https://github.com/elmish/Elmish.Uno/issues/86) (the issue is otherwise outdated).
 * New: Sticky `subModelOpt` bindings that returns the last non-null model when model is `None` (useful when animating out stuff)
 * New: `elmEq` and `refEq` as useful equality defaults for lazy bindings. `elmEq` efficiently uses reflection to do a comparison for each member that is referential for reference types except strings, and structural for strings and value types.
 * New: `Program.mkSimpleWpf` and `Program.mkProgramWpf` with more WPF-friendly signatures.
@@ -97,7 +97,7 @@
 
 #### 2.0.0-beta-9
 
-* Add new bindings `oneWayOpt` and `twoWayOpt` ([#75](https://github.com/elmish/Elmish.WPF/issues/75))
+* Add new bindings `oneWayOpt` and `twoWayOpt` ([#75](https://github.com/elmish/Elmish.Uno/issues/75))
 * Update to Elmish 3.0.0-beta-7
 
 #### 2.0.0-beta-8
@@ -119,7 +119,7 @@
 
 #### 2.0.0-beta-4
 
-* Breaking: Change order of `oneWayLazyWith` arguments to and rename it to `oneWayLazy`, removing the existing `oneWayLazy` function. The rationale is explained in [#60](https://github.com/elmish/Elmish.WPF/issues/60) . To migrate from 2.0.0-beta-3 to 2.0.0-beta-4: Add `(=)` as the `equals` parameter to `oneWayLazy` usages, and rename `oneWayLazyWith` usages to `oneWayLazy`.
+* Breaking: Change order of `oneWayLazyWith` arguments to and rename it to `oneWayLazy`, removing the existing `oneWayLazy` function. The rationale is explained in [#60](https://github.com/elmish/Elmish.Uno/issues/60) . To migrate from 2.0.0-beta-3 to 2.0.0-beta-4: Add `(=)` as the `equals` parameter to `oneWayLazy` usages, and rename `oneWayLazyWith` usages to `oneWayLazy`.
 * Add `Binding.oneWaySeqLazy`
 
 #### 2.0.0-beta-3

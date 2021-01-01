@@ -1,7 +1,7 @@
-﻿module Elmish.WPF.Samples.OneWaySeq.Program
+﻿module Elmish.Uno.Samples.OneWaySeq.Program
 
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 type Model =

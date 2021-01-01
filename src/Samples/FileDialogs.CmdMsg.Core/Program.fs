@@ -1,8 +1,8 @@
-﻿module Elmish.WPF.Samples.FileDialogsCmdMsg.Program
+﻿module Elmish.Uno.Samples.FileDialogs.CmdMsg.Program
 
 open System
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 module Core =

@@ -1,7 +1,7 @@
-﻿module Elmish.WPF.Samples.SubModelOpt.Program
+﻿module Elmish.Uno.Samples.SubModelOpt.Program
 
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 module Form1 =
