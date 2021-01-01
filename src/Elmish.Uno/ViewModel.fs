@@ -438,7 +438,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
               Vm = ref ValueNone }
         | ValueSome m ->
             let chain = getPropChainFor name
-            let vm = ViewModel(m, toMsg >> dispatch, getBindings (), config, chain)
+            let vm = this.Create(m, toMsg >> dispatch, getBindings (), config, chain)
             Some <| SubModel {
               GetModel = getModel
               GetBindings = getBindings
@@ -454,7 +454,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
           getModels initialModel
           |> Seq.map (fun m ->
                let chain = getPropChainForItem name (getId m |> string)
-               ViewModel(m, (fun msg -> toMsg (getId m, msg) |> dispatch), getBindings (), config, chain)
+               this.Create(m, (fun msg -> toMsg (getId m, msg) |> dispatch), getBindings (), config, chain)
           )
           |> ObservableCollection
         Some <| SubModelSeq {
@@ -496,59 +496,6 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
               dict.Add(b.Name, binding)
               updateValidationError initialModel b.Name binding)
         dict :> IReadOnlyDictionary<string, VmBinding<'model, 'msg>>
-
-  /// Updates the binding value (for relevant bindings) and returns a value
-  /// indicating whether to trigger PropertyChanged for this binding
-  let rec updateValue bindingName newModel = function
-    | OneWay { Get = get }
-    | TwoWay { Get = get }
-    | TwoWayValidate { Get = get } ->
-        get currentModel <> get newModel
-    | OneWayLazy b ->
-        not <| b.Equals (b.Get newModel) (b.Get currentModel)
-    | OneWaySeq b ->
-        let intermediate = b.Get newModel
-        if not <| b.Equals intermediate (b.Get currentModel) then
-          let create v _ = v
-          let update oldVal newVal oldIdx =
-            if not (b.ItemEquals newVal oldVal) then
-              b.Values.[oldIdx] <- newVal
-          let newVals = intermediate |> b.Map |> Seq.toArray
-          elmStyleMerge b.GetId b.GetId create update b.Values newVals
-        false
-    | Cmd _
-    | CmdParam _ ->
-        false
-    | SubModel b ->
-      match !b.Vm, b.GetModel newModel with
-      | ValueNone, ValueNone -> false
-      | ValueSome _, ValueNone ->
-          if b.Sticky then false
-          else
-            b.Vm := ValueNone
-            true
-      | ValueNone, ValueSome m ->
-          b.Vm := ValueSome <| ViewModel(m, b.ToMsg >> dispatch, b.GetBindings (), config, getPropChainFor bindingName)
-          true
-      | ValueSome vm, ValueSome m ->
-          vm.UpdateModel m
-          false
-    | SubModelSeq b ->
-        let getTargetId (vm: ViewModel<_, _>) = b.GetId vm.CurrentModel
-        let create m id =
-          let chain = getPropChainForItem bindingName (id |> string)
-          ViewModel(m, (fun msg -> b.ToMsg (id, msg) |> dispatch), b.GetBindings (), config, chain)
-        let update (vm: ViewModel<_, _>) m _ = vm.UpdateModel m
-        let newSubModels = newModel |> b.GetModels |> Seq.toArray
-        elmStyleMerge b.GetId getTargetId create update b.Vms newSubModels
-        false
-    | SubModelSelectedItem b ->
-        b.Get newModel <> b.Get currentModel
-    | Cached b ->
-        let valueChanged = updateValue bindingName newModel b.Binding
-        if valueChanged then
-          b.Cache := None
-        valueChanged
 
   /// Returns the command associated with a command binding if the command's
   /// CanExecuteChanged should be triggered.
@@ -602,6 +549,23 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
             b.Cache := Some v
             v
 
+  let rec canSetMember = function
+    | TwoWay _
+    | TwoWayValidate _
+    | SubModelSelectedItem _ ->
+        true
+    | Cached b ->
+        let successful = canSetMember b.Binding
+        successful
+    | OneWay _
+    | OneWayLazy _
+    | OneWaySeq _
+    | Cmd _
+    | CmdParam _
+    | SubModel _
+    | SubModelSeq _ ->
+        false
+
   let rec trySetMember model (value: obj) = function
     | TwoWay { Set = set }
     | TwoWayValidate { Set = set } ->
@@ -628,13 +592,72 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     | SubModelSeq _ ->
         false
 
-  member __.CurrentModel : 'model = currentModel
+  /// Updates the binding value (for relevant bindings) and returns a value
+  /// indicating whether to trigger PropertyChanged for this binding
+  member this.UpdateValue =
+    let rec updateValue bindingName newModel = function
+      | OneWay { Get = get }
+      | TwoWay { Get = get }
+      | TwoWayValidate { Get = get } ->
+          get currentModel <> get newModel
+      | OneWayLazy b ->
+          not <| b.Equals (b.Get newModel) (b.Get currentModel)
+      | OneWaySeq b ->
+          let intermediate = b.Get newModel
+          if not <| b.Equals intermediate (b.Get currentModel) then
+            let create v _ = v
+            let update oldVal newVal oldIdx =
+              if not (b.ItemEquals newVal oldVal) then
+                b.Values.[oldIdx] <- newVal
+            let newVals = intermediate |> b.Map |> Seq.toArray
+            elmStyleMerge b.GetId b.GetId create update b.Values newVals
+          false
+      | Cmd _
+      | CmdParam _ ->
+          false
+      | SubModel b ->
+        match !b.Vm, b.GetModel newModel with
+        | ValueNone, ValueNone -> false
+        | ValueSome _, ValueNone ->
+            if b.Sticky then false
+            else
+              b.Vm := ValueNone
+              true
+        | ValueNone, ValueSome m ->
+            b.Vm := ValueSome <| this.Create(m, b.ToMsg >> dispatch, b.GetBindings (), config, getPropChainFor bindingName)
+            true
+        | ValueSome vm, ValueSome m ->
+            vm.UpdateModel m
+            false
+      | SubModelSeq b ->
+          let getTargetId (vm: ViewModel<_, _>) = b.GetId vm.CurrentModel
+          let create m id =
+            let chain = getPropChainForItem bindingName (id |> string)
+            this.Create(m, (fun msg -> b.ToMsg (id, msg) |> dispatch), b.GetBindings (), config, chain)
+          let update (vm: ViewModel<_, _>) m _ = vm.UpdateModel m
+          let newSubModels = newModel |> b.GetModels |> Seq.toArray
+          elmStyleMerge b.GetId getTargetId create update b.Vms newSubModels
+          false
+      | SubModelSelectedItem b ->
+          b.Get newModel <> b.Get currentModel
+      | Cached b ->
+          let valueChanged = updateValue bindingName newModel b.Binding
+          if valueChanged then
+            b.Cache := None
+          valueChanged
+    updateValue
 
-  member __.UpdateModel (newModel: 'model) : unit =
-    let bindings = bindings.Value
+  abstract Create : initialModel: obj * dispatch: (obj -> unit) * bindings: Binding<obj, obj> list * config: ElmConfig * propNameChain: string -> ViewModel<obj, obj>
+  default __.Create (initialModel, dispatch, bindings, config, propNameChain) =
+    ViewModel(initialModel, dispatch, bindings, config, propNameChain)
+  member internal __.Bindings = bindings.Value
+  member internal __.Dispatch = dispatch
+  member __.CurrentModel : 'model = currentModel
+  member this.UpdateModel (newModel: 'model) : unit =
+    let bindings = this.Bindings
     let propsToNotify =
       bindings
-      |> Seq.filter (fun (Kvp (name, binding)) -> updateValue name newModel binding)
+      |> Seq.filter (fun (Kvp (name, binding)) -> this.UpdateValue name newModel binding)
       |> Seq.map Kvp.key
       |> Seq.toList
     let cmdsToNotify =
@@ -647,9 +670,9 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     for Kvp (name, binding) in bindings do
       updateValidationError currentModel name binding
 
-  override __.TryGetMember (binder, result) =
+  override this.TryGetMember (binder, result) =
     log "[%s] TryGetMember %s" propNameChain binder.Name
-    match bindings.Value.TryGetValue binder.Name with
+    match this.Bindings.TryGetValue binder.Name with
     | false, _ ->
         log "[%s] TryGetMember FAILED: Property %s doesn't exist" propNameChain binder.Name
         false
@@ -657,9 +680,13 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
         result <- tryGetMember currentModel binding
         true
 
-  override __.TrySetMember (binder, value) =
+  member internal ___.TryGetMember binding = tryGetMember currentModel binding
+
+  member internal __.CanSetMember = canSetMember
+
+  override this.TrySetMember (binder, value) =
     log "[%s] TrySetMember %s" propNameChain binder.Name
-    match bindings.Value.TryGetValue binder.Name with
+    match this.Bindings.TryGetValue binder.Name with
     | false, _ ->
         log "[%s] TrySetMember FAILED: Property %s doesn't exist" propNameChain binder.Name
         false
@@ -668,6 +695,8 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
         if not success then
           log "[%s] TrySetMember FAILED: Binding %s is read-only" propNameChain binder.Name
         success
+
+  member internal __.TrySetMember(value, binding) = trySetMember currentModel value binding
 
   // to help with debugging
   override __.ToString () =
