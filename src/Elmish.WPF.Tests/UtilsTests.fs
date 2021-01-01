@@ -1,9 +1,9 @@
-﻿module Elmish.WPF.Tests.UtilsTests
+﻿module Elmish.Uno.Tests.UtilsTests
 
 open Xunit
 open Hedgehog
 open Swensen.Unquote
-open Elmish.WPF
+open Elmish.Uno
 
 
 module refEq =

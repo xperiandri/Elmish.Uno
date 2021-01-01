@@ -1,5 +1,5 @@
 ﻿[<RequireQualifiedAccess>]
-module Elmish.WPF.Program
+module Elmish.Uno.Program
 
 open System.Windows
 open Elmish
@@ -58,7 +58,7 @@ let runWindow window program =
   runWindowWithConfig ElmConfig.Default window program
 
 
-/// Same as mkSimple, but with a signature adapted for Elmish.WPF.
+/// Same as mkSimple, but with a signature adapted for Elmish.Uno.
 let mkSimpleWpf
     (init: unit -> 'model)
     (update: 'msg  -> 'model -> 'model)
@@ -66,7 +66,7 @@ let mkSimpleWpf
   Program.mkSimple init update (fun _ _ -> bindings ())
 
 
-/// Same as mkProgram, but with a signature adapted for Elmish.WPF.
+/// Same as mkProgram, but with a signature adapted for Elmish.Uno.
 let mkProgramWpf
     (init: unit -> 'model * Cmd<'msg>)
     (update: 'msg  -> 'model -> 'model * Cmd<'msg>)

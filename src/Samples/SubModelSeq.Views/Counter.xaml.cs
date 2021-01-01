@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Elmish.WPF.Samples.SubModelSeq {
+namespace Elmish.Uno.Samples.SubModelSeq {
   public partial class Counter : UserControl {
     public Counter() {
       InitializeComponent();

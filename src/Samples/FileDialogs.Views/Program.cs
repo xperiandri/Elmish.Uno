@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.FileDialogs;
-using static Elmish.WPF.Samples.FileDialogs.Program;
+using Elmish.Uno.Samples.FileDialogs;
+using static Elmish.Uno.Samples.FileDialogs.Program;
 
 namespace FileDialogs.Views {
   public static class Program {

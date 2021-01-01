@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.NewWindow;
-using static Elmish.WPF.Samples.NewWindow.Program;
+using Elmish.Uno.Samples.NewWindow;
+using static Elmish.Uno.Samples.NewWindow.Program;
 
 namespace NewWindow.Views {
   public static class Program {

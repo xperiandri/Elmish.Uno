@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Elmish.WPF.Samples.EventBindingsAndBehaviors
+namespace Elmish.Uno.Samples.EventBindingsAndBehaviors
 {
     public partial class MainWindow : Window
     {

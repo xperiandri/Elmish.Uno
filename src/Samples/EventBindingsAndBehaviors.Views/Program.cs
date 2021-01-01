@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.EventBindingsAndBehaviors;
-using static Elmish.WPF.Samples.EventBindingsAndBehaviors.Program;
+using Elmish.Uno.Samples.EventBindingsAndBehaviors;
+using static Elmish.Uno.Samples.EventBindingsAndBehaviors.Program;
 
 namespace EventBindingsAndBehaviors.Views {
   public static class Program {

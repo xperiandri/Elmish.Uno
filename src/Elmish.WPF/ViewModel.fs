@@ -1,4 +1,4 @@
-namespace Elmish.WPF
+namespace Elmish.Uno
 
 open System
 open System.Dynamic

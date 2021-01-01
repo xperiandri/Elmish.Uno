@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.Validation;
-using static Elmish.WPF.Samples.Validation.Program;
+using Elmish.Uno.Samples.Validation;
+using static Elmish.Uno.Samples.Validation.Program;
 
 namespace Validation.Views {
   public static class Program {

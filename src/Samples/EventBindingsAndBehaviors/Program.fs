@@ -1,7 +1,7 @@
-﻿module Elmish.WPF.Samples.EventBindingsAndBehaviors.Program
+﻿module Elmish.Uno.Samples.EventBindingsAndBehaviors.Program
 
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 open System.Windows
 open System.Windows.Input
 

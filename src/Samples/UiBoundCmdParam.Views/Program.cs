@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.UiBoundCmdParam;
-using static Elmish.WPF.Samples.UiBoundCmdParam.Program;
+using Elmish.Uno.Samples.UiBoundCmdParam;
+using static Elmish.Uno.Samples.UiBoundCmdParam.Program;
 
 namespace UiBoundCmdParam.Views {
   public static class Program {

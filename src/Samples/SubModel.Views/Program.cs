@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.SubModel;
-using static Elmish.WPF.Samples.SubModel.Program;
+using Elmish.Uno.Samples.SubModel;
+using static Elmish.Uno.Samples.SubModel.Program;
 
 namespace SubModel.Views {
   public static class Program {

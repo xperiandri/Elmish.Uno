@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module internal Elmish.WPF.InternalTypes
+module internal Elmish.Uno.InternalTypes
 
 open System
 open System.Windows.Input

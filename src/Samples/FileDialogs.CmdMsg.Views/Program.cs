@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.FileDialogs.CmdMsg;
-using static Elmish.WPF.Samples.FileDialogs.CmdMsg.Program;
+using Elmish.Uno.Samples.FileDialogs.CmdMsg;
+using static Elmish.Uno.Samples.FileDialogs.CmdMsg.Program;
 
 namespace FileDialogs.CmdMsg.Views {
   public static class Program {

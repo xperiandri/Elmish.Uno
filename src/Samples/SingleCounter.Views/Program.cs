@@ -1,6 +1,6 @@
 ﻿using System;
-using Elmish.WPF.Samples.SingleCounter;
-using static Elmish.WPF.Samples.SingleCounter.Program;
+using Elmish.Uno.Samples.SingleCounter;
+using static Elmish.Uno.Samples.SingleCounter.Program;
 
 namespace SingleCounter.Views {
   public static class Program {

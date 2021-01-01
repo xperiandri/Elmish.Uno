@@ -1,8 +1,8 @@
-module Elmish.WPF.Samples.SubModelSeq.Program
+module Elmish.Uno.Samples.SubModelSeq.Program
 
 open System
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 type InOutMsg<'a, 'b> =
