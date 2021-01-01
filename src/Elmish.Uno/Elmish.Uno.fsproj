@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0-windows;netcoreapp3.1;net461</TargetFrameworks>
-    <UseWpf>true</UseWpf>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>Embedded</DebugType>
     <EmbedAllSources>True</EmbedAllSources>
@@ -15,14 +15,14 @@
     <PackageTags>Uno F# fsharp Elmish Elm</PackageTags>
     <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
     <Version>1.0.0</Version>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageReleaseNotes></PackageReleaseNotes>-->
+
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
-    <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
