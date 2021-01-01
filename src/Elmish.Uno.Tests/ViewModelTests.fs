@@ -1,4 +1,4 @@
-module Elmish.Uno.Tests.ViewModelTests
+﻿module Elmish.Uno.Tests.ViewModelTests
 
 open System
 open System.Collections.Concurrent
@@ -172,12 +172,10 @@ module Helpers =
   let internal cmdParam
       name
       (exec: 'a -> 'model -> 'msg voption)
-      (canExec: 'a -> 'model -> bool)
-      (autoRequery: bool) =
+      (canExec: 'a -> 'model -> bool) =
     name |> createBinding (CmdParamData {
       Exec = unbox >> exec
       CanExec = unbox >> canExec
-      AutoRequery = autoRequery
       WrapDispatch = id
     })
 
@@ -458,7 +456,7 @@ module OneWaySeqLazy =
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
-      
+
       testObservableCollectionContainsExpectedItems vm name (m2 |> get |> map)
     }
 
@@ -480,7 +478,7 @@ module OneWaySeqLazy =
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
-      
+
       testObservableCollectionContainsExpectedItems vm name (m1 |> get |> map)
     }
 
@@ -707,7 +705,7 @@ module OneWaySeqLazy =
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
-      
+
       testObservableCollectionContainsExpectedItems vm name m2
     }
 
@@ -1001,12 +999,11 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m, binding)
 
       (vm.Get name : ICommand).Execute(p)
@@ -1023,12 +1020,11 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m, binding)
 
       test <@ (vm.Get name : ICommand).CanExecute(p) = canExec p m @>
@@ -1041,12 +1037,11 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m1, binding)
 
       vm.TrackCecTriggersFor name
@@ -1062,12 +1057,11 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
