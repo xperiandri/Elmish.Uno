@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Elmish.WPF.Utils
+module Elmish.Uno.Utils
 
 
 /// Reference/physical equality for reference types. Alias for

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Xaml.Behaviors;
 
-namespace Elmish.WPF.Samples.EventBindingsAndBehaviors
+namespace Elmish.Uno.Samples.EventBindingsAndBehaviors
 {
   public class FocusWhenVisibleBehavior : Behavior<UIElement>
   {

@@ -1,11 +1,11 @@
-﻿module Elmish.WPF.Samples.FileDialogs.Program
+﻿module Elmish.Uno.Samples.FileDialogs.Program
 
 open System
 open System.IO
 open System.Threading
 open System.Windows
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 type Model =

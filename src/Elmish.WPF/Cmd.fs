@@ -1,5 +1,5 @@
 ﻿[<RequireQualifiedAccess>]
-module Elmish.WPF.Cmd
+module Elmish.Uno.Cmd
 
 open System
 open System.Windows

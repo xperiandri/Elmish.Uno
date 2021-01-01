@@ -1,7 +1,7 @@
-﻿module Elmish.WPF.Samples.SingleCounter.Program
+﻿module Elmish.Uno.Samples.SingleCounter.Program
 
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 type Model =
   { Count: int

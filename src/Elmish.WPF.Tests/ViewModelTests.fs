@@ -1,4 +1,4 @@
-module Elmish.WPF.Tests.ViewModelTests
+module Elmish.Uno.Tests.ViewModelTests
 
 open System
 open System.Collections.Concurrent
@@ -10,7 +10,7 @@ open FSharp.Interop.Dynamic
 open Xunit
 open Hedgehog
 open Swensen.Unquote
-open Elmish.WPF
+open Elmish.Uno
 
 
 [<AutoOpen>]
