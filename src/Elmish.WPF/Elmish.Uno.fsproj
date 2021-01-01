@@ -9,11 +9,11 @@
     <DebugType>Embedded</DebugType>
     <EmbedAllSources>True</EmbedAllSources>
     <Authors>jsacks, cmeeren, TysonMN</Authors>
-    <Description>F# bindings for using Elmish in WPF</Description>
+    <Description>F# bindings for using Elmish in Uno</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/elmish/Elmish.Uno</PackageProjectUrl>
-    <PackageTags>WPF F# fsharp Elmish Elm</PackageTags>
-    <PackageIcon>elmish-wpf-logo-128x128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/XperiAndri/Elmish.Uno</PackageProjectUrl>
+    <PackageTags>Uno F# fsharp Elmish Elm</PackageTags>
+    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
     <Version>4.0.0-beta-3</Version>
     <PackageReleaseNotes>https://github.com/elmish/Elmish.WPF/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="elmish-wpf-logo-128x128.png">
+    <None Include="elmish-uno-logo-128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
