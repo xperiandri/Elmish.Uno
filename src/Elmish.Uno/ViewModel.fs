@@ -479,22 +479,23 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
           None
 
   let bindings =
-    log "[%s] Initializing bindings" propNameChain
-    let dict = Dictionary<string, VmBinding<'model, 'msg>>(bindings.Length)
-    let dictAsFunc name =
-      match dict.TryGetValue name with
-      | true, b -> Some b
-      | _ -> None
-    let sortedBindings = bindings |> List.sortWith Binding.subModelSelectedItemLast
-    for b in sortedBindings do
-      if dict.ContainsKey b.Name then
-        log "Binding name '%s' is duplicated. Only the first occurrence will be used." b.Name
-      else
-        initializeBinding b.Name b.Data dictAsFunc
-        |> Option.iter (fun binding ->
-          dict.Add(b.Name, binding)
-          updateValidationError initialModel b.Name binding)
-    dict :> IReadOnlyDictionary<string, VmBinding<'model, 'msg>>
+    lazy
+        log "[%s] Initializing bindings" propNameChain
+        let dict = Dictionary<string, VmBinding<'model, 'msg>>(bindings.Length)
+        let dictAsFunc name =
+          match dict.TryGetValue name with
+          | true, b -> Some b
+          | _ -> None
+        let sortedBindings = bindings |> List.sortWith Binding.subModelSelectedItemLast
+        for b in sortedBindings do
+          if dict.ContainsKey b.Name then
+            log "Binding name '%s' is duplicated. Only the first occurrence will be used." b.Name
+          else
+            initializeBinding b.Name b.Data dictAsFunc
+            |> Option.iter (fun binding ->
+              dict.Add(b.Name, binding)
+              updateValidationError initialModel b.Name binding)
+        dict :> IReadOnlyDictionary<string, VmBinding<'model, 'msg>>
 
   /// Updates the binding value (for relevant bindings) and returns a value
   /// indicating whether to trigger PropertyChanged for this binding
@@ -630,6 +631,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   member __.CurrentModel : 'model = currentModel
 
   member __.UpdateModel (newModel: 'model) : unit =
+    let bindings = bindings.Value
     let propsToNotify =
       bindings
       |> Seq.filter (fun (Kvp (name, binding)) -> updateValue name newModel binding)
@@ -647,7 +649,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
 
   override __.TryGetMember (binder, result) =
     log "[%s] TryGetMember %s" propNameChain binder.Name
-    match bindings.TryGetValue binder.Name with
+    match bindings.Value.TryGetValue binder.Name with
     | false, _ ->
         log "[%s] TryGetMember FAILED: Property %s doesn't exist" propNameChain binder.Name
         false
@@ -657,7 +659,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
 
   override __.TrySetMember (binder, value) =
     log "[%s] TrySetMember %s" propNameChain binder.Name
-    match bindings.TryGetValue binder.Name with
+    match bindings.Value.TryGetValue binder.Name with
     | false, _ ->
         log "[%s] TrySetMember FAILED: Property %s doesn't exist" propNameChain binder.Name
         false
