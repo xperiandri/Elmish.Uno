@@ -9,11 +9,11 @@
     <DebugType>Embedded</DebugType>
     <EmbedAllSources>True</EmbedAllSources>
     <Authors>jsacks, cmeeren, TysonMN</Authors>
-    <Description>F# bindings for using Elmish in WPF</Description>
+    <Description>F# bindings for using Elmish in Uno</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/elmish/Elmish.Uno</PackageProjectUrl>
-    <PackageTags>WPF F# fsharp Elmish Elm</PackageTags>
-    <PackageIcon>elmish-wpf-logo-128x128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/XperiAndri/Elmish.Uno</PackageProjectUrl>
+    <PackageTags>Uno F# fsharp Elmish Elm</PackageTags>
+    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
     <Version>3.5.6</Version>
     <PackageReleaseNotes>The amount of time used to update OneWaySeq and SubModelSeq bindings has been significantly decreased. This includes all cases of a SubModelSeq binding and all cases of a OneWaySeq binding for which equals returns false.</PackageReleaseNotes>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -24,9 +24,9 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <None Include="elmish-wpf-logo-128x128.png">
+    <None Include="elmish-uno-logo-128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -43,13 +43,13 @@
     <Compile Include="Cmd.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.6.2" />
   </ItemGroup>
-  
+
 </Project>
