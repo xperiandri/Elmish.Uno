@@ -8,8 +8,8 @@ type ElmConfig =
     // Whether to measure and log calls to functions supplied in bindings. Default false.
     Measure: bool
     // If Measure is true, only log calls that take at least this many milliseconds. Default 1.
-    MeasureLimitMs: int
-  }
+    MeasureLimitMs: int }
+
   static member Default =
     { LogConsole = false
       LogTrace = false
