@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Elmish.WPF.Samples.FileDialogsCmdMsg
+namespace Elmish.Uno.Samples.FileDialogsCmdMsg
 {
     public partial class MainWindow : Window
     {

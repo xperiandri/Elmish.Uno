@@ -1,4 +1,6 @@
-﻿namespace Elmish.WPF
+﻿namespace Elmish.Uno
+
+// fsharplint:disable MemberNames
 
 open System.Collections.Generic
 open System.Collections.ObjectModel
@@ -6,11 +8,8 @@ open System.Windows
 
 open Elmish
 
-
-
 [<AutoOpen>]
 module internal BindingLogic =
-
 
   let elmStyleMerge
         getSourceId
@@ -73,13 +72,13 @@ module internal BindingLogic =
 
             update curTarget nextSource (curTargetIdx + 1)
             update nextTarget curSource curTargetIdx
-            
+
             curSourceIdx <- curSourceIdx + 2
             curTargetIdx <- curTargetIdx + 2
         |               None, Some (nextTarget, _, true)
         | Some (_, _, false), Some (nextTarget, _, true) -> // remove
             recordRemoval curTargetIdx curTarget curTargetId
-            
+
             update nextTarget curSource curTargetIdx
 
             curSourceIdx <- curSourceIdx + 1
@@ -87,20 +86,20 @@ module internal BindingLogic =
         | Some (nextSource, _, true), None
         | Some (nextSource, _, true), Some (_, _, false) -> // add
             recordAddition curSourceIdx curSource curSourceId
-            
+
             update curTarget nextSource (curTargetIdx + 1)
-            
+
             curSourceIdx <- curSourceIdx + 2
             curTargetIdx <- curTargetIdx + 1
         | Some (_, _, false),               None
         |               None, Some (_, _, false)
         |               None,               None -> // source and target have different lengths and we have reached the end of one
-            shouldContinue <- false 
+            shouldContinue <- false
         | Some (nextSource, nextSourceId, false), Some (nextTarget, nextTargetId, false) ->
             if nextSourceId = nextTargetId then // replace
               recordRemoval curTargetIdx curTarget curTargetId
               recordAddition curSourceIdx curSource curSourceId
-              
+
               update nextTarget nextSource (curTargetIdx + 1)
 
               curSourceIdx <- curSourceIdx + 2
@@ -118,7 +117,7 @@ module internal BindingLogic =
 
       recordRemoval curTargetIdx curTarget curTargetId
       recordAddition curSourceIdx curSource curSourceId
-      
+
       curSourceIdx <- curSourceIdx + 1
       curTargetIdx <- curTargetIdx + 1
 
@@ -227,7 +226,7 @@ type internal OneWayLazyData<'model, 'a, 'b> =
   { Get: 'model -> 'a
     Map: 'a -> 'b
     Equals: 'a -> 'a -> bool }
-    
+
   member d.DidProeprtyChange((currentModel: 'model), (newModel: 'model)) =
     not <| d.Equals (d.Get newModel) (d.Get currentModel)
 
@@ -241,7 +240,7 @@ type internal OneWaySeqLazyData<'model, 'a, 'b, 'id when 'id : equality> =
     Equals: 'a -> 'a -> bool
     GetId: 'b -> 'id
     ItemEquals: 'b -> 'b -> bool }
-    
+
   member d.Merge((values: ObservableCollection<'b>), (currentModel: 'model), (newModel: 'model)) =
     let intermediate = d.Get newModel
     if not <| d.Equals intermediate (d.Get currentModel) then
@@ -256,7 +255,7 @@ type internal OneWaySeqLazyData<'model, 'a, 'b, 'id when 'id : equality> =
 type internal TwoWayData<'model, 'msg, 'a when 'a : equality> =
   { Get: 'model -> 'a
     Set: 'a -> 'model -> 'msg }
-    
+
   member d.DidPropertyChange((currentModel: 'model), (newModel: 'model)) =
     d.Get currentModel <> d.Get newModel
 
@@ -284,7 +283,7 @@ type internal SubModelSelectedItemData<'model, 'msg, 'id when 'id : equality> =
   { Get: 'model -> 'id voption
     Set: 'id voption -> 'model -> 'msg
     SubModelSeqBindingName: string }
-    
+
   member d.DidPropertyChange((currentModel: 'model), (newModel: 'model)) =
     d.Get currentModel <> d.Get newModel
 
@@ -328,7 +327,7 @@ and internal SubModelSeqData<'model, 'msg, 'bindingModel, 'bindingMsg, 'id when 
     GetId: 'bindingModel -> 'id
     GetBindings: unit -> Binding<'bindingModel, 'bindingMsg> list
     ToMsg: 'model -> 'id * 'bindingMsg -> 'msg }
-    
+
   member d.Merge
       ((getTargetId: ('bindingModel -> 'id) -> 'b -> 'id),
        (create: 'bindingModel -> 'id -> 'b),
@@ -338,13 +337,13 @@ and internal SubModelSeqData<'model, 'msg, 'bindingModel, 'bindingMsg, 'id when 
     let update b bm _ = update b bm
     let newSubModels = newModel |> d.GetModels |> Seq.toArray
     elmStyleMerge d.GetId (getTargetId d.GetId) create update values newSubModels
-    
-    
+
+
 and internal ValidationData<'model, 'msg> =
   { BindingData: BindingData<'model, 'msg>
     Validate: 'model -> string list }
-    
-    
+
+
 and internal LazyData<'model, 'msg> =
   { BindingData: BindingData<'model, 'msg>
     Equals: 'model -> 'model -> bool }
@@ -513,11 +512,11 @@ module internal BindingData =
 
 
   module Binding =
-  
+
     let mapData f binding =
       { Name = binding.Name
         Data = binding.Data |> f }
-  
+
     let mapModel f = f |> mapModel |> mapData
     let mapMsgWithModel f = f |> mapMsgWithModel |> mapData
     let mapMsg f = f |> mapMsg |> mapData
@@ -527,7 +526,7 @@ module internal BindingData =
     let mapModel f = f |> Binding.mapModel |> List.map
     let mapMsgWithModel f = f |> Binding.mapMsgWithModel |> List.map
     let mapMsg f = f |> Binding.mapMsg |> List.map
-  
+
 
   module Option =
 
@@ -541,7 +540,7 @@ module internal BindingData =
 
 
   module OneWay =
-  
+
     let mapMinorTypes
         (outMapA: 'a -> 'a0)
         (d: OneWayData<'model, 'a>) = {
@@ -564,7 +563,7 @@ module internal BindingData =
 
 
   module OneWayLazy =
-  
+
     let mapMinorTypes
         (outMapA: 'a -> 'a0)
         (outMapB: 'b -> 'b0)
@@ -599,7 +598,7 @@ module internal BindingData =
 
 
   module OneWaySeqLazy =
-  
+
     let mapMinorTypes
         (outMapA: 'a -> 'a0)
         (outMapB: 'b -> 'b0)
@@ -644,7 +643,7 @@ module internal BindingData =
 
 
   module TwoWay =
-  
+
     let mapMinorTypes
         (outMapA: 'a -> 'a0)
         (inMapA: 'a0 -> 'a)
@@ -707,7 +706,7 @@ module internal BindingData =
 
 
   module SubModelSelectedItem =
-  
+
     let mapMinorTypes
         (outMapId: 'id -> 'id0)
         (inMapId: 'id0 -> 'id)
@@ -735,7 +734,7 @@ module internal BindingData =
 
 
   module SubModel =
-  
+
     let mapMinorTypes
         (outMapBindingModel: 'bindingModel -> 'bindingModel0)
         (outMapBindingMsg: 'bindingMsg -> 'bindingMsg0)
@@ -770,7 +769,7 @@ module internal BindingData =
 
 
   module SubModelWin =
-  
+
     let mapMinorTypes
         (outMapBindingModel: 'bindingModel -> 'bindingModel0)
         (outMapBindingMsg: 'bindingMsg -> 'bindingMsg0)
@@ -813,7 +812,7 @@ module internal BindingData =
 
 
   module SubModelSeq =
-  
+
     let mapMinorTypes
         (outMapBindingModel: 'bindingModel -> 'bindingModel0)
         (outMapBindingMsg: 'bindingMsg -> 'bindingMsg0)
@@ -881,10 +880,10 @@ module Binding =
 
   /// Map the model type parameter of a binding via a contravariant mapping.
   let mapModel (f: 'a -> 'b) (binding: Binding<'b, 'msg>) = BindingData.Binding.mapModel f binding
-  
+
   /// Map the message type parameter of a binding with access to the model via a covariant mapping.
   let mapMsgWithModel (f: 'model -> 'a -> 'b) (binding: Binding<'model, 'a>) = BindingData.Binding.mapMsgWithModel f binding
-  
+
   /// Map the message type parameter of a binding via a covariant mapping.
   let mapMsg (f: 'a -> 'b) (binding: Binding<'model, 'a>) = BindingData.Binding.mapMsg f binding
 
@@ -936,10 +935,10 @@ module Bindings =
 
   /// Map the model type parameter of a list of bindings via a contravariant mapping.
   let mapModel (f: 'a -> 'b) (bindings: Binding<'b, 'msg> list) = BindingData.Bindings.mapModel f bindings
-  
+
   /// Map the message type parameter of a list of bindings with access to the model via a covariant mapping.
   let mapMsgWithModel (f: 'model -> 'a -> 'b) (bindings: Binding<'model, 'a> list) = BindingData.Bindings.mapMsgWithModel f bindings
-  
+
   /// Map the message type parameter of a list of bindings via a covariant mapping.
   let mapMsg (f: 'a -> 'b) (bindings: Binding<'model, 'a> list) = BindingData.Bindings.mapMsg f bindings
 
@@ -1118,7 +1117,7 @@ type Binding private () =
     |> OneWaySeqLazyData
     |> createBinding
 
-    
+
   /// <summary>
   ///   Creates a one-way binding to a sequence of items, each uniquely
   ///   identified by the value returned by <paramref name="getId"/>. The
@@ -2430,7 +2429,7 @@ type Binding private () =
   ///   Creates a two-way binding to a <c>SelectedItem</c>-like property where
   ///   the
   ///   <c>ItemsSource</c>-like property is a <see cref="subModelSeq" />
-  ///   binding. Automatically converts the dynamically created Elmish.WPF view
+  ///   binding. Automatically converts the dynamically created Elmish.Uno view
   ///   models to/from their corresponding IDs, so the Elmish user code only has
   ///   to work with the IDs.
   ///
@@ -2469,7 +2468,7 @@ type Binding private () =
   ///   Creates a two-way binding to a <c>SelectedItem</c>-like property where
   ///   the
   ///   <c>ItemsSource</c>-like property is a <see cref="subModelSeq" />
-  ///   binding. Automatically converts the dynamically created Elmish.WPF view
+  ///   binding. Automatically converts the dynamically created Elmish.Uno view
   ///   models to/from their corresponding IDs, so the Elmish user code only has
   ///   to work with the IDs.
   ///
@@ -2993,7 +2992,7 @@ module Extensions =
     ///   Creates a two-way binding to a <c>SelectedItem</c>-like property where
     ///   the
     ///   <c>ItemsSource</c>-like property is a <see cref="subModelSeq" />
-    ///   binding. Automatically converts the dynamically created Elmish.WPF
+    ///   binding. Automatically converts the dynamically created Elmish.Uno
     ///   view models to/from their corresponding IDs, so the Elmish user code
     ///   only has to work with the IDs.
     ///
@@ -3032,7 +3031,7 @@ module Extensions =
     ///   Creates a two-way binding to a <c>SelectedItem</c>-like property where
     ///   the
     ///   <c>ItemsSource</c>-like property is a <see cref="subModelSeq" />
-    ///   binding. Automatically converts the dynamically created Elmish.WPF
+    ///   binding. Automatically converts the dynamically created Elmish.Uno
     ///   view models to/from their corresponding IDs, so the Elmish user code
     ///   only has to work with the IDs.
     ///

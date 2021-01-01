@@ -1,10 +1,10 @@
-﻿module Elmish.WPF.Samples.FileDialogsCmdMsg.Program
+﻿module Elmish.Uno.Samples.FileDialogsCmdMsg.Program
 
 open System
 open Serilog
 open Serilog.Extensions.Logging
 open Elmish
-open Elmish.WPF
+open Elmish.Uno
 
 
 module Core =
@@ -124,7 +124,7 @@ let main window =
       .WriteTo.Console()
       .CreateLogger()
 
-  WpfProgram.mkProgramWithCmdMsg init update bindings toCmd
-  |> WpfProgram.withSubscription (fun _ -> Cmd.ofSub timerTick)
-  |> WpfProgram.withLogger (new SerilogLoggerFactory(logger))
-  |> WpfProgram.startElmishLoop window
+  Program.mkProgramWithCmdMsg init update bindings toCmd
+  |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
+  |> Program.withLogger (new SerilogLoggerFactory(logger))
+  |> Program.startElmishLoop window

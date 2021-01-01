@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.SubModelSelectedItem
+namespace Elmish.Uno.Samples.SubModelSelectedItem
 {
   public partial class App : Application
   {

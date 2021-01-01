@@ -1,4 +1,5 @@
-﻿namespace Elmish.WPF
+﻿[<AutoOpen>]
+module internal Elmish.Uno.InternalTypes
 
 open System
 open System.Windows.Input

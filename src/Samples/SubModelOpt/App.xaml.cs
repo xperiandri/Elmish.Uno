@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.SubModelOpt
+namespace Elmish.Uno.Samples.SubModelOpt
 {
   public partial class App : Application
   {

@@ -1,4 +1,4 @@
-namespace Elmish.WPF
+﻿namespace Elmish.Uno
 
 open System
 open System.Dynamic
@@ -179,7 +179,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       | OneWayData d ->
           { OneWayData = d |> BindingData.OneWay.measureFunctions measure }
           |> OneWay
-          |> Some 
+          |> Some
       | OneWayLazyData d ->
           { OneWayLazyData = d |> BindingData.OneWayLazy.measureFunctions measure measure measure2 }
           |> OneWayLazy
@@ -442,7 +442,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       | SubModelSeq b ->
           let d = b.SubModelSeqData
           let getTargetId getId (vm: ViewModel<_, _>) = getId vm.CurrentModel
-          let create m id = 
+          let create m id =
             let toMsg = fun msg -> d.ToMsg currentModel msg
             let chain = getNameChainForItem name (id |> string)
             ViewModel(m, (fun msg -> toMsg (id, msg) |> dispatch), d.GetBindings (), performanceLogThresholdMs, chain, log, logPerformance)

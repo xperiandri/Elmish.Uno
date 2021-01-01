@@ -1,4 +1,4 @@
-﻿namespace Elmish.WPF
+﻿namespace Elmish.Uno
 
 open System.Windows
 open Microsoft.Extensions.Logging
@@ -6,9 +6,9 @@ open Microsoft.Extensions.Logging.Abstractions
 open Elmish
 
 
-type WpfProgram<'model, 'msg> =
+type UnoProgram<'arg, 'model, 'msg> =
   internal {
-    ElmishProgram: Program<unit, 'model, 'msg, unit>
+    ElmishProgram: Program<'arg, 'model, 'msg, unit>
     Bindings: Binding<'model, 'msg> list
     LoggerFactory: ILoggerFactory
     /// Only log calls that take at least this many milliseconds. Default 1.
@@ -17,7 +17,7 @@ type WpfProgram<'model, 'msg> =
 
 
 [<RequireQualifiedAccess>]
-module WpfProgram =
+module Program =
 
 
   let private create getBindings program =
@@ -29,7 +29,7 @@ module WpfProgram =
 
   /// Creates a WpfProgram that does not use commands.
   let mkSimple
-      (init: unit -> 'model)
+      (init: 'arg -> 'model)
       (update: 'msg  -> 'model -> 'model)
       (bindings: unit -> Binding<'model, 'msg> list) =
     Program.mkSimple init update (fun _ _ -> ())
@@ -38,7 +38,7 @@ module WpfProgram =
 
   /// Creates a WpfProgram that uses commands
   let mkProgram
-      (init: unit -> 'model * Cmd<'msg>)
+      (init: 'arg -> 'model * Cmd<'msg>)
       (update: 'msg  -> 'model -> 'model * Cmd<'msg>)
       (bindings: unit -> Binding<'model, 'msg> list) =
     Program.mkProgram init update (fun _ _ -> ())
@@ -50,12 +50,12 @@ module WpfProgram =
   /// you control app/window instantiation, runWindowWithConfig might be a better option.
   let startElmishLoop
       (element: FrameworkElement)
-      (program: WpfProgram<'model, 'msg>) =
+      (program: UnoProgram<unit, 'model, 'msg>) =
     let mutable viewModel = None
 
-    let updateLogger = program.LoggerFactory.CreateLogger("Elmish.WPF.Update")
-    let bindingsLogger = program.LoggerFactory.CreateLogger("Elmish.WPF.Bindings")
-    let performanceLogger = program.LoggerFactory.CreateLogger("Elmish.WPF.Performance")
+    let updateLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Update")
+    let bindingsLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Bindings")
+    let performanceLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Performance")
 
     let setState model dispatch =
       match viewModel with
@@ -69,7 +69,7 @@ module WpfProgram =
     let uiDispatch (innerDispatch: Dispatch<'msg>) : Dispatch<'msg> =
       fun msg -> element.Dispatcher.InvokeAsync(fun () -> innerDispatch msg) |> ignore
 
-    let logMsgAndModel (msg: 'msg) (model: 'model) = 
+    let logMsgAndModel (msg: 'msg) (model: 'model) =
       updateLogger.LogTrace("New message: {Message}\nUpdated state:\n{Model}", msg, model)
 
     let logError (msg: string, ex: exn) =
@@ -118,7 +118,7 @@ module WpfProgram =
   /// general; this is just a trivial convenience function that automatically
   /// converts CmdMsg to Cmd<'msg> for you in init and update.
   let mkProgramWithCmdMsg
-      (init: unit -> 'model * 'cmdMsg list)
+      (init: 'arg -> 'model * 'cmdMsg list)
       (update: 'msg -> 'model -> 'model * 'cmdMsg list)
       (bindings: unit -> Binding<'model, 'msg> list)
       (toCmd: 'cmdMsg -> Cmd<'msg>) =

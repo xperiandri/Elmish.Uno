@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0-windows;netcoreapp3.0;net461</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows;netcoreapp3.1;net461</TargetFrameworks>
     <UseWpf>true</UseWpf>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -11,7 +11,7 @@
     <Authors>jsacks, cmeeren, TysonMN</Authors>
     <Description>F# bindings for using Elmish in WPF</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/elmish/Elmish.WPF</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/elmish/Elmish.Uno</PackageProjectUrl>
     <PackageTags>WPF F# fsharp Elmish Elm</PackageTags>
     <PackageIcon>elmish-wpf-logo-128x128.png</PackageIcon>
     <Version>4.0.0-beta-3</Version>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="elmish-wpf-logo-128x128.png">
       <Pack>True</Pack>
@@ -40,16 +40,16 @@
     <Compile Include="Binding.fs" />
     <Compile Include="ViewModel.fs" />
     <Compile Include="ViewModelModule.fs" />
-    <Compile Include="WpfProgram.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.1.0, 3.99]" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.6.2" />
   </ItemGroup>
-  
+
 </Project>

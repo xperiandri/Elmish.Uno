@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.FileDialogs
+namespace Elmish.Uno.Samples.FileDialogs
 {
   public partial class App : Application
   {

@@ -1,11 +1,11 @@
-Elmish.WPF Tutorial
+Elmish.Uno Tutorial
 ===================
 
-<img src="https://raw.githubusercontent.com/elmish/Elmish.WPF/master/logo/elmish-wpf-logo-ghreadme.png" width="300" align="right" />
+<img src="https://raw.githubusercontent.com/elmish/Elmish.Uno/master/logo/elmish-wpf-logo-ghreadme.png" width="300" align="right" />
 
-The aim of this tutorial is to explain how to use Elmish.WPF, building in complexity from start (what is MVU?) to end (using complex bindings and applying optimizations).
+The aim of this tutorial is to explain how to use Elmish.Uno, building in complexity from start (what is MVU?) to end (using complex bindings and applying optimizations).
 
-This tutorial is not directly related to the many samples in the Elmish.WPF repository, but complements them well. The samples are complete, fully functional apps demonstrating selected aspects of Elmish.WPF. The samples *show*; the tutorial *explains*.
+This tutorial is not directly related to the many samples in the Elmish.Uno repository, but complements them well. The samples are complete, fully functional apps demonstrating selected aspects of Elmish.Uno. The samples *show*; the tutorial *explains*.
 
 This tutorial assumes working F# knowledge. If you’re new to F#, Scott Wlaschin’s blog [F# for fun and profit](https://fsharpforfunandprofit.com/) is a great place to start (and continue) learning the ins and outs of F# and functional programming. His book [Domain Modeling Made Functional](https://pragprog.com/book/swdddf/domain-modeling-made-functional) is also a great resource for learning F# (and in particular how it can be used for domain modeling). You can find many more excellent resources at [fsharp.org](https://fsharp.org).
 
@@ -20,16 +20,16 @@ Table of contents
   + [Model](#model)
   + [Message](#message)
   + [Update](#update)
-  + [View in standard MVU (not Elmish.WPF)](#view-in-standard-mvu-not-elmishwpf)
-  + [View in Elmish.WPF](#view-in-elmishwpf)
+  + [View in standard MVU (not Elmish.Uno)](#view-in-standard-mvu-not-elmishwpf)
+  + [View in Elmish.Uno](#view-in-elmishwpf)
   + [Commands (and subscriptions)](#commands-and-subscriptions)
 * [Some MVU tips for beginners](#some-mvu-tips-for-beginners)
   + [Normalize your model; use IDs instead of duplicating entities](#normalize-your-model-use-ids-instead-of-duplicating-entities)
   + [Use commands for anything impure](#use-commands-for-anything-impure)
   + [Child components and scaling](#child-components-and-scaling)
   + [Optimize easily with memoization](#optimize-easily-with-memoization)
-* [Getting started with Elmish.WPF](#getting-started-with-elmishwpf)
-* [The Elmish.WPF bindings](#the-elmishwpf-bindings)
+* [Getting started with Elmish.Uno](#getting-started-with-elmishwpf)
+* [The Elmish.Uno bindings](#the-elmishwpf-bindings)
   + [One-way bindings](#one-way-bindings)
     - [Binding to option-wrapped values](#binding-to-option-wrapped-values)
   + [Two-way bindings](#two-way-bindings)
@@ -114,7 +114,7 @@ let update (msg: Msg) (model: Model) : Model =
   | SetStepSize i -> { model with StepSize = i }  
 ```
 
-### View in standard MVU (not Elmish.WPF)
+### View in standard MVU (not Elmish.Uno)
 
 This is where MVU frameworks will differ, since every UI technology is different.
 
@@ -154,13 +154,13 @@ type Dispatch<'msg> = 'msg -> unit
 
 Therefore, you will normally see `dispatch` typed as `Dispatch<'msg>` instead of `'msg -> unit`.
 
-### View in Elmish.WPF
+### View in Elmish.Uno
 
 The `view` example above shows *dynamic views*, which is how “proper” MVU works. Creating views as a simple function of the model is a very powerful technique, is conceptually very simple, and allows for good composability.
 
-In Elmish.WPF, however, the views are defined externally in XAML. The UI is *static* and is not defined or changed by the `view` code; hence, Elmish.WPF is said to use *static views*.
+In Elmish.Uno, however, the views are defined externally in XAML. The UI is *static* and is not defined or changed by the `view` code; hence, Elmish.Uno is said to use *static views*.
 
-You set up bindings in the XAML views as you normally would if using MVVM. Then, in the `view` function, you use Elmish.WPF to declaratively create a “view model” of sorts that contain the data the view will bind to. Therefore the `view` function is normally called `bindings` in Elmish.WPF.
+You set up bindings in the XAML views as you normally would if using MVVM. Then, in the `view` function, you use Elmish.Uno to declaratively create a “view model” of sorts that contain the data the view will bind to. Therefore the `view` function is normally called `bindings` in Elmish.Uno.
 
 For example, the counter app may look like this:
 
@@ -182,7 +182,7 @@ The actual bindings will be explained in detail later, but explained simply, the
 * two get-only properties `Increment` and `Decrement` that are `ICommand`s that can always execute and, when executed, dispatches the `Increment` and `Decrement` messages, respectively
 * a `float` get-set property `StepSize ` returning `model.StepSize` and which, when set, dispatches the `SetStepSize` message with the number
 
-Another important difference between normal MVU `view` functions and Elmish.WPF’s `update`  function is that `view` is called every time the model has been updated, whereas `bindings` is only called once, when the “view model” is initialized. After that, it is the functions used in the bindings themselves that are called when the model is updated. Therefore, `bindings` do not accept a `model` or `dispatch` parameter. The `model` is instead passed separately in each binding, and the `dispatch` isn’t visible at all; you simply specify the message to be dispatched, and Elmish.WPF will take care of dispatching the message.
+Another important difference between normal MVU `view` functions and Elmish.Uno’s `update`  function is that `view` is called every time the model has been updated, whereas `bindings` is only called once, when the “view model” is initialized. After that, it is the functions used in the bindings themselves that are called when the model is updated. Therefore, `bindings` do not accept a `model` or `dispatch` parameter. The `model` is instead passed separately in each binding, and the `dispatch` isn’t visible at all; you simply specify the message to be dispatched, and Elmish.Uno will take care of dispatching the message.
 
 ### Commands (and subscriptions)
 
@@ -287,19 +287,19 @@ module Child =
   
 module Parent =
 
-	type Model = {
-	  ...
-	  Child: Child.Model
+    type Model = {
+      ...
+      Child: Child.Model
   }
 
-	type Msg =
-		...
-		| ChildMsg of Child.Msg
+    type Msg =
+        ...
+        | ChildMsg of Child.Msg
 
-	let update msg model =
-		match msg with
-		...
-		| ChildMsg of childMsg -> { model with Child = Child.update childMsg model }
+    let update msg model =
+        match msg with
+        ...
+        | ChildMsg of childMsg -> { model with Child = Child.update childMsg model }
 ```
 
 As you can see, there’s some boilerplate involved in the parent component: You must have a model field for the child model, a wrapping message case for the child message, and an `update` branch that passes the child message on to the child model.
@@ -353,17 +353,17 @@ let myExpensiveFunMemoized x = memoize myExpensiveFun x
 
 then a new memoized version would be created each for each call, which defeats the purpose of memoizing it in the first place.
 
-Furthermore, the implementation above only memoizes functions with a single input. If you need more parameters, you need to create `memoize2`, `memoize3`, etc. (You could also pass a single tuple argument, but that will never be referentially equal, so you’d need to use structural comparison instead. That might be prohibitively expensive if the input is, say, a large collection of domain objects. Alternatively you might use functionality similar to Elmish.WPF’s `elmEq` helper, which is explained later.)
+Furthermore, the implementation above only memoizes functions with a single input. If you need more parameters, you need to create `memoize2`, `memoize3`, etc. (You could also pass a single tuple argument, but that will never be referentially equal, so you’d need to use structural comparison instead. That might be prohibitively expensive if the input is, say, a large collection of domain objects. Alternatively you might use functionality similar to Elmish.Uno’s `elmEq` helper, which is explained later.)
 
-Getting started with Elmish.WPF
+Getting started with Elmish.Uno
 -------------------------------
 
-The [readme](https://github.com/elmish/Elmish.WPF/blob/master/README.md) has a “getting started” section that will have you up and running quickly with a simple skeleton solution.
+The [readme](https://github.com/elmish/Elmish.Uno/blob/master/README.md) has a “getting started” section that will have you up and running quickly with a simple skeleton solution.
 
-The Elmish.WPF bindings
+The Elmish.Uno bindings
 ----------------------------
 
-The Elmish.WPF bindings can be categorized into the following types:
+The Elmish.Uno bindings can be categorized into the following types:
 
 * **One-way bindings**, for when you want to bind to a simple value.
 * **Two-way bindings**, for when you want to bind to a simple value as well as update this value by dispatching a message. Used for inputs, checkboxes, sliders, etc. Can optionally support validation (e.g. provide an error message using `INotifyDataErrorInfo` that can be displayed when an input is not valid).
@@ -398,7 +398,7 @@ A one-way binding simply accepts a function `get: 'model -> 'a` that retrieves t
 
 #### Binding to option-wrapped values
 
-In F#, it’s common to model missing values using the `Option` type. However, WPF uses `null` and doesn’t know how to handle the F# `Option` type. You could simply convert from `Option` to `null` (or `Nullable<_>`) in the `get` function using `Option.toObj` (or `Option.toNullable`), but this is such a common scenario that Elmish.WPF has a variant of the one-way binding called `oneWayOpt` with this behavior built-in. The `oneWayOpt` binding accepts a function `get: 'model -> 'a option`. If it returns `None`, the UI will receive `null`. If it returns `Some`, the UI will receive the inner value.
+In F#, it’s common to model missing values using the `Option` type. However, WPF uses `null` and doesn’t know how to handle the F# `Option` type. You could simply convert from `Option` to `null` (or `Nullable<_>`) in the `get` function using `Option.toObj` (or `Option.toNullable`), but this is such a common scenario that Elmish.Uno has a variant of the one-way binding called `oneWayOpt` with this behavior built-in. The `oneWayOpt` binding accepts a function `get: 'model -> 'a option`. If it returns `None`, the UI will receive `null`. If it returns `Some`, the UI will receive the inner value.
 
 ### Two-way bindings
 
@@ -428,7 +428,7 @@ The corresponding XAML may look like this:
 
 The WPF slider’s value is a `float`, but in the model we use an `int`. Therefore the binding’s `get` function must convert the model’s integer to a float, and conversely, the binding’s “setter” must convert the UI value from a float to an int.
 
-You might think that the `get` function doesn’t have to cast to `float`. However, `'a` is the same in both `get` and `set`, and if you return `int` in `get`, then Elmish.WPF expects the value coming from the UI (which is `obj`) to also be `int`, and will try to unbox it to `int` when being set. Since it actually is a `float`, this will fail.
+You might think that the `get` function doesn’t have to cast to `float`. However, `'a` is the same in both `get` and `set`, and if you return `int` in `get`, then Elmish.Uno expects the value coming from the UI (which is `obj`) to also be `int`, and will try to unbox it to `int` when being set. Since it actually is a `float`, this will fail.
 
 It’s common for the `set` function to rely only on the value to be set, not on the model. Therefore, the two-way binding also has an overload where the `set` function accepts only the value, not the model. This allows a more shorthand notation:
 
@@ -441,13 +441,13 @@ It’s common for the `set` function to rely only on the value to be set, not on
 
 #### Binding to option-wrapped values
 
-Just like one-way bindings, there is a variant of the two-way binding for `option`-wrapped values. The `option` wrapping is used in both `get` and `set`. Elmish.WPF will convert both ways between a possibly `null` raw value and an `option`-wrapped value.
+Just like one-way bindings, there is a variant of the two-way binding for `option`-wrapped values. The `option` wrapping is used in both `get` and `set`. Elmish.Uno will convert both ways between a possibly `null` raw value and an `option`-wrapped value.
 
 #### Using validation with two-way bindings
 
 *Relevant sample: Validation*
 
-You might want to display validation errors when the input is invalid. The best way to do this in WPF is through `INotifyDataErrorInfo`. Elmish.WPF supports this directly through the `twoWayValidate` bindings. In addition to `get` and `set`, this binding also accepts a third parameter that returns the error string to be displayed. This can be returned as `string option` (where `None` indicates no error), or `Result<_, string>` (where `Ok` indicates no error; this variant might allow you to easily reuse existing validation functions you have).
+You might want to display validation errors when the input is invalid. The best way to do this in WPF is through `INotifyDataErrorInfo`. Elmish.Uno supports this directly through the `twoWayValidate` bindings. In addition to `get` and `set`, this binding also accepts a third parameter that returns the error string to be displayed. This can be returned as `string option` (where `None` indicates no error), or `Result<_, string>` (where `Ok` indicates no error; this variant might allow you to easily reuse existing validation functions you have).
 
 Keep in mind that by default, WPF controls do not display errors. To display errors, either use 3rd party controls/styles (such as [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)) or add your own styles (the `Validation` sample in this repo demonstrates this).
 
@@ -465,13 +465,13 @@ For example, for the counter app we have been looking at, the XAML binding to ex
 <Button Command="{Binding Increment}" Content="+" />
 ```
 
-The corresponding Elmish.WPF binding that dispatches `Msg.Increment` when the command is executed generally looks like this:
+The corresponding Elmish.Uno binding that dispatches `Msg.Increment` when the command is executed generally looks like this:
 
 ```f#
 "Increment" |> Binding.cmd (fun m -> Increment)
 ```
 
-The binding accepts a single function `exec: 'model -> 'msg ` that accepts the current model and returns the message to be dispatched. Elmish.WPF will convert the message to an `ICommand` that dispatches the message when the command is invoked.
+The binding accepts a single function `exec: 'model -> 'msg ` that accepts the current model and returns the message to be dispatched. Elmish.Uno will convert the message to an `ICommand` that dispatches the message when the command is invoked.
 
 For convenience, if you don’t need the model, there is also an overload that directly accepts the message (instead of a model-accepting function). The above can therefore be written like this:
 
@@ -504,7 +504,7 @@ There are several ways to indicate that a command can‘t execute. The `cmdIf` b
 
 *Relevant sample: UiBoundCmdParam*
 
-There may be times you need to use the XAML `CommandParameter` property. You then need to use Elmish.WPF’s `cmdParam` binding, which works exactly like `cmd` but where `exec` function accepts the command parameter as its first parameter.
+There may be times you need to use the XAML `CommandParameter` property. You then need to use Elmish.Uno’s `cmdParam` binding, which works exactly like `cmd` but where `exec` function accepts the command parameter as its first parameter.
 
 There is also `cmdParamIf` which combines `cmdParam` and `cmdIf`, allowing you to override the command’s `CanExecute`.
 
@@ -531,10 +531,10 @@ For example, let’s say that we have an app where a counter is a part of the ap
 
 ```f#
 "Counter" |> Binding.subModel(
-	(fun m -> m.Counter),  // Counter is an object with Count, StepSize, etc.
+    (fun m -> m.Counter),  // Counter is an object with Count, StepSize, etc.
   (fun () -> [
-  	"CounterValue" |> Binding.oneWay (fun (parent, counter) -> counter.Count)
-  	"Increment" |> Binding.cmd IncrementCounter
+    "CounterValue" |> Binding.oneWay (fun (parent, counter) -> counter.Count)
+    "Increment" |> Binding.cmd IncrementCounter
   ])
 )
 ```
@@ -555,11 +555,11 @@ This is useful if you want to use a separate message type in the sub-model bindi
 
 ```f#
 "Counter" |> Binding.subModel(
-	(fun m -> m.Counter),
-	CounterMsg,
+    (fun m -> m.Counter),
+    CounterMsg,
   (fun () -> [
-  	"CounterValue" |> Binding.oneWay (fun (parent, counter) -> counter.Count)
-  	"Increment" |> Binding.cmd Increment
+    "CounterValue" |> Binding.oneWay (fun (parent, counter) -> counter.Count)
+    "Increment" |> Binding.cmd Increment
   ])
 )
 ```
@@ -590,12 +590,12 @@ Continuing with the counter example above, it could look like this:
 
 ```f#
 "Counter" |> Binding.subModel(
-	(fun m -> m.Counter),
-	(fun (parent, counter) -> counter)
-	CounterMsg,
+    (fun m -> m.Counter),
+    (fun (parent, counter) -> counter)
+    CounterMsg,
   (fun () -> [
-  	"CounterValue" |> Binding.oneWay (fun counter -> counter.Count)
-  	"Increment" |> Binding.cmd Increment
+    "CounterValue" |> Binding.oneWay (fun counter -> counter.Count)
+    "Increment" |> Binding.cmd Increment
   ])
 )
 ```
@@ -608,9 +608,9 @@ The model transformation is also required for recursive bindings. Imagine that a
 
 ```f#
 let rec counterBindings () : Binding<CounterModel, CounterMsg> list = [
-  	"CounterValue" |> Binding.oneWay (fun m -> m.Count)
-  	"Increment" |> Binding.cmd Increment
-  	"ChildCounter" |> Binding.subModel(
+    "CounterValue" |> Binding.oneWay (fun m -> m.Count)
+    "Increment" |> Binding.cmd Increment
+    "ChildCounter" |> Binding.subModel(
       (fun m -> m.ChildCounter),
       (fun (parent, counter) -> counter)
       ChildMsg,
@@ -630,7 +630,7 @@ You now have the power to create child components. Use it with great care; as me
 
 You can also use the `subModelOpt` binding. The signature is the same as the variants described above, except that `getSubModel` returns `'subModel option`. The UI will receive `null` when the sub-model is `None`.
 
-Additionally, these bindings have an optional `sticky: bool` parameter. If `true`, Elmish.WPF will “remember” and return the most recent non-null sub-model when the `getSubModel` returns `None`. This can be useful for example when you want to animate away the UI for the sub-component when it’s set to `None`. If you do not use `sticky`, the UI will be cleared at the start of the animation, which may look weird.
+Additionally, these bindings have an optional `sticky: bool` parameter. If `true`, Elmish.Uno will “remember” and return the most recent non-null sub-model when the `getSubModel` returns `None`. This can be useful for example when you want to animate away the UI for the sub-component when it’s set to `None`. If you do not use `sticky`, the UI will be cleared at the start of the animation, which may look weird.
 
 ### Sub-model window bindings
 
@@ -682,7 +682,7 @@ There are two special bindings not yet covered.
 
 The section on model normalization made it clear that it’s better to use IDs than complex objects in messages. This means that for bindings to the selected value of a `ListBox` or similar, you’ll likely have better luck using `SelectedValue` and `SelectedValuePath` rather than `SelectedItem`.
 
-Unfortunately some selection-enabled WPF controls only have `SelectedItem` and do not support `SelectedValue` and `SelectedValuePath`. Using `SelectedItem` is particularly cumbersome in Elmish.WPF since the value is not your sub-model, but an instance of the Elmish.WPF view-model. To help with this, Elmish.WPF provides the `subModelSelectedItem` binding.
+Unfortunately some selection-enabled WPF controls only have `SelectedItem` and do not support `SelectedValue` and `SelectedValuePath`. Using `SelectedItem` is particularly cumbersome in Elmish.Uno since the value is not your sub-model, but an instance of the Elmish.Uno view-model. To help with this, Elmish.Uno provides the `subModelSelectedItem` binding.
 
 This binding works together with a `subModelSeq` binding in the same binding list, and allows you to use the `subModelSeq` binding’s IDs in your model while still using `SelectedItem` from XAML. For example, if you use `subModelSeq` to display a list of books identified by a `BookId`, the `subModelSelectedItem` binding allows you to use `SelectedBook: BookId` in your model.
 
@@ -692,10 +692,10 @@ The `subModelSelectedItem` binding has the following parameters:
 * `get: 'model -> 'id option`, where you return the ID of the sub-model in the `subModelSeq` binding that should be selected
 * `set: 'id option -> 'msg`, where you return the message to dispatch when the selected item changes (typically this will be a message case wrapping the ID).
 
-You bind the `SelectedItem` of a control to the `subModelSelectedItem` binding. Then, Elmish.WPF will take care of the following:
+You bind the `SelectedItem` of a control to the `subModelSelectedItem` binding. Then, Elmish.Uno will take care of the following:
 
-* When the UI retrieves the selected item, Elmish.WPF gets the ID using `get`, looks up the correct view-model in the `subModelSeq` binding identified by `subModelSeqBindingName`, and returns that view-model to the UI.
-* When the UI sets the selected item (which it sets to an Elmish.WPF view-model), Elmish.WPF calls `set` with the ID of the sub-model corresponding to that view-model.
+* When the UI retrieves the selected item, Elmish.Uno gets the ID using `get`, looks up the correct view-model in the `subModelSeq` binding identified by `subModelSeqBindingName`, and returns that view-model to the UI.
+* When the UI sets the selected item (which it sets to an Elmish.Uno view-model), Elmish.Uno calls `set` with the ID of the sub-model corresponding to that view-model.
 
 #### `oneWaySeq`
 
@@ -711,21 +711,21 @@ The `oneWaySeq` binding has the following parameters:
 * `itemEquals: 'a -> 'a -> bool`, to determine whether an item has changed
 * `getId: 'a -> 'id`, to track which items are added, removed, re-ordered, and changed
 
-If the values are not simple (e.g. not strings or numbers), then you can instead use `subModelSeq` to set up separate bindings for each item. And if the values are not distinct (i.e., can not be uniquely identified in the collection), then Elmish.WPF won’t be able to track which items are moved, and you can’t use this optimization.
+If the values are not simple (e.g. not strings or numbers), then you can instead use `subModelSeq` to set up separate bindings for each item. And if the values are not distinct (i.e., can not be uniquely identified in the collection), then Elmish.Uno won’t be able to track which items are moved, and you can’t use this optimization.
 
 Note that you can always use `subModelSeq` instead of `oneWaySeq` (the opposite is not true.) The `oneWaySeq` binding is slightly simpler than `subModelSeq` if the elements are simple values that can be bound to directly.
 
 ### Lazy bindings
 
-*Note: Lazy bindings may get a complete overhaul soon; see [#143](https://github.com/elmish/Elmish.WPF/issues/143).*
+*Note: Lazy bindings may get a complete overhaul soon; see [#143](https://github.com/elmish/Elmish.Uno/issues/143).*
 
-You may find yourself doing potentially expensive work in one-way bindings. To facilitate simple optimization in these cases, Elmish.WPF provides the bindings `oneWayLazy`, `oneWayOptLazy`, and `oneWaySeqLazy`. The difference between these and their non-lazy counterparts is that they have two extra parameters: `equals` and `map `.
+You may find yourself doing potentially expensive work in one-way bindings. To facilitate simple optimization in these cases, Elmish.Uno provides the bindings `oneWayLazy`, `oneWayOptLazy`, and `oneWaySeqLazy`. The difference between these and their non-lazy counterparts is that they have two extra parameters: `equals` and `map `.
 
 The optimization is done at two levels. The first optimization is for the update process. As with the non-lazy bindings, the initial `get` function is called. For the lazy bindings, this should be cheap; it should basically just return what you need from from the model (e.g. a single item or a tuple or record with multiple items). Then, `equals` is used to compare the output of `get` with the previous output of `get`. If `equals` returns `true`, the rest of the update process is skipped entirely. If `equals` returns `false`, the output of `get` is passed to `map`, which may be expensive, and then the binding is updated normally.
 
 The second optimization is when the UI retrieves the value. The output of `map` is cached, so if the UI attempts to retrieve a value multiple times, `map` is still only called once. Contrast this the non-lazy bindings, where `get` is called each time the value is retrieved by the UI.
 
-Elmish.WPF provides two helpers you can often use as the `equals` parameter: `refEq` and `elmEq`.
+Elmish.Uno provides two helpers you can often use as the `equals` parameter: `refEq` and `elmEq`.
 
 - `refEq` is a good choice if `get` returns a single item (not an inline-created tuple, record, or other wrapper) from your model. It is simply an alias for `LanguagePrimitives.PhysicalEquality` (which is essentially `Object.ReferenceEquals` with better typing). Since the Elmish model is generally immutable, a reference equality check for the output of `get` is a very efficient way to short-circuit the update process. It may cause false negatives if two values are structurally equal but not referentially equal, but this should not be a common case, and structural equality may be prohibitively expensive if comparing e.g. large lists, defeating the purpose.
 - `elmEq` is a good choice if `get` returns multiple items from the model wrapped inline in a tuple or record. It will compare each member of the `get` return value separately (i.e. each record field, or each tuple item). Reference-typed members will be compared using reference equality, and string members and value-typed members will be compared using structural equality.
@@ -790,6 +790,6 @@ A binding in Elmish.WPF is represented by an instance of type `Binding<'model, '
 Additional resources
 --------------------
 
-* The [Elmish.WPF readme](https://github.com/elmish/Elmish.WPF/blob/master/README.md) contains
+* The [Elmish.Uno readme](https://github.com/elmish/Elmish.Uno/blob/master/README.md) contains
   * a “getting started” section that will get you quickly up and running
   * a FAQ with miscellaneous useful information

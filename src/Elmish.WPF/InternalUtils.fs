@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module internal Elmish.WPF.InternalUtils
+module internal Elmish.Uno.InternalUtils
 
 
 [<RequireQualifiedAccess>]

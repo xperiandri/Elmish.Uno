@@ -1,9 +1,10 @@
-module Elmish.WPF.Samples.SubModelSeq.Program
+﻿module Elmish.Uno.Samples.SubModelSeq.Program
 
 open System
+open Elmish
+open Elmish.Uno
 open Serilog
 open Serilog.Extensions.Logging
-open Elmish.WPF
 
 
 type InOutMsg<'a, 'b> =
@@ -24,7 +25,7 @@ module Func =
 module FuncOption =
 
   let inputIfNone f a = a |> f |> Option.defaultValue a
-  
+
   let map (f: 'b -> 'c) (mb: 'a -> 'b option) =
     mb >> Option.map f
 
@@ -69,14 +70,14 @@ module List =
             mapFirstRec (a :: reverseFront) ma
     mapFirstRec [] input
 
-        
+
 [<AutoOpen>]
 module Identifiable =
 
   type Identifiable<'a> =
     { Id: Guid
       Value: 'a }
-  
+
   module Identifiable =
 
     let getId m = m.Id
@@ -103,9 +104,9 @@ module Counter =
     let init =
       { Count = 0
         StepSize = 1 }
-    
+
     let canReset = (<>) init
-    
+
     let update msg m =
       match msg with
       | Increment -> { m with Count = m.Count + m.StepSize }
@@ -306,12 +307,12 @@ let mainDesignVm = ViewModel.designInstance (App.init ()) (Bindings.rootBindings
 let main window =
   let logger =
     LoggerConfiguration()
-      .MinimumLevel.Override("Elmish.WPF.Update", Events.LogEventLevel.Verbose)
-      .MinimumLevel.Override("Elmish.WPF.Bindings", Events.LogEventLevel.Verbose)
-      .MinimumLevel.Override("Elmish.WPF.Performance", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Update", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Bindings", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Performance", Events.LogEventLevel.Verbose)
       .WriteTo.Console()
       .CreateLogger()
 
-  WpfProgram.mkSimple App.init App.update Bindings.rootBindings
-  |> WpfProgram.withLogger (new SerilogLoggerFactory(logger))
-  |> WpfProgram.startElmishLoop window
+  Program.mkSimple App.init App.update Bindings.rootBindings
+  |> Program.withLogger (new SerilogLoggerFactory(logger))
+  |> Program.startElmishLoop window

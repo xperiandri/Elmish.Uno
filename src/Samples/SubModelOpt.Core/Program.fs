@@ -1,8 +1,9 @@
-﻿module Elmish.WPF.Samples.SubModelOpt.Program
+﻿module Elmish.Uno.Samples.SubModelOpt.Program
 
+open Elmish
+open Elmish.Uno
 open Serilog
 open Serilog.Extensions.Logging
-open Elmish.WPF
 
 
 module Form1 =
@@ -125,12 +126,12 @@ let main window =
 
   let logger =
     LoggerConfiguration()
-      .MinimumLevel.Override("Elmish.WPF.Update", Events.LogEventLevel.Verbose)
-      .MinimumLevel.Override("Elmish.WPF.Bindings", Events.LogEventLevel.Verbose)
-      .MinimumLevel.Override("Elmish.WPF.Performance", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Update", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Bindings", Events.LogEventLevel.Verbose)
+      .MinimumLevel.Override("Elmish.Uno.Performance", Events.LogEventLevel.Verbose)
       .WriteTo.Console()
       .CreateLogger()
 
-  WpfProgram.mkSimple App.init App.update App.bindings
-  |> WpfProgram.withLogger (new SerilogLoggerFactory(logger))
-  |> WpfProgram.startElmishLoop window
+  Program.mkSimple App.init App.update App.bindings
+  |> Program.withLogger (new SerilogLoggerFactory(logger))
+  |> Program.startElmishLoop window

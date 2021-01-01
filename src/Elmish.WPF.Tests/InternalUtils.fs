@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module internal Elmish.WPF.Tests.InternalUtils
+module internal Elmish.Uno.Tests.InternalUtils
 
 
 type InvokeTester<'a, 'b>(f: 'a -> 'b) =

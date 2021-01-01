@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.Validation
+namespace Elmish.Uno.Samples.Validation
 {
   public partial class App : Application
   {

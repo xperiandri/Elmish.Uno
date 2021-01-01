@@ -1,4 +1,4 @@
-﻿module Elmish.WPF.ViewModel
+﻿module Elmish.Uno.ViewModel
 
 open Microsoft.Extensions.Logging.Abstractions
 

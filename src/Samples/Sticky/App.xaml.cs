@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.Sticky
+namespace Elmish.Uno.Samples.Sticky
 {
   public partial class App : Application
   {

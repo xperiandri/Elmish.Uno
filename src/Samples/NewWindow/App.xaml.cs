@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.NewWindow
+namespace Elmish.Uno.Samples.NewWindow
 {
   public partial class App : Application
   {

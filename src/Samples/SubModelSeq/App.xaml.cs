@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Elmish.WPF.Samples.SubModelSeq
+namespace Elmish.Uno.Samples.SubModelSeq
 {
   public partial class App : Application
   {
