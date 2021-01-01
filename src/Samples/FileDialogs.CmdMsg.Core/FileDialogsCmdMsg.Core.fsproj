@@ -10,7 +10,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <Compile Include="FileDialogs.CmdMsg.fs" />
   </ItemGroup>
   
   <ItemGroup>
