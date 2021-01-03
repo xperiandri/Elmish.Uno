@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="SingleCounter.fs" />
+    <Compile Include="OneWaySeq.fs" />
+    <Compile Include="SubModel.fs" />
+    <Compile Include="SubModelOpt.fs" />
+    <Compile Include="SubModelSelectedItem.fs" />
+    <Compile Include="SubModelSeq.fs" />
+    <Compile Include="UiBoundCmdParam.fs" />
+    <Compile Include="Validation.fs" />
+    <Compile Include="FileDialogs.fs" />
+    <Compile Include="FileDialogs.CmdMsg.fs" />
+    <Compile Include="EventBindingsAndBehaviors.fs" />
+    <Compile Include="NewWindow.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
+    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.0.2" />
+    <PackageReference Include="Uno.Core" Version="2.1.0" />
+    <PackageReference Include="Uno.UI" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
