@@ -4,129 +4,102 @@ open System
 open System.Windows
 open Elmish
 open Elmish.Uno
+open Windows.ApplicationModel.Core
+open Windows.UI.Core
+open Windows.UI.ViewManagement
+open Windows.UI.Xaml
+open Windows.UI.Xaml.Controls
 
-module App =
+module Win1 =
 
-  type ConfirmState =
-    | SubmitClicked
-    | CancelClicked
-    | CloseRequested
-
-  type Win2 = {
-    Input: string
-    IsChecked: bool
-    ConfirmState: ConfirmState option
-  }
-
-  type Model =
-    { Win1State: WindowState<string>
-      Win1Input: string
-      Win2: Win2 option }
-
-  let init () =
-    { Win1State = WindowState.Closed
-      Win1Input = ""
-      Win2 = None }
-
-  let initWindow2 =
-    { Input = ""
-      IsChecked = false
-      ConfirmState = None }
+  type Model = { Text: string }
 
   type Msg =
-    | ShowWin1
-    | HideWin1
-    | CloseWin1
-    | ShowWin2
-    | Win1Input of string
-    | Win2Input of string
-    | Win2SetChecked of bool
-    | Win2Submit
-    | Win2ButtonCancel
-    | Win2CloseRequested
+  | TextInput of string
+
+  let init = { Text = "" }
 
   let update msg m =
     match msg with
-    | ShowWin1 -> { m with Win1State = WindowState.Visible "" }
-    | HideWin1 -> { m with Win1State = WindowState.Hidden "" }
-    | CloseWin1 -> { m with Win1State = WindowState.Closed }
-    | ShowWin2 -> { m with Win2 = Some initWindow2 }
-    | Win1Input s -> { m with Win1Input = s }
-    | Win2Input s ->
-        { m with
-            Win2 =
-              m.Win2
-              |> Option.map (fun m' -> { m' with Input = s })
-          }
-    | Win2SetChecked isChecked ->
-        { m with
-            Win2 =
-              m.Win2
-              |> Option.map (fun m' -> { m' with IsChecked = isChecked })
-            }
-    | Win2Submit ->
-        match m.Win2 with
-        | Some { ConfirmState = Some SubmitClicked } -> { m with Win2 = None }
-        | Some win2 -> { m with Win2 = Some { win2 with ConfirmState = Some SubmitClicked } }
-        | None -> m
-    | Win2ButtonCancel ->
-        match m.Win2 with
-        | Some { ConfirmState = Some CancelClicked } -> { m with Win2 = None }
-        | Some win2 -> { m with Win2 = Some { win2 with ConfirmState = Some CancelClicked } }
-        | None -> m
-    | Win2CloseRequested -> 
-        match m.Win2 with
-        | Some { ConfirmState = Some CloseRequested } -> { m with Win2 = None }
-        | Some win2 -> { m with Win2 = Some { win2 with ConfirmState = Some CloseRequested } }
-        | None -> m
+    | TextInput s -> { m with Text = s }
 
-  let window1Bindings () = [
-    "Input" |> Binding.twoWay((fun m -> m.Win1Input), Win1Input)
-  ]
+  let bindings () =
+    [ "Text" |> Binding.twoWay ((fun m -> m.Text), (fun v m -> TextInput v)) ]
 
-  let window2Bindings () = [
-    "Input" |> Binding.twoWay((fun m -> m.Input), Win2Input)
-    "IsChecked" |> Binding.twoWay((fun m -> m.IsChecked), Win2SetChecked)
-    "Submit" |> Binding.cmd Win2Submit
-    "Cancel" |> Binding.cmd Win2ButtonCancel
-    "SubmitMsgVisible" |> Binding.oneWay (fun m -> m.ConfirmState = Some SubmitClicked)
-    "CancelMsgVisible" |> Binding.oneWay (fun m -> m.ConfirmState = Some CancelClicked)
-    "CloseRequestedMsgVisible" |> Binding.oneWay (fun m -> m.ConfirmState = Some CloseRequested)
-  ]
 
-  let mainBindings (createWindow1: unit -> #Window) (createWindow2: unit -> #Window) () : Binding<Model, Msg> list = [
-    "ShowWin1" |> Binding.cmd ShowWin1
-    "HideWin1" |> Binding.cmd HideWin1
-    "CloseWin1" |> Binding.cmd CloseWin1
-    "ShowWin2" |> Binding.cmd ShowWin2
-    "Win1" |> Binding.subModelWin(
-      (fun m -> m.Win1State), fst, id,
-      window1Bindings,
-      createWindow1)
-    "Win2" |> Binding.subModelWin(
-      (fun m -> m.Win2 |> WindowState.ofOption), snd, id,
-      window2Bindings,
-      createWindow2,
-      onCloseRequested = Win2CloseRequested,
-      isModal = true)
+module Win2 =
+
+  type Model =
+    { Input1: string
+      Input2: string }
+
+  type Msg =
+  | Text1Input of string
+  | Text2Input of string
+
+  let init =
+    { Input1 = ""
+      Input2 = "" }
+
+  let update msg m =
+    match msg with
+    | Text1Input s -> { m with Input1 = s }
+    | Text2Input s -> { m with Input2 = s }
+
+  let bindings () = [
+    "Input1" |> Binding.twoWay ((fun m -> m.Input1), (fun v m -> Text1Input v))
+    "Input2" |> Binding.twoWay ((fun m -> m.Input2), (fun v m -> Text2Input v))
   ]
 
 
-let fail _ = failwith "never called"
-let mainDesignVm = ViewModel.designInstance (App.init ()) (App.mainBindings fail fail ())
-let window1DesignVm = ViewModel.designInstance (App.init ()) (App.window1Bindings ())
-let window2DesignVm = ViewModel.designInstance App.initWindow2 (App.window2Bindings ())
+type Model =
+  { Win1: Win1.Model
+    Win2: Win2.Model }
 
+let init () =
+  { Win1 = Win1.init
+    Win2 = Win2.init },
+  Cmd.none
 
-let main mainWindow (createWindow1: Func<#Window>) (createWindow2: Func<#Window>) =
-  let createWindow1 () = createWindow1.Invoke()
-  let createWindow2 () =
-    let window = createWindow2.Invoke()
-    window.Owner <- mainWindow
-    window
-  let bindings = App.mainBindings createWindow1 createWindow2
-  Program.mkSimpleWpf App.init App.update bindings
-  |> Program.withConsoleTrace
-  |> Program.runWindowWithConfig
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    mainWindow
+type Msg =
+| ShowWin1
+| ShowWin2
+| Win1Msg of Win1.Msg
+| Win2Msg of Win2.Msg
+
+let showWindow windowTitle pageType viewModel = async {
+  let view = CoreApplication.CreateNewView()
+  do! view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, fun () ->
+      let window = CoreWindow.GetForCurrentThread ()
+      let view = ApplicationView.GetForCurrentView ()
+      view.Title <- windowTitle
+
+      let frame = new Frame()
+      frame.DataContext <- viewModel
+      frame.Navigate(pageType) |> ignore
+      Window.Current.Content <- frame
+      Window.Current.Activate()
+      ).AsTask()
+}
+
+let update window1PageType window2pageType getViewModel msg m =
+  match msg with
+  | ShowWin1 -> m, Cmd.OfAsync.attempt (showWindow "Window 1" window1PageType) (getViewModel ()) raise
+  | ShowWin2 -> m, Cmd.OfAsync.attempt (showWindow "Window 2" window2pageType) (getViewModel ()) raise
+  | Win1Msg msg' -> { m with Win1 = Win1.update msg' m.Win1 }, Cmd.none
+  | Win2Msg msg' -> { m with Win2 = Win2.update msg' m.Win2 }, Cmd.none
+
+let bindings = [
+  "ShowWin1" |> Binding.cmd (fun m -> ShowWin1)
+  "ShowWin2" |> Binding.cmd (fun m -> ShowWin2)
+  "Win1" |> Binding.subModel ((fun m -> m.Win1), snd, Win1Msg, Win1.bindings)
+  "Win2" |> Binding.subModel ((fun m -> m.Win2), snd, Win2Msg, Win2.bindings)
+]
+
+[<CompiledName("CreateProgram")>]
+let createProgram<'win1, 'win2> getViewModel =
+    Program.mkProgramUno init (update typeof<'win1> typeof<'win2> getViewModel) bindings
+    |> Program.withConsoleTrace
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true }

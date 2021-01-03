@@ -1,4 +1,4 @@
-module Elmish.Uno.Samples.SubModel.Program
+﻿module Elmish.Uno.Samples.SubModel.Program
 
 open System
 open Elmish
@@ -9,26 +9,26 @@ module Counter =
   type Model =
     { Count: int
       StepSize: int }
-  
+
   type Msg =
     | Increment
     | Decrement
     | SetStepSize of int
     | Reset
-  
+
   let init =
     { Count = 0
       StepSize = 1 }
 
   let canReset = (<>) init
-    
+
   let update msg m =
     match msg with
     | Increment -> { m with Count = m.Count + m.StepSize }
     | Decrement -> { m with Count = m.Count - m.StepSize }
     | SetStepSize x -> { m with StepSize = x }
     | Reset -> init
-  
+
   let bindings () : Binding<Model, Msg> list = [
     "CounterValue" |> Binding.oneWay (fun m -> m.Count)
     "Increment" |> Binding.cmd Increment
@@ -114,7 +114,7 @@ module App =
     | ClockCounter2Msg msg ->
         { m with ClockCounter2 = CounterWithClock.update msg m.ClockCounter2 }
 
-  let bindings () : Binding<Model, Msg> list = [
+  let bindings : Binding<Model, Msg> list = [
     "ClockCounter1" |> Binding.subModel(
       (fun m -> m.ClockCounter1),
       snd,
@@ -127,13 +127,6 @@ module App =
       ClockCounter2Msg,
       CounterWithClock.bindings)
   ]
-
-
-let counterDesignVm = ViewModel.designInstance Counter.init (Counter.bindings ())
-let clockDesignVm = ViewModel.designInstance (Clock.init ()) (Clock.bindings ())
-let counterWithClockDesignVm = ViewModel.designInstance (CounterWithClock.init ()) (CounterWithClock.bindings ())
-let mainDesignVm = ViewModel.designInstance (App.init ()) (App.bindings ())
-
 
 let timerTick dispatch =
   let timer = new System.Timers.Timer(1000.)
@@ -148,10 +141,11 @@ let timerTick dispatch =
   timer.Start()
 
 
-let main window =
-  Program.mkSimpleWpf App.init App.update App.bindings
-  |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno App.init App.update App.bindings
+  |> Program.withSubscription (fun m -> Cmd.ofSub timerTick)
   |> Program.withConsoleTrace
-  |> Program.runWindowWithConfig
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true }

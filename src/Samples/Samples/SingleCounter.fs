@@ -1,5 +1,6 @@
 ﻿module Elmish.Uno.Samples.SingleCounter.Program
 
+open System
 open Elmish
 open Elmish.Uno
 
@@ -13,20 +14,22 @@ type Msg =
   | SetStepSize of int
   | Reset
 
-let init =
+let initial =
   { Count = 0
     StepSize = 1 }
 
-let canReset = (<>) init
+let init () = initial
+
+let canReset = (<>) initial
 
 let update msg m =
   match msg with
   | Increment -> { m with Count = m.Count + m.StepSize }
   | Decrement -> { m with Count = m.Count - m.StepSize }
   | SetStepSize x -> { m with StepSize = x }
-  | Reset -> init
+  | Reset -> initial
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "CounterValue" |> Binding.oneWay (fun m -> m.Count)
   "Increment" |> Binding.cmd Increment
   "Decrement" |> Binding.cmd Decrement
@@ -36,12 +39,10 @@ let bindings () : Binding<Model, Msg> list = [
   "Reset" |> Binding.cmdIf(Reset, canReset)
 ]
 
-let designVm = ViewModel.designInstance init (bindings ())
-
-
-let main window =
-  Program.mkSimpleWpf (fun () -> init) update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.runWindowWithConfig
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true }

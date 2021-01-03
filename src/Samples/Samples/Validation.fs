@@ -4,7 +4,6 @@ open System
 open Elmish
 open Elmish.Uno
 
-
 let requireNotEmpty s =
   if String.IsNullOrEmpty s then Error "This field is required" else Ok s
 
@@ -37,7 +36,7 @@ let update msg m =
   | Input x -> { m with RawValue = x }
   | Submit _ -> m
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "RawValue" |> Binding.twoWayValidate(
     (fun m -> m.RawValue),
     Input,
@@ -46,12 +45,11 @@ let bindings () : Binding<Model, Msg> list = [
     fun m -> validateInt42 m.RawValue |> Result.map Submit)
 ]
 
-let designVm = ViewModel.designInstance (init ()) (bindings ())
 
-
-let main window =
-  Program.mkSimpleWpf init update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.runWindowWithConfig
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true }

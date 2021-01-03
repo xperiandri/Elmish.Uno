@@ -34,5 +34,10 @@
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.4.0" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.WindowsStateTriggers" Version="1.1.1-uno.*" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj" />
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
+    <ProjectReference Include="..\Samples\Samples.fsproj" />
+  </ItemGroup>
   <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
 </Project>
