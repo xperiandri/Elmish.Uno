@@ -1,4 +1,4 @@
-module Elmish.Uno.Samples.SubModelSeq.Program
+﻿module Elmish.Uno.Samples.SubModelSeq.Program
 
 open System
 open Elmish
@@ -23,7 +23,7 @@ module Func =
 module FuncOption =
 
   let inputIfNone f a = a |> f |> Option.defaultValue a
-  
+
   let map (f: 'b -> 'c) (mb: 'a -> 'b option) =
     mb >> Option.map f
 
@@ -68,14 +68,14 @@ module List =
             mapFirstRec (a :: reverseFront) ma
     mapFirstRec [] input
 
-        
+
 [<AutoOpen>]
 module Identifiable =
 
   type Identifiable<'a> =
     { Id: Guid
       Value: 'a }
-  
+
   module Identifiable =
 
     let getId m = m.Id
@@ -102,9 +102,9 @@ module Counter =
     let init =
       { Count = 0
         StepSize = 1 }
-    
+
     let canReset = (<>) init
-    
+
     let update msg m =
       match msg with
       | Increment -> { m with Count = m.Count + m.StepSize }
@@ -276,7 +276,7 @@ module Bindings =
       subtreeBindings)
   ]
 
-  let rootBindings () : Binding<Model, Msg> list = [
+  let rootBindings : Binding<Model, Msg> list = [
     "Counters" |> Binding.subModelSeq(
       (fun m -> m.DummyRoot.Children |> Seq.map (fun c -> { Self = c; Parent = m.DummyRoot })),
       (fun { Self = c } -> c.Data.Id),
@@ -293,11 +293,10 @@ module Bindings =
   ]
 
 
-let mainDesignVm = ViewModel.designInstance (App.init ()) (Bindings.rootBindings ())
-
-let main window =
-  Program.mkSimpleWpf App.init App.update Bindings.rootBindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno App.init App.update Bindings.rootBindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true; Measure = true }

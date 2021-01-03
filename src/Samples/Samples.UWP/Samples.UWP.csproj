@@ -132,6 +132,18 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\..\Elmish.Uno.Uwp\Elmish.Uno.Uwp.csproj">
+      <Project>{e8fab67c-c113-4e2c-b28c-7ba8eb3559c3}</Project>
+      <Name>Elmish.Uno.Uwp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
+      <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
+      <Name>Elmish.Uno</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Samples\Samples.fsproj">
+      <Project>{25668814-618e-4ebf-bc4d-716f38589f0a}</Project>
+      <Name>Samples</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

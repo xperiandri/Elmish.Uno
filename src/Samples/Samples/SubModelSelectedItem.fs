@@ -23,7 +23,7 @@ let update msg m =
   match msg with
   | Select entityId -> { m with Selected = entityId }
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "SelectRandom" |> Binding.cmd
     (fun m -> m.Entities.Item(Random().Next(m.Entities.Length)).Id |> Some |> Select)
 
@@ -40,11 +40,10 @@ let bindings () : Binding<Model, Msg> list = [
   "SelectedEntity" |> Binding.subModelSelectedItem("Entities", (fun m -> m.Selected), Select)
 ]
 
-let designVm = ViewModel.designInstance (init ()) (bindings ())
-
-let main window =
-  Program.mkSimpleWpf init update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true; Measure = true }

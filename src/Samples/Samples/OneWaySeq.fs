@@ -1,5 +1,6 @@
 ﻿module Elmish.Uno.Samples.OneWaySeq.Program
 
+open System
 open Elmish
 open Elmish.Uno
 
@@ -21,18 +22,18 @@ let update msg m =
   | AddOneWaySeqNumber -> { m with OneWaySeqNumbers = m.OneWaySeqNumbers.Head + 1 :: m.OneWaySeqNumbers }
   | AddOneWayNumber -> { m with OneWayNumbers = m.OneWayNumbers.Head + 1 :: m.OneWayNumbers }
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "OneWaySeqNumbers" |> Binding.oneWaySeq((fun m -> m.OneWaySeqNumbers), (=), id)
   "OneWayNumbers" |> Binding.oneWay (fun m -> m.OneWayNumbers)
   "AddOneWaySeqNumber" |> Binding.cmd AddOneWaySeqNumber
   "AddOneWayNumber" |> Binding.cmd AddOneWayNumber
 ]
 
-let designVm = ViewModel.designInstance (init ()) (bindings ())
 
-let main window =
-  Program.mkSimpleWpf init update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true }

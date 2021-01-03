@@ -1,8 +1,8 @@
 ﻿module Elmish.Uno.Samples.UiBoundCmdParam.Program
 
+open System
 open Elmish
 open Elmish.Uno
-
 
 type Model =
   { Numbers: int list
@@ -21,21 +21,19 @@ let update msg m =
   | SetLimit x -> { m with EnabledMaxLimit = x }
   | Command -> m
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "Numbers" |> Binding.oneWay(fun m -> m.Numbers)
   "Limit" |> Binding.twoWay((fun m -> float m.EnabledMaxLimit), int >> SetLimit)
   "Command" |> Binding.cmdParamIf(
     (fun p m -> Command),
-    (fun p m -> not (isNull p) && p :?> int <= m.EnabledMaxLimit),
-    true)
+    (fun (p : obj) m -> not (isNull p) && p :?> int <= m.EnabledMaxLimit))
 ]
 
-let designVm = ViewModel.designInstance (init ()) (bindings ())
 
-
-let main window =
-  Program.mkSimpleWpf init update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true; Measure = true }
