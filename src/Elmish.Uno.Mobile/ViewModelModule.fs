@@ -8,7 +8,8 @@ open Windows.UI.Core
 open Elmish
 open Elmish.Uno
 
-/// Start Elmish dispatch loop
+/// Starts the Elmish dispatch loop, setting the bindings as the DataContext
+/// for the specified FrameworkElement. Non-blocking. This is a low-level function;
 let startLoop
     (config: ElmConfig)
     (element: FrameworkElement)
