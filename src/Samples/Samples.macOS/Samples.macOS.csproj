@@ -107,6 +107,20 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj">
+      <Project>{910a4d58-adb0-46e5-9587-9dbd132771cb}</Project>
+      <Name>Elmish.Uno.Mobile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
+      <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
+      <Name>Elmish.Uno</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Samples\Samples.fsproj">
+      <Project>{25668814-618e-4ebf-bc4d-716f38589f0a}</Project>
+      <Name>Samples</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="VS16Mac_RemoveSystemMemory" BeforeTargets="ResolveAssemblyReferences">
     <!--

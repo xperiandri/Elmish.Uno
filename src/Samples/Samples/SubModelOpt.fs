@@ -1,5 +1,6 @@
 ﻿module Elmish.Uno.Samples.SubModelOpt.Program
 
+open System
 open Elmish
 open Elmish.Uno
 
@@ -88,7 +89,7 @@ module App =
         | Some (Form2 m') -> { m with Dialog = Form2.update msg' m' |> Form2 |> Some }
         | _ -> m
 
-  let bindings () : Binding<Model, Msg> list = [
+  let bindings : Binding<Model, Msg> list = [
     "ShowForm1" |> Binding.cmd ShowForm1
 
     "ShowForm2" |> Binding.cmd ShowForm2
@@ -115,14 +116,10 @@ module App =
   ]
 
 
-let form1DesignVm = ViewModel.designInstance Form1.init (Form1.bindings ())
-let form2DesignVm = ViewModel.designInstance Form2.init (Form2.bindings ())
-let mainDesignVm = ViewModel.designInstance (App.init ()) (App.bindings ())
-
-
-let main window =
-  Program.mkSimpleWpf App.init App.update App.bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno App.init App.update App.bindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true; Measure = true }
