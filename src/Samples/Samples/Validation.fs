@@ -5,7 +5,6 @@ open System.Linq
 open Elmish
 open Elmish.Uno
 
-
 let requireNotEmpty s =
   if String.IsNullOrEmpty s then Error "This field is required" else Ok s
 
@@ -53,7 +52,7 @@ let update msg m =
   | NewPassword x -> { m with Password = x }
   | Submit -> m
 
-let bindings () : Binding<Model, Msg> list = [
+let bindings : Binding<Model, Msg> list = [
   "Value" |> Binding.twoWayValidate(
     (fun m -> m.Value),
     NewValue,
@@ -67,12 +66,11 @@ let bindings () : Binding<Model, Msg> list = [
     (fun m -> (match validateInt42 m.Value with Ok _ -> true | Error _ -> false) && (validatePassword m.Password |> List.isEmpty)))
 ]
 
-let designVm = ViewModel.designInstance (init ()) (bindings ())
 
-
-let main window =
-  Program.mkSimpleWpf init update bindings
+[<CompiledName("Program")>]
+let program =
+  Program.mkSimpleUno init update bindings
   |> Program.withConsoleTrace
-  |> Program.startElmishLoop
-    { ElmConfig.Default with LogConsole = true; Measure = true }
-    window
+
+[<CompiledName("Config")>]
+let config = { ElmConfig.Default with LogConsole = true; Measure = true }
