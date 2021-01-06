@@ -5,6 +5,8 @@ open System.Collections.Generic
 open System.Collections.ObjectModel
 open System.ComponentModel
 open System.Dynamic
+open System.Reflection
+open Microsoft.FSharp.Reflection
 
 open Elmish
 open Elmish.Uno
@@ -269,6 +271,14 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
 
   let propertyChanged = Event<PropertyChangedEventHandler, PropertyChangedEventArgs>()
   let errorsChanged = DelegateEvent<EventHandler<DataErrorsChangedEventArgs>>()
+  let modelTypeChanged = Event<EventHandler, EventArgs>()
+
+  static let multicastFiled = typeof<Event<EventHandler, EventArgs>>.GetField("multicast", BindingFlags.NonPublic ||| BindingFlags.Instance)
+  let getDelegateFromEvent (event : Event<EventHandler, EventArgs>) =
+    let ``delegate`` = multicastFiled.GetValue event
+    match ``delegate`` with
+    | :? EventHandler as handler -> handler
+    | _ -> null
 
   /// Error messages keyed by property name.
   let errorsByBindingName = Dictionary<string, string list>()
@@ -645,7 +655,35 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     ViewModel(initialModel, dispatch, bindings, config, propNameChain)
   member internal __.Bindings = bindings.Value
   member internal __.Dispatch = dispatch
-  member __.CurrentModel : 'model = currentModel
+  [<CLIEvent>]
+  member val ModelTypeChanged = modelTypeChanged.Publish
+  member this.CurrentModel
+    with get () : 'model = currentModel
+    and private set (newModel  : 'model) =
+        // TODO:
+        //if currentModel <> newModel then
+            let oldModel = currentModel
+            currentModel <- newModel
+            notifyPropertyChanged "CurrentModel"
+            let ``delegate`` = modelTypeChanged |> getDelegateFromEvent
+            match ``delegate`` with
+            | null -> ()
+            | _ when ``delegate``.GetInvocationList () |> (not << Seq.isEmpty) ->
+                let oldModelType = oldModel.GetType ()
+                let newModelType = newModel.GetType ()
+                match FSharpType.IsUnion newModelType, FSharpType.IsUnion newModelType with
+                | true, true ->
+                    let oldUnionCase, _ = FSharpValue.GetUnionFields(oldModel, oldModelType)
+                    let newUnionCase, _ = FSharpValue.GetUnionFields(newModel, newModelType)
+                    if oldUnionCase.DeclaringType <> newUnionCase.DeclaringType
+                    || oldUnionCase.Name <> newUnionCase.Name
+                    then modelTypeChanged.Trigger (this, EventArgs ())
+                | false, false ->
+                    if oldModelType <> newModelType
+                    then modelTypeChanged.Trigger (this, EventArgs ())
+                | _ -> modelTypeChanged.Trigger (this, EventArgs ())
+            | _ -> ()
+        //else ()
   member this.UpdateModel (newModel: 'model) : unit =
     let bindings = this.Bindings
     let propsToNotify =
@@ -657,7 +695,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       bindings
       |> Seq.choose (Kvp.value >> getCmdIfCanExecChanged newModel)
       |> Seq.toList
-    currentModel <- newModel
+    this.CurrentModel <- newModel
     propsToNotify |> List.iter notifyPropertyChanged
     cmdsToNotify |> List.iter raiseCanExecuteChanged
     for Kvp (name, binding) in bindings do
