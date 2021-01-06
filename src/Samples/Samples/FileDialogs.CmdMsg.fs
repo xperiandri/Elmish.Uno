@@ -1,4 +1,4 @@
-﻿module Elmish.Uno.Samples.FileDialogs.CmdMsg.Program
+﻿module Elmish.Uno.Samples.FileDialogsCmdMsg.Program
 
 open System
 open Elmish
@@ -19,11 +19,12 @@ module Core =
     | Load
 
 
-  let init () =
+  let initial =
     { CurrentTime = DateTimeOffset.Now
       Text = ""
-      StatusMsg = "" },
-    []
+      StatusMsg = "" }
+
+  let init () = initial, []
 
   type Msg =
     | SetTime of DateTimeOffset
@@ -52,14 +53,12 @@ module Core =
     | LoadFailed ex -> { m with StatusMsg = sprintf "Loading failed with excption %s: %s" (ex.GetType().Name) ex.Message }, []
 
 
-
 module Platform =
 
   open System.IO
   open System.Threading
   open System.Windows
   open Core
-
 
   let bindings : Binding<Model, Msg> list = [
     "CurrentTime" |> Binding.oneWay (fun m -> m.CurrentTime)
@@ -68,7 +67,6 @@ module Platform =
     "Save" |> Binding.cmd RequestSave
     "Load" |> Binding.cmd RequestLoad
   ]
-
 
   let save text =
     //CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, fun () ->
@@ -133,6 +131,9 @@ let timerTick dispatch =
   timer.Elapsed.Add (fun _ -> dispatch (SetTime DateTimeOffset.Now))
   timer.Start()
 
+
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =

@@ -83,36 +83,7 @@ module Identifiable =
     let set v m = { m with Value = v }
     let map f = f |> map get set
 
-
-[<AutoOpen>]
-module Counter =
-
-  type Counter =
-    { Count: int
-      StepSize: int }
-
-  type CounterMsg =
-    | Increment
-    | Decrement
-    | SetStepSize of int
-    | Reset
-
-  module Counter =
-
-    let init =
-      { Count = 0
-        StepSize = 1 }
-
-    let canReset = (<>) init
-
-    let update msg m =
-      match msg with
-      | Increment -> { m with Count = m.Count + m.StepSize }
-      | Decrement -> { m with Count = m.Count - m.StepSize }
-      | SetStepSize x -> { m with StepSize = x }
-      | Reset -> init
-
-
+module Counter = Elmish.Uno.Samples.SingleCounter.Program
 
 [<AutoOpen>]
 module RoseTree =
@@ -154,10 +125,10 @@ module App =
 
   type Model =
     { SomeGlobalState: bool
-      DummyRoot: RoseTree<Identifiable<Counter>> }
+      DummyRoot: RoseTree<Identifiable<Counter.Model>> }
 
   type SubtreeMsg =
-    | CounterMsg of CounterMsg
+    | CounterMsg of Counter.Msg
     | AddChild
     | Remove of Guid
     | MoveUp of Guid
@@ -183,7 +154,7 @@ module App =
 
   let createNewIdentifiableCounter () =
     { Id = Guid.NewGuid ()
-      Value = Counter.init }
+      Value = Counter.init () }
 
   let createNewLeaf () =
     createNewIdentifiableCounter ()
@@ -243,17 +214,17 @@ module Bindings =
         OutMoveDown |> OutMsg |> Some
     | _ -> None
 
-  let rec subtreeBindings () : Binding<Model * SelfWithParent<RoseTree<Identifiable<Counter>>>, InOutMsg<RoseTreeMsg<Guid, SubtreeMsg>, SubtreeOutMsg>> list = [
+  let rec subtreeBindings () : Binding<Model * SelfWithParent<RoseTree<Identifiable<Counter.Model>>>, InOutMsg<RoseTreeMsg<Guid, SubtreeMsg>, SubtreeOutMsg>> list = [
     "CounterIdText" |> Binding.oneWay(fun (_, { Self = s }) -> s.Data.Id)
 
     "CounterValue" |> Binding.oneWay(fun (_, { Self = s }) -> s.Data.Value.Count)
-    "Increment" |> Binding.cmd(Increment |> CounterMsg |> LeafMsg |> InMsg)
-    "Decrement" |> Binding.cmd(Decrement |> CounterMsg |> LeafMsg |> InMsg)
+    "Increment" |> Binding.cmd(Counter.Increment |> CounterMsg |> LeafMsg |> InMsg)
+    "Decrement" |> Binding.cmd(Counter.Decrement |> CounterMsg |> LeafMsg |> InMsg)
     "StepSize" |> Binding.twoWay(
-      (fun (_, { Self = s }) -> float s.Data.Value.StepSize),
-      (fun v _ -> v |> int |> SetStepSize |> CounterMsg |> LeafMsg |> InMsg))
+      (fun (_, { Self = s }) -> float <| (s.Data.Value : Counter.Model).StepSize),
+      (fun v _ -> v |> int |> Counter.SetStepSize |> CounterMsg |> LeafMsg |> InMsg))
     "Reset" |> Binding.cmdIf(
-      Reset |> CounterMsg |> LeafMsg |> InMsg,
+      Counter.Reset |> CounterMsg |> LeafMsg |> InMsg,
       (fun (_, { Self = s }) -> Counter.canReset s.Data.Value))
 
     "Remove" |> Binding.cmd(OutRemove |> OutMsg)
@@ -292,6 +263,9 @@ module Bindings =
     "AddCounter" |> Binding.cmd (AddChild |> LeafMsg |> SubtreeMsg)
   ]
 
+
+[<CompiledName("DesignModel")>]
+let designModel = App.init ()
 
 [<CompiledName("Program")>]
 let program =

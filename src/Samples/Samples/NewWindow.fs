@@ -23,8 +23,12 @@ module Win1 =
     match msg with
     | TextInput s -> { m with Text = s }
 
+  [<CompiledName("Bindings")>]
   let bindings () =
     [ "Text" |> Binding.twoWay ((fun m -> m.Text), (fun v m -> TextInput v)) ]
+
+  [<CompiledName("DesignModel")>]
+  let designModel = init
 
 
 module Win2 =
@@ -46,20 +50,25 @@ module Win2 =
     | Text1Input s -> { m with Input1 = s }
     | Text2Input s -> { m with Input2 = s }
 
+  [<CompiledName("Bindings")>]
   let bindings () = [
     "Input1" |> Binding.twoWay ((fun m -> m.Input1), (fun v m -> Text1Input v))
     "Input2" |> Binding.twoWay ((fun m -> m.Input2), (fun v m -> Text2Input v))
   ]
+
+  [<CompiledName("DesignModel")>]
+  let designModel = init
 
 
 type Model =
   { Win1: Win1.Model
     Win2: Win2.Model }
 
-let init () =
+let initial =
   { Win1 = Win1.init
-    Win2 = Win2.init },
-  Cmd.none
+    Win2 = Win2.init }
+
+let init () = initial, Cmd.none
 
 type Msg =
 | ShowWin1
@@ -89,12 +98,16 @@ let update window1PageType window2pageType getViewModel msg m =
   | Win1Msg msg' -> { m with Win1 = Win1.update msg' m.Win1 }, Cmd.none
   | Win2Msg msg' -> { m with Win2 = Win2.update msg' m.Win2 }, Cmd.none
 
+[<CompiledName("Bindings")>]
 let bindings = [
   "ShowWin1" |> Binding.cmd (fun m -> ShowWin1)
   "ShowWin2" |> Binding.cmd (fun m -> ShowWin2)
   "Win1" |> Binding.subModel ((fun m -> m.Win1), snd, Win1Msg, Win1.bindings)
   "Win2" |> Binding.subModel ((fun m -> m.Win2), snd, Win2Msg, Win2.bindings)
 ]
+
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("CreateProgram")>]
 let createProgram<'win1, 'win2> getViewModel =

@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 namespace Elmish.Uno.Samples.SubModel
 {

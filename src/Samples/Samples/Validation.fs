@@ -24,8 +24,10 @@ let validateInt42 =
 type Model =
   { RawValue: string }
 
-let init () =
+let initial =
   { RawValue = "" }
+
+let init () = initial
 
 type Msg =
   | Input of string
@@ -45,6 +47,8 @@ let bindings : Binding<Model, Msg> list = [
     fun m -> validateInt42 m.RawValue |> Result.map Submit)
 ]
 
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =

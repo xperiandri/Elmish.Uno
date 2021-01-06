@@ -1,44 +1,77 @@
-﻿<Window x:Class="Elmish.Uno.Samples.SubModelSeq.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Elmish.Uno.Samples.SubModelSeq"
-        xmlns:vm="clr-namespace:Elmish.Uno.Samples.SubModelSeq;assembly=SubModelSeq"
-        Title="SubModelSeq"
-        Height="800"
-        Width="1100"
-        WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d"
-        d:DataContext="{x:Static vm:Program.mainDesignVm}">
-  <Grid Margin="0,20,0,10">
+﻿<Page d:DataContext="{d:DesignInstance Type=samples:DesignData, IsDesignTimeCreatable=True}"
+  x:Class="Elmish.Uno.Samples.SubModelSeq.SubModelSeqPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:cmp="using:Elmish.Uno.Samples.Components"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:samples="using:Elmish.Uno.Samples"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+  mc:Ignorable="d">
+  <Grid d:DataContext="{Binding SubModelSeq}" Margin="0,20,0,10">
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-      <Button Command="{Binding AddCounter}" Content="Add counter" Width="150" Margin="10,0,10,20" />
-      <Button Command="{Binding ToggleGlobalState}" Content="Toggle global state" Width="150" Margin="10,0,10,20" />
+    <StackPanel
+      Grid.Row="0"
+      Padding="0,10"
+      HorizontalAlignment="Center"
+      Orientation="Horizontal">
+      <Button
+        Width="150"
+        Margin="10"
+        Command="{Binding AddCounter}"
+        Content="Add counter" />
+      <Button
+        Width="150"
+        Margin="10"
+        Command="{Binding ToggleGlobalState}"
+        Content="Toggle global state" />
     </StackPanel>
     <TreeView Grid.Row="1" ItemsSource="{Binding Counters}">
       <TreeView.ItemContainerStyle>
-        <Style TargetType="{x:Type TreeViewItem}">
-          <Setter Property="IsExpanded" Value="True"/>
+        <Style TargetType="TreeViewItem">
+          <Setter Property="IsExpanded" Value="True" />
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
       </TreeView.ItemContainerStyle>
       <TreeView.ItemTemplate>
-        <HierarchicalDataTemplate ItemsSource="{Binding ChildCounters}">
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding CounterIdText}" Width="250" Margin="10,5,10,5" />
-            <local:Counter/>
-            <Button Command="{Binding AddChild}" Content="Add child" Margin="0,5,10,5" />
-            <Button Command="{Binding Remove}" Content="×" Margin="0,5,10,5" Width="20" />
-            <Button Command="{Binding MoveUp}" Content="↑" Margin="0,5,10,5" Width="20" />
-            <Button Command="{Binding MoveDown}" Content="↓" Margin="0,5,10,5" Width="20"/>
-            <TextBlock Text="{Binding GlobalState, StringFormat='Global state: {0}'}" Margin="10,5,10,5" />
-          </StackPanel>
-        </HierarchicalDataTemplate>
+        <DataTemplate>
+          <TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock
+                Width="250"
+                Margin="10,5,10,5"
+                Text="{Binding CounterIdText}" />
+              <cmp:Counter />
+              <Button
+                Margin="0,5,10,5"
+                Command="{Binding AddChild}"
+                Content="Add child" />
+              <Button
+                Width="20"
+                Margin="0,5,10,5"
+                Command="{Binding Remove}"
+                Content="×" />
+              <Button
+                Width="20"
+                Margin="0,5,10,5"
+                Command="{Binding MoveUp}"
+                Content="↑" />
+              <Button
+                Width="20"
+                Margin="0,5,10,5"
+                Command="{Binding MoveDown}"
+                Content="↓" />
+              <TextBlock Margin="10,5,10,5">
+                <Run Text="Global state:" />
+                <Run Text="{Binding GlobalState}" />
+              </TextBlock>
+            </StackPanel>
+          </TreeViewItem>
+        </DataTemplate>
       </TreeView.ItemTemplate>
     </TreeView>
   </Grid>
-</Window>
+</Page>

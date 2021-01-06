@@ -1,10 +1,10 @@
-﻿using System.Windows;
+﻿using Windows.UI.Xaml.Controls;
 
 namespace Elmish.Uno.Samples.NewWindow
 {
-    public partial class Window1 : Window
+    public partial class Window1Page : Page
     {
-        public Window1()
+        public Window1Page()
         {
             InitializeComponent();
         }
