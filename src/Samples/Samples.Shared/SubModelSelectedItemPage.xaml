@@ -7,22 +7,27 @@
   xmlns:samples="using:Elmish.Uno.Samples"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
-  <StackPanel d:DataContext="{Binding SubModelSelectedItem}">
+
+  <Grid d:DataContext="{Binding SubModelSelectedItem}" Padding="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
       <Button
         Width="100"
         Margin="5,5"
-        Command="{Binding SelectRandom}">
-        Select random
-      </Button>
+        Command="{Binding SelectRandom}"
+        Content="Select random" />
       <Button
         Width="100"
         Margin="5,5"
-        Command="{Binding Deselect}">
-        Deselect
-      </Button>
+        Command="{Binding Deselect}"
+        Content="Deselect" />
     </StackPanel>
     <ListView
+      Grid.Row="1"
       HorizontalContentAlignment="Center"
       ItemsSource="{Binding Entities}"
       SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
@@ -35,5 +40,5 @@
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ListView>
-  </StackPanel>
+  </Grid>
 </Page>

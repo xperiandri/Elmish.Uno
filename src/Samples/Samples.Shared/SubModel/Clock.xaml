@@ -6,6 +6,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
   xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters"
+  xmlns:ttriggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
   d:DesignHeight="300"
   d:DesignWidth="400"
   mc:Ignorable="d">
@@ -14,16 +15,42 @@
     <tconv:FormatStringConverter x:Key="FormatStringConverter" />
   </UserControl.Resources>
 
-  <StackPanel d:DataContext="{Binding SubModelClock}" Orientation="Horizontal">
-    <TextBlock>
+  <StackPanel d:DataContext="{Binding SubModelClock}"
+    x:Name="root"
+    Orientation="Horizontal">
+    <TextBlock VerticalAlignment="Center">
       <Run Text="Today is" />
       <Run Text="{Binding Time, Converter={StaticResource FormatStringConverter}, ConverterParameter='MMMM dd, yyyy'}" /><Run Text=". It is" />
-      <Run Text="{Binding Time, Converter={StaticResource FormatStringConverter}, ConverterParameter='dddd'}" /><Run Text=". The time is" />
+      <Run Text="{Binding Time, Converter={StaticResource FormatStringConverter}, ConverterParameter='dddd'}" /><Run Text="." />
+    </TextBlock>
+    <TextBlock VerticalAlignment="Center">
+      <Run Text="The time is" />
       <Run Text="{Binding Time, Converter={StaticResource FormatStringConverter}, ConverterParameter='HH:mm:ss'}" /><Run Text="." />
     </TextBlock>
     <Button
       Margin="10,0,0,0"
       Command="{Binding ToggleUtc}"
       Content="Toggle UTC" />
+
+    <VisualStateManager.VisualStateGroups>
+      <VisualStateGroup x:Name="OrienatationStates">
+        <VisualState x:Name="Landscape">
+          <VisualState.StateTriggers>
+            <ttriggers:OrientationStateTrigger Orientations="Landscape,LandscapeFlipped" />
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="root.(StackPanel.Orientation)" Value="Horizontal" />
+          </VisualState.Setters>
+        </VisualState>
+        <VisualState x:Name="Portrait">
+          <VisualState.StateTriggers>
+            <ttriggers:OrientationStateTrigger Orientations="Portrait,PortraitFlipped" />
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="root.(StackPanel.Orientation)" Value="Vertical" />
+          </VisualState.Setters>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
   </StackPanel>
 </UserControl>

@@ -7,14 +7,18 @@
   xmlns:samples="using:Elmish.Uno.Samples"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
-  <StackPanel d:DataContext="{Binding UiBoundCmdParam}">
+
+  <Grid d:DataContext="{Binding UiBoundCmdParam}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
     <StackPanel
       Margin="0,25,0,0"
       HorizontalAlignment="Center"
       VerticalAlignment="Top"
       Orientation="Horizontal">
       <Button
-        Width="250"
         Margin="0,5,10,5"
         Padding="5"
         Command="{Binding Command}"
@@ -35,13 +39,14 @@
     </StackPanel>
     <ListView
       x:Name="List"
+      Grid.Row="1"
       HorizontalContentAlignment="Center"
       ItemsSource="{Binding Numbers}">
-      <ItemsControl.ItemTemplate>
+      <ListView.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding}" />
         </DataTemplate>
-      </ItemsControl.ItemTemplate>
+      </ListView.ItemTemplate>
     </ListView>
-  </StackPanel>
+  </Grid>
 </Page>
