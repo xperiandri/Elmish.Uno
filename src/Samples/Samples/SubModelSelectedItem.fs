@@ -12,9 +12,11 @@ type Model =
   { Entities: Entity list
     Selected: int option }
 
-let init () =
+let initial =
   { Entities = [0 .. 10] |> List.map (fun i -> { Id = i; Name = sprintf "Entity %i" i})
     Selected = Some 4 }
+
+let init () = initial
 
 type Msg =
   | Select of int option
@@ -39,6 +41,9 @@ let bindings : Binding<Model, Msg> list = [
 
   "SelectedEntity" |> Binding.subModelSelectedItem("Entities", (fun m -> m.Selected), Select)
 ]
+
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =

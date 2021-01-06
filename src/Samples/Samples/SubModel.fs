@@ -4,41 +4,7 @@ open System
 open Elmish
 open Elmish.Uno
 
-module Counter =
-
-  type Model =
-    { Count: int
-      StepSize: int }
-
-  type Msg =
-    | Increment
-    | Decrement
-    | SetStepSize of int
-    | Reset
-
-  let init =
-    { Count = 0
-      StepSize = 1 }
-
-  let canReset = (<>) init
-
-  let update msg m =
-    match msg with
-    | Increment -> { m with Count = m.Count + m.StepSize }
-    | Decrement -> { m with Count = m.Count - m.StepSize }
-    | SetStepSize x -> { m with StepSize = x }
-    | Reset -> init
-
-  let bindings () : Binding<Model, Msg> list = [
-    "CounterValue" |> Binding.oneWay (fun m -> m.Count)
-    "Increment" |> Binding.cmd Increment
-    "Decrement" |> Binding.cmd Decrement
-    "StepSize" |> Binding.twoWay(
-      (fun m -> float m.StepSize),
-      int >> SetStepSize)
-    "Reset" |> Binding.cmdIf(Reset, canReset)
-  ]
-
+module Counter = Elmish.Uno.Samples.SingleCounter.Program
 
 module Clock =
 
@@ -46,9 +12,11 @@ module Clock =
     { Time: DateTimeOffset
       UseUtc: bool }
 
-  let init () =
+  let initial =
     { Time = DateTimeOffset.Now
       UseUtc = false }
+
+  let init () = initial
 
   let getTime m =
     if m.UseUtc then m.Time.UtcDateTime else m.Time.LocalDateTime
@@ -62,10 +30,14 @@ module Clock =
     | Tick t -> { m with Time = t }
     | ToggleUtc -> { m with UseUtc = not m.UseUtc }
 
+  [<CompiledName("Bindings")>]
   let bindings () : Binding<Model, Msg> list = [
     "Time" |> Binding.oneWay getTime
     "ToggleUtc" |> Binding.cmd ToggleUtc
   ]
+
+  [<CompiledName("DesignModel")>]
+  let designModel = initial
 
 
 module CounterWithClock =
@@ -74,9 +46,11 @@ module CounterWithClock =
     { Counter: Counter.Model
       Clock: Clock.Model }
 
-  let init () =
-    { Counter = Counter.init
+  let initial =
+    { Counter = Counter.initial
       Clock = Clock.init () }
+
+  let init () = initial
 
   type Msg =
     | CounterMsg of Counter.Msg
@@ -87,11 +61,14 @@ module CounterWithClock =
     | CounterMsg msg -> { m with Counter = Counter.update msg m.Counter }
     | ClockMsg msg -> { m with Clock = Clock.update msg m.Clock }
 
+  [<CompiledName("Bindings")>]
   let bindings () : Binding<Model, Msg> list = [
-    "Counter" |> Binding.subModel((fun m -> m.Counter), snd, CounterMsg, Counter.bindings)
+    "Counter" |> Binding.subModel((fun m -> m.Counter), snd, CounterMsg, fun () -> Counter.bindings)
     "Clock" |> Binding.subModel((fun m -> m.Clock), snd, ClockMsg, Clock.bindings)
   ]
 
+  [<CompiledName("DesignModel")>]
+  let designModel = initial
 
 module App =
 
@@ -140,6 +117,11 @@ let timerTick dispatch =
   )
   timer.Start()
 
+
+[<CompiledName("DesignModel")>]
+let designModel : App.Model =
+  { ClockCounter1 = CounterWithClock.initial
+    ClockCounter2 = CounterWithClock.initial }
 
 [<CompiledName("Program")>]
 let program =

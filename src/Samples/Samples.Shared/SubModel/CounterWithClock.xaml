@@ -1,14 +1,19 @@
-﻿<UserControl x:Class="Elmish.Uno.Samples.SubModel.CounterWithClock"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:Elmish.Uno.Samples.SubModel"
-             xmlns:vm="clr-namespace:Elmish.Uno.Samples.SubModel;assembly=SubModel.Core"
-             mc:Ignorable="d"
-             d:DataContext="{x:Static vm:Program.counterWithClockDesignVm}">
-  <StackPanel>
-    <local:Counter DataContext="{Binding Counter}" d:DataContext="{Binding DataContext.Counter, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Center" />
-    <local:Clock DataContext="{Binding Clock}" d:DataContext="{Binding DataContext.Clock, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Center" />
+﻿<UserControl d:DataContext="{d:DesignInstance Type=samples:DesignData, IsDesignTimeCreatable=True}"
+  x:Class="Elmish.Uno.Samples.SubModel.CounterWithClock"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:cmp="using:Elmish.Uno.Samples.Components"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="using:Elmish.Uno.Samples.SubModel"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:samples="using:Elmish.Uno.Samples"
+  d:DesignHeight="300"
+  d:DesignWidth="400"
+  mc:Ignorable="d">
+
+  <StackPanel d:DataContext="{Binding SubModelCounterWithClock}">
+    <cmp:Counter DataContext="{Binding Counter}" HorizontalAlignment="Center" />
+    <local:Clock d:DataContext="{Binding DataContext.Clock, ElementName=StackPanel}" DataContext="{Binding Clock}"
+      HorizontalAlignment="Center" />
   </StackPanel>
 </UserControl>

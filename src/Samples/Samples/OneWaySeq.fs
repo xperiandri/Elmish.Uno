@@ -9,9 +9,11 @@ type Model =
   { OneWaySeqNumbers: int list
     OneWayNumbers: int list }
 
-let init () =
+let initial =
   { OneWaySeqNumbers = [ 1000..-1..1 ]
     OneWayNumbers = [ 1000..-1..1 ] }
+
+let init () = initial
 
 type Msg =
   | AddOneWaySeqNumber
@@ -23,12 +25,14 @@ let update msg m =
   | AddOneWayNumber -> { m with OneWayNumbers = m.OneWayNumbers.Head + 1 :: m.OneWayNumbers }
 
 let bindings : Binding<Model, Msg> list = [
-  "OneWaySeqNumbers" |> Binding.oneWaySeq((fun m -> m.OneWaySeqNumbers), (=), id)
+  "OneWaySeqNumbers" |> Binding.oneWaySeq ((fun m -> m.OneWaySeqNumbers), (=), id)
   "OneWayNumbers" |> Binding.oneWay (fun m -> m.OneWayNumbers)
   "AddOneWaySeqNumber" |> Binding.cmd AddOneWaySeqNumber
   "AddOneWayNumber" |> Binding.cmd AddOneWayNumber
 ]
 
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =
