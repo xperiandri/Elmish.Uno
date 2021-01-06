@@ -8,26 +8,19 @@
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <StackPanel d:DataContext="{Binding NewWindow1}"
-    Width="300"
+  <Grid d:DataContext="{Binding NewWindow1}" DataContext="{Binding Win1}"
     VerticalAlignment="Center">
-    <TextBlock TextWrapping="Wrap">
-      This window deliberately does not react to external close requests, so
-      Alt+F4, System Menu -&gt; Close, or the Close (X) button does nothing. It can
-      only be opened/closed using the buttons in the main window.
-    </TextBlock>
-    <TextBlock Margin="0,5,0,0" TextWrapping="Wrap">
-      Note the interplay between the hidden/visible state of this window and the
-      main window's binding to the text entered below. The state is always kept
-      in the model, even after close, but when the window is closed (not just
-      hidden), the submodel binding returns null.
-    </TextBlock>
-    <TextBlock Margin="0,10,0,0" Text="Enter text:" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <TextBlock Text="Enter text:" />
     <TextBox
+      Grid.Row="1"
       Height="80"
       Margin="0,5,0,5"
       AcceptsReturn="True"
-      Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+      Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
       TextWrapping="Wrap" />
-  </StackPanel>
+  </Grid>
 </Page>

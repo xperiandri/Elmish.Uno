@@ -13,7 +13,7 @@
 
   <StackPanel d:DataContext="{Binding SubModelCounterWithClock}">
     <cmp:Counter DataContext="{Binding Counter}" HorizontalAlignment="Center" />
-    <local:Clock d:DataContext="{Binding DataContext.Clock, ElementName=StackPanel}" DataContext="{Binding Clock}"
-      HorizontalAlignment="Center" />
+    <local:Clock DataContext="{Binding Clock}" HorizontalAlignment="Center" />
   </StackPanel>
+
 </UserControl>

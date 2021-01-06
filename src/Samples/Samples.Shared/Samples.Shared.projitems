@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SingleCounterPage.xaml.cs">
       <DependentUpon>SingleCounterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Triggers\OrientationStateTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SubModelOptPage.xaml.cs">
       <DependentUpon>SubModelOptPage.xaml</DependentUpon>
     </Compile>

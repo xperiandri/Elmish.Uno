@@ -8,11 +8,13 @@
   xmlns:samples="using:Elmish.Uno.Samples"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
-  <Grid d:DataContext="{Binding SubModelSeq}" Margin="0,20,0,10">
+
+  <Grid d:DataContext="{Binding SubModelSeq}" Padding="0,10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+
     <StackPanel
       Grid.Row="0"
       Padding="0,10"
@@ -39,36 +41,58 @@
       <TreeView.ItemTemplate>
         <DataTemplate>
           <TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
-            <StackPanel Orientation="Horizontal">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
               <TextBlock
-                Width="250"
-                Margin="10,5,10,5"
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                Margin="0,5"
                 Text="{Binding CounterIdText}" />
-              <cmp:Counter />
+              <cmp:Counter Grid.Row="1" Grid.ColumnSpan="5" />
               <Button
-                Margin="0,5,10,5"
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="0,5"
                 Command="{Binding AddChild}"
                 Content="Add child" />
               <Button
-                Width="20"
-                Margin="0,5,10,5"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,5"
                 Command="{Binding Remove}"
                 Content="×" />
               <Button
-                Width="20"
-                Margin="0,5,10,5"
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="0,5"
                 Command="{Binding MoveUp}"
                 Content="↑" />
               <Button
-                Width="20"
-                Margin="0,5,10,5"
+                Grid.Row="2"
+                Grid.Column="3"
+                Margin="0,5"
                 Command="{Binding MoveDown}"
                 Content="↓" />
-              <TextBlock Margin="10,5,10,5">
+              <TextBlock
+                Grid.Row="0"
+                Grid.Column="4"
+                Margin="10,5,10,5"
+                VerticalAlignment="Center">
                 <Run Text="Global state:" />
                 <Run Text="{Binding GlobalState}" />
               </TextBlock>
-            </StackPanel>
+            </Grid>
           </TreeViewItem>
         </DataTemplate>
       </TreeView.ItemTemplate>
