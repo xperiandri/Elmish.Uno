@@ -1,12 +1,15 @@
-﻿using System.Windows;
+﻿using Windows.UI.Xaml.Controls;
+using Elmish.Uno;
+using ElmishProgram = Elmish.Uno.Samples.SubModelSelectedItem.Program;
 
 namespace Elmish.Uno.Samples.SubModelSelectedItem
 {
-    public partial class MainWindow : Window
+    public partial class SubModelSelectedItemPage : Page
     {
-        public MainWindow()
+        public SubModelSelectedItemPage()
         {
             InitializeComponent();
+            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.run, ElmishProgram.Program);
         }
     }
 }

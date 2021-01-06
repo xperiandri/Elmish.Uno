@@ -1,4 +1,4 @@
-﻿module Elmish.Uno.Samples.FileDialogs.CmdMsg.Program
+﻿module Elmish.Uno.Samples.FileDialogsCmdMsg.Program
 
 open System
 open Elmish
@@ -16,11 +16,13 @@ module Core =
     | Save of string
     | Load
 
-  let init () =
+
+  let initial =
     { CurrentTime = DateTimeOffset.Now
       Text = ""
-      StatusMsg = "" },
-    []
+      StatusMsg = "" }
+
+  let init () = initial, []
 
   type Msg =
     | SetTime of DateTimeOffset
@@ -122,6 +124,9 @@ let timerTick dispatch =
   timer.Elapsed.Add (fun _ -> dispatch (SetTime DateTimeOffset.Now))
   timer.Start()
 
+
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =

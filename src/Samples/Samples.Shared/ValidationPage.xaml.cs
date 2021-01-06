@@ -1,12 +1,15 @@
-﻿using System.Windows;
+﻿using Windows.UI.Xaml.Controls;
+using Elmish.Uno;
+using ElmishProgram = Elmish.Uno.Samples.Validation.Program;
 
 namespace Elmish.Uno.Samples.Validation
 {
-    public partial class MainWindow : Window
+    public partial class ValidationPage : Page
     {
-        public MainWindow()
+        public ValidationPage()
         {
             InitializeComponent();
+            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.run, ElmishProgram.Program);
         }
     }
 }

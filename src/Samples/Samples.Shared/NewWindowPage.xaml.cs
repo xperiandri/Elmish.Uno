@@ -1,17 +1,17 @@
-﻿using System.Windows;
+﻿using Microsoft.FSharp.Core;
+using Windows.UI.Xaml.Controls;
+using Elmish.Uno;
+using ElmishProgram = Elmish.Uno.Samples.NewWindow.Program;
 
 namespace Elmish.Uno.Samples.NewWindow
 {
-    public partial class MainWindow : Window
+    public partial class NewWindowPage : Page
     {
-        public MainWindow()
+        public NewWindowPage()
         {
             InitializeComponent();
-        }
-
-        private void CounterWithClock_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            var program = ElmishProgram.CreateProgram<Window1Page, Window2Page>(FuncConvert.FromFunc(() => this.DataContext));
+            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.run, program);
         }
     }
 }

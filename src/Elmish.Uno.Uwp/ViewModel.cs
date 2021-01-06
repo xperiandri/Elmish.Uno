@@ -102,11 +102,17 @@ namespace Elmish.Uno
     [RequireQualifiedAccess, CompilationMapping(SourceConstructFlags.Module)]
     public static class ViewModel
     {
+        public static object DesignInstance<TModel, TMsg>(TModel model, FSharpList<Binding<TModel, TMsg>> bindings)
+        {
+            var emptyDispatch = FuncConvert.FromAction((TMsg msg) => { });
+            return new Elmish.Windows.ViewModel<TModel, TMsg>(model, emptyDispatch, bindings, ElmConfig.Default, "main");
+        }
+
         public static object DesignInstance<T, TModel, TMsg>(TModel model, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
         {
             var emptyDispatch = FuncConvert.FromAction((TMsg msg) => { });
             var mapping = FSharpFunc<TModel, FSharpFunc<TMsg, Unit>>.InvokeFast(ProgramModule.view(program), model, emptyDispatch);
-            return new Elmish.Windows.ViewModel<TModel, TMsg>(model, emptyDispatch, mapping, ElmConfig.Default, "main");
+            return DesignInstance(model, mapping);
         }
 
         public static void StartLoop<T, TModel, TMsg>(ElmConfig config, FrameworkElement element, Action<Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>>> programRun, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
