@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
-namespace Elmish.Uno.Samples.SubModel
+namespace Elmish.Uno.Samples.Components
 {
     public partial class Counter : UserControl
     {

@@ -8,9 +8,11 @@ type Model =
   { Numbers: int list
     EnabledMaxLimit: int }
 
-let init () =
+let initial =
   { Numbers = [0 .. 10]
     EnabledMaxLimit = 5 }
+
+let init () = initial
 
 type Msg =
   | SetLimit of int
@@ -29,6 +31,8 @@ let bindings : Binding<Model, Msg> list = [
     (fun (p : obj) m -> not (isNull p) && p :?> int <= m.EnabledMaxLimit))
 ]
 
+[<CompiledName("DesignModel")>]
+let designModel = initial
 
 [<CompiledName("Program")>]
 let program =

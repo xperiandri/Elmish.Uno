@@ -1,17 +1,15 @@
-﻿using System.Windows;
+﻿using Windows.UI.Xaml.Controls;
+using Elmish.Uno;
+using ElmishProgram = Elmish.Uno.Samples.SubModelOpt.Program;
 
 namespace Elmish.Uno.Samples.SubModelOpt
 {
-    public partial class MainWindow : Window
+    public partial class SubModelOptPage : Page
     {
-        public MainWindow()
+        public SubModelOptPage()
         {
             InitializeComponent();
-        }
-
-        private void CounterWithClock_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.run, ElmishProgram.Program);
         }
     }
 }

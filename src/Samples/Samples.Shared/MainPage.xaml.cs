@@ -26,4 +26,10 @@ namespace Elmish.Uno.Samples
             this.InitializeComponent();
         }
     }
+
+    public class SampleItem
+    {
+        public string Title { get; set; }
+        public string PageTypeName => $"Elmish.Uno.Samples.{Title}.{Title}Page";
+    }
 }
