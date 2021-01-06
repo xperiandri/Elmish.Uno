@@ -7,40 +7,57 @@
   xmlns:samples="using:Elmish.Uno.Samples"
   mc:Ignorable="d">
 
-  <StackPanel d:DataContext="{Binding OneWaySeq}">
+  <Grid d:DataContext="{Binding OneWaySeq}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
     <TextBlock
+      Grid.ColumnSpan="2"
       Margin="10"
       Text="This sample shows the difference between Binding.oneWay and Binding.oneWaySeq. For oneWay, the whole ListView is re-rendered for every change. For oneWaySeq, only the new item is added."
       TextWrapping="Wrap" />
-    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-      <StackPanel Margin="0,0,50,0">
-        <TextBlock
-          Margin="0,0,0,10"
-          HorizontalAlignment="Center"
-          FontSize="16"
-          FontWeight="Bold"
-          Text="Binding.oneWay" />
-        <Button
-          Width="150"
-          Margin="0,0,0,20"
-          Command="{Binding AddOneWayNumber}"
-          Content="Add number" />
-        <ListView ItemsSource="{Binding OneWayNumbers}" />
-      </StackPanel>
-      <StackPanel>
-        <TextBlock
-          Margin="0,0,0,10"
-          HorizontalAlignment="Center"
-          FontSize="16"
-          FontWeight="Bold"
-          Text="Binding.oneWaySeq" />
-        <Button
-          Width="150"
-          Margin="0,0,0,20"
-          Command="{Binding AddOneWaySeqNumber}"
-          Content="Add number" />
-        <ListView ItemsSource="{Binding OneWaySeqNumbers}" />
-      </StackPanel>
-    </StackPanel>
-  </StackPanel>
+    <TextBlock
+      Grid.Row="1"
+      Margin="0,0,0,10"
+      HorizontalAlignment="Center"
+      FontSize="16"
+      FontWeight="Bold"
+      Text="Binding.oneWay" />
+    <Button
+      Grid.Row="2"
+      Width="150"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Top"
+      Command="{Binding AddOneWayNumber}"
+      Content="Add number" />
+    <ListView Grid.Row="3" ItemsSource="{Binding OneWayNumbers}" />
+    <TextBlock
+      Grid.Row="1"
+      Grid.Column="1"
+      Margin="0,0,0,10"
+      HorizontalAlignment="Center"
+      FontSize="16"
+      FontWeight="Bold"
+      Text="Binding.oneWaySeq" />
+    <Button
+      Grid.Row="2"
+      Grid.Column="1"
+      Width="150"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Top"
+      Command="{Binding AddOneWaySeqNumber}"
+      Content="Add number" />
+    <ListView
+      Grid.Row="3"
+      Grid.Column="1"
+      ItemsSource="{Binding OneWaySeqNumbers}" />
+  </Grid>
 </Page>
