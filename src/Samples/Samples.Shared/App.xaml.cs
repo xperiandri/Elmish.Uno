@@ -57,16 +57,14 @@ namespace Elmish.Uno.Samples
             var window = global::Windows.UI.Xaml.Window.Current;
 #endif
 
-            Frame rootFrame = window.Content as Frame;
+            Shell shell = window.Content as Shell;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (shell == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                shell = new Shell();
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -74,33 +72,23 @@ namespace Elmish.Uno.Samples
                 }
 
                 // Place the frame in the current Window
-                window.Content = rootFrame;
+                window.Content = shell;
             }
 
 #if !(NET5_0 && WINDOWS)
             if (e.PrelaunchActivated == false)
 #endif
             {
-                if (rootFrame.Content == null)
+                if (shell.RootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    shell.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 window.Activate();
             }
-        }
-
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
         }
 
         /// <summary>
