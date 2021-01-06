@@ -6,6 +6,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
   mc:Ignorable="d">
+
   <StackPanel d:DataContext="{Binding FileDialogs}"
     Padding="0,25"
     HorizontalAlignment="Center"

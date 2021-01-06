@@ -5,14 +5,20 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:wst="using:WindowsStateTriggers"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
-  <StackPanel d:DataContext="{Binding FileDialogsCmdMsg}"
+
+  <Grid d:DataContext="{Binding FileDialogsCmdMsg}"
     Padding="0,25"
     HorizontalAlignment="Center"
-    VerticalAlignment="Top"
-    Orientation="Horizontal">
-    <StackPanel>
+    VerticalAlignment="Top">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <StackPanel x:Name="contentPanel">
       <TextBox
         Width="200"
         Height="100"
@@ -24,19 +30,46 @@
       <TextBlock Text="Clock (to show that dialogs do not block the dispatch loop):" />
       <TextBlock Text="{Binding CurrentTime}" />
     </StackPanel>
-    <StackPanel>
+    <StackPanel Name="actionsPanel" Grid.Column="1">
       <Button
         Width="50"
-        Height="20"
         Margin="0,5,10,5"
         Command="{Binding Save}"
         Content="Save" />
       <Button
         Width="50"
-        Height="20"
         Margin="0,5,10,5"
         Command="{Binding Load}"
         Content="Load" />
     </StackPanel>
-  </StackPanel>
+
+    <VisualStateManager.VisualStateGroups>
+      <VisualStateGroup x:Name="OrientationStates">
+        <VisualState x:Name="Landscape">
+          <VisualState.StateTriggers>
+            <wst:OrientationStateTrigger Orientation="Landscape" />
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="contentPanel.(Grid.Column)" Value="0" />
+            <Setter Target="contentPanel.(Grid.Row)" Value="0" />
+            <Setter Target="actionsPanel.(Grid.Column)" Value="0" />
+            <Setter Target="actionsPanel.(Grid.Row)" Value="1" />
+            <Setter Target="actionsPanel.Orientation" Value="Vertical" />
+          </VisualState.Setters>
+        </VisualState>
+        <VisualState x:Name="Portrait">
+          <VisualState.StateTriggers>
+            <wst:OrientationStateTrigger Orientation="Portrait" />
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="contentPanel.(Grid.Column)" Value="0" />
+            <Setter Target="contentPanel.(Grid.Row)" Value="1" />
+            <Setter Target="actionsPanel.(Grid.Column)" Value="0" />
+            <Setter Target="actionsPanel.(Grid.Row)" Value="0" />
+            <Setter Target="actionsPanel.Orientation" Value="Horizontal" />
+          </VisualState.Setters>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+  </Grid>
 </Page>

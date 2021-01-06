@@ -14,7 +14,9 @@
     <tconv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
   </Page.Resources>
 
-  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Grid d:DataContext="{Binding SubModelOpt}"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch">
     <StackPanel Margin="0,15,0,0">
       <Button
         Width="200"
