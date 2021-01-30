@@ -43,6 +43,7 @@
     <Compile Include="Utils.fs" />
     <Compile Include="ViewModel.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="Navigation.fs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,9 +11,11 @@
 
   <ItemGroup>
     <Compile Include="ViewModelModule.fs" />
+    <Compile Include="Navigation.fs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FSharp.Collections.Immutable" Version="1.0.0" />
     <PackageReference Include="Uno.UI" Version="3.5.1" />
   </ItemGroup>
 
