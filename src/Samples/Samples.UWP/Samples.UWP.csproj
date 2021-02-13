@@ -168,7 +168,40 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <ItemGroup>
+    <ApplicationDefinition Include="..\Samples.Shared\App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="..\Samples.Shared\**\*.xaml" Exclude="..\Samples.Shared\App.xaml">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="..\Samples.Shared\**\*.cs" Exclude="..\Samples.Shared\**\*.xaml.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\Samples.Shared\**\*.xaml.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <DependentUpon>$([System.String]::Copy('%(Filename)').TrimEnd('.cs'))</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Target Name="ReplaceXbfFiles" AfterTargets="Prep_ComputeProcessXamlFiles" BeforeTargets="CopyGeneratedXaml">
+    <ItemGroup>
+      <TempXbfSrc Include="@(GeneratedXamlSrc-&gt;Replace('..\Samples.Shared\',''))" />
+      <TempXbfDest Include="@(GeneratedXamlDest-&gt;Replace('..\Samples.Shared\',''))" />
+      <GeneratedXamlSrc Remove="@(GeneratedXamlSrc)" />
+      <GeneratedXamlDest Remove="@(GeneratedXamlDest)" />
+      <GeneratedXamlSrc Include="@(TempXbfSrc)" />
+      <GeneratedXamlDest Include="@(TempXbfDest)" />
+      <TempXbfSrc Remove="@(TempXbfSrc)" />
+      <TempXbfDest Remove="@(TempXbfDest)" />
+    </ItemGroup>
+  </Target>
+  <!--<Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />-->
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
