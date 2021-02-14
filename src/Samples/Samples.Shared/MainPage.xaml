@@ -7,11 +7,33 @@
   xmlns:ie="using:Microsoft.Xaml.Interactions.Core"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+  NavigationCacheMode="Enabled"
   mc:Ignorable="d">
 
-  <Grid>
-    <ListView x:Name="SamplesListView" SelectedValuePath="PageTypeName">
+  <Page.TopAppBar>
+    <CommandBar
+      utoolkit:VisibleBoundsPadding.PaddingMask="Top"
+      Background="Transparent"
+      Content="Main"
+      Visibility="Collapsed" />
+  </Page.TopAppBar>
+
+  <Grid utoolkit:VisibleBoundsPadding.PaddingMask="All">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <ListView
+      x:Name="samplesListView"
+      Grid.Row="1"
+      IsItemClickEnabled="True"
+      ItemClick="OnSamplesListViewItemClick"
+      SelectedValuePath="PageTypeName"
+      SelectionMode="None">
       <ListView.Resources>
         <Style TargetType="Button">
           <Setter Property="Margin" Value="4" />
@@ -37,11 +59,19 @@
       <samples:SampleItem Title="EventBindingsAndBehaviors" />
       <samples:SampleItem Title="NewWindow" />
 
-      <i:Interaction.Behaviors>
+      <!--<i:Interaction.Behaviors>
         <ie:EventTriggerBehavior EventName="SelectionChanged">
-          <ie:NavigateToPageAction TargetPage="{Binding SelectedValue, ElementName=SamplesListView}" />
+          <ie:NavigateToPageAction TargetPage="{Binding SelectedValue, ElementName=samplesListView}" />
         </ie:EventTriggerBehavior>
-      </i:Interaction.Behaviors>
+      </i:Interaction.Behaviors>-->
     </ListView>
   </Grid>
+
+  <Page.BottomAppBar>
+    <CommandBar Style="{StaticResource CommandBarRevealStyle}">
+      <CommandBar.PrimaryCommands>
+        <AppBarButton Icon="Back" />
+      </CommandBar.PrimaryCommands>
+    </CommandBar>
+  </Page.BottomAppBar>
 </Page>

@@ -25,6 +25,11 @@ namespace Elmish.Uno.Samples
         {
             this.InitializeComponent();
         }
+
+        private void OnSamplesListViewItemClick(object sender, ItemClickEventArgs e)
+        {
+            Frame.Navigate(Type.GetType((e.ClickedItem as SampleItem).PageTypeName));
+        }
     }
 
     public class SampleItem

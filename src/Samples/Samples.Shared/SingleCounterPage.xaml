@@ -1,13 +1,56 @@
-﻿<Page d:DataContext="{d:DesignInstance Type=samples:DesignData, IsDesignTimeCreatable=True}"
+﻿<Page
   x:Class="Elmish.Uno.Samples.SingleCounter.SingleCounterPage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:cmp="using:Elmish.Uno.Samples.Components"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:i="using:Microsoft.Xaml.Interactivity"
+  xmlns:ie="using:Microsoft.Xaml.Interactions.Core"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
-  mc:Ignorable="d">
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
+  xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:xamarin="http://uno.ui/xamarin"
+  d:DataContext="{d:DesignInstance Type=samples:DesignData,
+                                   IsDesignTimeCreatable=True}"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+  mc:Ignorable="d xamarin">
 
-  <cmp:Counter d:DataContext="{Binding SingleCounter}" Margin="5,25,5,25" />
+  <Page.TopAppBar>
+    <CommandBar
+      win:VerticalContentAlignment="Stretch"
+      xamarin:Content="Single counter"
+      xamarin:Style="{StaticResource NativeDefaultCommandBar}"
+      xamarin:VerticalContentAlignment="Center">
+      <win:CommandBar.Content>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Button Style="{StaticResource NavigationBackButtonNormalStyle}" Visibility="{x:Bind Frame.CanGoBack, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <i:Interaction.Behaviors>
+              <ie:EventTriggerBehavior EventName="Click">
+                <ie:CallMethodAction MethodName="GoBack" TargetObject="{x:Bind Frame}" />
+              </ie:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <TextBlock
+            Grid.Column="1"
+            Padding="5"
+            VerticalAlignment="Center"
+            Text="Single counter" />
+        </Grid>
+      </win:CommandBar.Content>
+    </CommandBar>
+  </Page.TopAppBar>
+
+  <Grid d:DataContext="{Binding SingleCounter}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <cmp:Counter Grid.Row="1" Margin="5,25,5,25" />
+  </Grid>
 
 </Page>
