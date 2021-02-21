@@ -7,7 +7,7 @@ open Elmish
 
 /// Same as mkSimple, but with a signature adapted for Elmish.Uno.
 let mkSimpleUno
-    (init: unit -> 'model)
+    (init: 'arg -> 'model)
     (update: 'msg  -> 'model -> 'model)
     (bindings: Binding<'model, 'msg> list) =
   Program.mkSimple init update (fun _ _ -> bindings)
@@ -15,7 +15,7 @@ let mkSimpleUno
 
 /// Same as mkProgram, but with a signature adapted for Elmish.Uno.
 let mkProgramUno
-    (init: unit -> 'model * Cmd<'msg>)
+    (init: 'arg -> 'model * Cmd<'msg>)
     (update: 'msg  -> 'model -> 'model * Cmd<'msg>)
     (bindings: Binding<'model, 'msg> list) =
   Program.mkProgram init update (fun _ _ -> bindings)

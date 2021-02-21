@@ -18,7 +18,7 @@ let initial =
   { Count = 0
     StepSize = 1 }
 
-let init () = initial
+let init parameter = { initial with Count = parameter }
 
 let canReset = (<>) initial
 

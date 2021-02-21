@@ -6,6 +6,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
   <cmp:Counter d:DataContext="{Binding SingleCounter}" Margin="5,25,5,25" />

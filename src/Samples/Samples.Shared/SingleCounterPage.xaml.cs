@@ -1,4 +1,7 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.SingleCounter.Program;
 
@@ -9,7 +12,13 @@ namespace Elmish.Uno.Samples.SingleCounter
         public SingleCounterPage()
         {
             InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.run, ElmishProgram.Program);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var parameters = e.Parameter as IReadOnlyDictionary<string, object>;
+            var count = Convert.ToInt32(parameters?["count"]);
+            ViewModel.StartLoop(ElmishProgram.Config, this, Elmish.ProgramModule.runWith, ElmishProgram.Program, count);
         }
     }
 }

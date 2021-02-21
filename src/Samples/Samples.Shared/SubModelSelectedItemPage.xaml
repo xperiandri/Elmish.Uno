@@ -14,18 +14,21 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+    <Grid HorizontalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
       <Button
-        Width="100"
         Margin="5,5"
         Command="{Binding SelectRandom}"
         Content="Select random" />
       <Button
-        Width="100"
+        Grid.Column="1"
         Margin="5,5"
         Command="{Binding Deselect}"
         Content="Deselect" />
-    </StackPanel>
+    </Grid>
     <ListView
       Grid.Row="1"
       HorizontalContentAlignment="Center"

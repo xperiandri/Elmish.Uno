@@ -21,9 +21,21 @@ namespace Elmish.Uno.Samples
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public IReadOnlyDictionary<string, object> SingleCounterParameter { get; set; }
+            = new Dictionary<string, object>
+        {
+            ["count"] = 5
+        };
+
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem as SampleItem;
+            Frame.Navigate(Type.GetType(item.PageTypeName), item.Parameter);
         }
     }
 
@@ -31,5 +43,6 @@ namespace Elmish.Uno.Samples
     {
         public string Title { get; set; }
         public string PageTypeName => $"Elmish.Uno.Samples.{Title}.{Title}Page";
+        public object Parameter { get; set; }
     }
 }
