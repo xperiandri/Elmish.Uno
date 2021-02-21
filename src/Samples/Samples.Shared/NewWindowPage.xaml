@@ -5,13 +5,8 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
-  xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
-
-  <Page.Resources>
-    <tconv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-  </Page.Resources>
 
   <Grid d:DataContext="{Binding NewWindow}">
     <Grid.RowDefinitions>
