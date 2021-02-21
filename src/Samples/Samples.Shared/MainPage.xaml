@@ -7,11 +7,18 @@
   xmlns:ie="using:Microsoft.Xaml.Interactions.Core"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+  NavigationCacheMode="Enabled"
   mc:Ignorable="d">
 
-  <Grid>
-    <ListView x:Name="SamplesListView" SelectedValuePath="PageTypeName">
+  <Grid utoolkit:VisibleBoundsPadding.PaddingMask="All">
+    <ListView
+      x:Name="SamplesListView"
+      IsItemClickEnabled="True"
+      ItemClick="OnItemClick"
+      SelectedValuePath="PageTypeName"
+      SelectionMode="None">
       <ListView.Resources>
         <Style TargetType="Button">
           <Setter Property="Margin" Value="4" />
@@ -24,7 +31,7 @@
         </DataTemplate>
       </ListView.ItemTemplate>
 
-      <samples:SampleItem Title="SingleCounter" />
+      <samples:SampleItem Title="SingleCounter" Parameter="{x:Bind SingleCounterParameter}" />
       <samples:SampleItem Title="OneWaySeq" />
       <samples:SampleItem Title="SubModel" />
       <samples:SampleItem Title="SubModelOpt" />
@@ -37,11 +44,12 @@
       <samples:SampleItem Title="EventBindingsAndBehaviors" />
       <samples:SampleItem Title="NewWindow" />
 
-      <i:Interaction.Behaviors>
+      <!-- Shell implements INavigate which does not support parameter -->
+      <!--<i:Interaction.Behaviors>
         <ie:EventTriggerBehavior EventName="SelectionChanged">
           <ie:NavigateToPageAction TargetPage="{Binding SelectedValue, ElementName=SamplesListView}" />
         </ie:EventTriggerBehavior>
-      </i:Interaction.Behaviors>
+      </i:Interaction.Behaviors>-->
     </ListView>
   </Grid>
 </Page>

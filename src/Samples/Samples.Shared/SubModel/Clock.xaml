@@ -5,15 +5,10 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
-  xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters"
   xmlns:wst="using:WindowsStateTriggers"
   d:DesignHeight="300"
   d:DesignWidth="400"
   mc:Ignorable="d">
-
-  <UserControl.Resources>
-    <tconv:FormatStringConverter x:Key="FormatStringConverter" />
-  </UserControl.Resources>
 
   <StackPanel d:DataContext="{Binding SubModelClock}"
     x:Name="root"

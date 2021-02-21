@@ -115,7 +115,7 @@ namespace Elmish.Uno
             return DesignInstance(model, mapping);
         }
 
-        public static void StartLoop<T, TModel, TMsg>(ElmConfig config, FrameworkElement element, Action<Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>>> programRun, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
+        public static void StartLoop<TModel, TMsg>(ElmConfig config, FrameworkElement element, Action<Program<Microsoft.FSharp.Core.Unit, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>>> programRun, Program<Unit, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
         {
             FSharpRef<FSharpOption<ViewModel<TModel, TMsg>>> lastModel = new FSharpRef<FSharpOption<ViewModel<TModel, TMsg>>>(null);
             FSharpFunc<FSharpFunc<TMsg, Unit>, FSharpFunc<TMsg, Unit>> syncDispatch =
@@ -126,6 +126,19 @@ namespace Elmish.Uno
                 ProgramModule.withSyncDispatch(syncDispatch,
                   ProgramModule.withSetState(setSate, program)));
         }
+
+        public static void StartLoop<T, TModel, TMsg>(ElmConfig config, FrameworkElement element, Action<T, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>>> programRun, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program, T arg)
+        {
+            FSharpRef<FSharpOption<ViewModel<TModel, TMsg>>> lastModel = new FSharpRef<FSharpOption<ViewModel<TModel, TMsg>>>(null);
+            FSharpFunc<FSharpFunc<TMsg, Unit>, FSharpFunc<TMsg, Unit>> syncDispatch =
+              FuncConvert.FromAction(MakeSyncDispatch<TMsg>(element));
+            var setSate = FuncConvert.FromAction(MakeSetState(config, element, program, lastModel));
+
+            programRun.Invoke(arg,
+                ProgramModule.withSyncDispatch(syncDispatch,
+                  ProgramModule.withSetState(setSate, program)));
+        }
+
 
         private static Action<TModel, FSharpFunc<TMsg, Unit>> MakeSetState<TArg, TModel, TMsg>(ElmConfig config, FrameworkElement element, Program<TArg, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program, FSharpRef<FSharpOption<ViewModel<TModel, TMsg>>> lastModel)
         {

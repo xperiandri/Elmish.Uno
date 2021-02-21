@@ -41,8 +41,11 @@ type ViewModel() =
     |> Program.withSyncDispatch uiDispatch
     |> programRun
 
-  static member StartLoop (config, element, programRun : Action<Program<'t, 'model, 'msg, Binding<'model, 'msg> list>>, program) =
+  static member StartLoop (config, element, programRun : Action<Program<Unit, 'model, 'msg, Binding<'model, 'msg> list>>, program) =
     startLoop config element (FuncConvert.FromAction programRun) program
+
+  static member StartLoop (config, element, programRun : Action<'arg, Program<'arg, 'model, 'msg, Binding<'model, 'msg> list>>, program, arg) =
+    startLoop config element (FuncConvert.FromAction programRun arg) program
 
   static member DesignInstance (model: 'model, bindings: Binding<'model, 'msg> list) =
     ViewModel<_,_> (model, ignore, bindings, ElmConfig.Default, "main") |> box
