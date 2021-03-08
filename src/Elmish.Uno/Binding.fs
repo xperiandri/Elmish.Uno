@@ -33,7 +33,7 @@ type internal TwoWayData<'model, 'msg, 'a> = {
 type internal TwoWayValidateData<'model, 'msg, 'a> = {
   Get: 'model -> 'a
   Set: 'a -> 'model -> 'msg
-  Validate: 'model -> string list
+  Validate: 'model -> obj array
   WrapDispatch: Dispatch<'msg> -> Dispatch<'msg>
 }
 
@@ -526,13 +526,13 @@ type Binding private () =
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
-       validate: 'model -> string list,
+       validate: 'model -> obj seq,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      Validate = validate
+      Validate = validate >> Seq.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -553,13 +553,13 @@ type Binding private () =
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
-       validate: 'model -> string voption,
+       validate: 'model -> obj voption,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      Validate = validate >> ValueOption.toList
+      Validate = validate >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -580,13 +580,13 @@ type Binding private () =
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
-       validate: 'model -> string option,
+       validate: 'model -> obj option,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      Validate = validate >> Option.toList
+      Validate = validate >> Option.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -607,13 +607,13 @@ type Binding private () =
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
-       validate: 'model -> Result<'ignored, string>,
+       validate: 'model -> Result<'ignored, obj>,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      Validate = validate >> ValueOption.ofError >> ValueOption.toList
+      Validate = validate >> ValueOption.ofError >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -636,13 +636,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
-       validate: 'model -> string list,
+       validate: 'model -> obj seq,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      Validate = validate
+      Validate = validate >> Seq.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -665,13 +665,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
-       validate: 'model -> string voption,
+       validate: 'model -> obj voption,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      Validate = validate >> ValueOption.toList
+      Validate = validate >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -694,13 +694,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
-       validate: 'model -> string option,
+       validate: 'model -> obj option,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      Validate = validate >> Option.toList
+      Validate = validate >> Option.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -723,13 +723,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
-       validate: 'model -> Result<'ignored, string>,
+       validate: 'model -> Result<'ignored, obj>,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      Validate = validate >> ValueOption.ofError >> ValueOption.toList
+      Validate = validate >> ValueOption.ofError >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -752,13 +752,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
-       validate: 'model -> string list,
+       validate: 'model -> obj list,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      Validate = validate
+      Validate = validate >> Seq.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -781,13 +781,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
-       validate: 'model -> string voption,
+       validate: 'model -> obj voption,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      Validate = validate >> ValueOption.toList
+      Validate = validate >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -810,13 +810,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
-       validate: 'model -> string option,
+       validate: 'model -> obj option,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      Validate = validate >> Option.toList
+      Validate = validate >> Option.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -839,13 +839,13 @@ type Binding private () =
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
-       validate: 'model -> Result<'ignored, string>,
+       validate: 'model -> Result<'ignored, obj>,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      Validate = validate >> ValueOption.ofError >> ValueOption.toList
+      Validate = validate >> ValueOption.ofError >> ValueOption.toArray
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -1644,13 +1644,13 @@ module Extensions =
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
-         validate: 'model -> string list,
+         validate: 'model -> obj list,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        Validate = validate
+        Validate = validate >> Seq.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1671,13 +1671,13 @@ module Extensions =
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
-         validate: 'model -> string voption,
+         validate: 'model -> obj voption,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        Validate = validate >> ValueOption.toList
+        Validate = validate >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1698,13 +1698,13 @@ module Extensions =
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
-         validate: 'model -> string option,
+         validate: 'model -> obj option,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p  _ -> p |> unbox<'a> |> set
-        Validate = validate >> Option.toList
+        Validate = validate >> Option.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1725,13 +1725,13 @@ module Extensions =
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
-         validate: 'model -> Result<'ignored, string>,
+         validate: 'model -> Result<'ignored, obj>,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        Validate = validate >> ValueOption.ofError >> ValueOption.toList
+        Validate = validate >> ValueOption.ofError >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1754,13 +1754,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
-         validate: 'model -> string list,
+         validate: 'model -> obj list,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        Validate = validate
+        Validate = validate >> Seq.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1783,13 +1783,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
-         validate: 'model -> string voption,
+         validate: 'model -> obj voption,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        Validate = validate >> ValueOption.toList
+        Validate = validate >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1812,13 +1812,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
-         validate: 'model -> string option,
+         validate: 'model -> obj option,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        Validate = validate >> Option.toList
+        Validate = validate >> Option.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1841,13 +1841,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
-         validate: 'model -> Result<'ignored, string>,
+         validate: 'model -> Result<'ignored, obj>,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        Validate = validate >> ValueOption.ofError >> ValueOption.toList
+        Validate = validate >> ValueOption.ofError >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1870,13 +1870,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
-         validate: 'model -> string list,
+         validate: 'model -> obj list,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        Validate = validate
+        Validate = validate >> Seq.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1899,13 +1899,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
-         validate: 'model -> string voption,
+         validate: 'model -> obj voption,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        Validate = validate >> ValueOption.toList
+        Validate = validate >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1928,13 +1928,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
-         validate: 'model -> string option,
+         validate: 'model -> obj option,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        Validate = validate >> Option.toList
+        Validate = validate >> Option.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1957,13 +1957,13 @@ module Extensions =
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
-         validate: 'model -> Result<'ignored, string>,
+         validate: 'model -> Result<'ignored, obj>,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        Validate = validate >> ValueOption.ofError >> ValueOption.toList
+        Validate = validate >> ValueOption.ofError >> ValueOption.toArray
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2286,7 +2286,7 @@ module BindingFn =
   let twoWayValidate
       (get: 'model -> 'a)
       (set: 'a -> 'model -> 'msg)
-      (validate: 'model -> Result<'ignored, string>)
+      (validate: 'model -> Result<'ignored, obj>)
       (name: string)
       : Binding<'model, 'msg> =
     Binding.twoWayValidate(get, set, validate) name

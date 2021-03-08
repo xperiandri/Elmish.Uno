@@ -204,10 +204,11 @@ type internal TwoWayBinding<'model, 'msg, 'a> = {
   Set: 'a -> 'model -> unit
 }
 
-type internal TwoWayValidateBinding<'model, 'msg, 'a> = {
+type internal TwoWayValidateBinding<'model, 'msg, 'a, 'e> = {
   Get: 'model -> 'a
   Set: 'a -> 'model -> unit
-  Validate: 'model -> string list
+  Validate: 'model -> obj array
+  Errors : ObservableCollection<'e> Lazy
 }
 
 type internal CmdBinding<'model, 'msg> = {
@@ -249,7 +250,7 @@ and internal VmBinding<'model, 'msg> =
   | OneWayLazy of OneWayLazyBinding<'model, obj, obj>
   | OneWaySeq of OneWaySeqBinding<'model, obj, obj, obj>
   | TwoWay of TwoWayBinding<'model, 'msg, obj>
-  | TwoWayValidate of TwoWayValidateBinding<'model, 'msg, obj>
+  | TwoWayValidate of TwoWayValidateBinding<'model, 'msg, obj, obj>
   | Cmd of CmdBinding<'model, 'msg>
   | CmdParam of cmd: Command
   | SubModel of SubModelBinding<'model, 'msg, obj, obj>
@@ -281,7 +282,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     | _ -> null
 
   /// Error messages keyed by property name.
-  let errorsByBindingName = Dictionary<string, string list>()
+  let errors = Dictionary<string, obj ICollection>()
 
 
   let withCaching b = Cached { Binding = b; Cache = ref None }
@@ -306,17 +307,32 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   let raiseCanExecuteChanged (cmd: Command) =
     cmd.RaiseCanExecuteChanged ()
 
+  let setError propErrors propName =
+    match errors.TryGetValue propName with
+    | true, _ -> ()
+    | _ ->
+       log "[%s] ErrorsChanged \"%s\"" propNameChain propName
+       errors.[propName] <- propErrors
+       errorsChanged.Trigger([| box this; box <| DataErrorsChangedEventArgs propName |])
+
+  let removeError propName =
+    if errors.Remove propName then
+      log "[%s] ErrorsChanged \"%s\"" propNameChain propName
+      errorsChanged.Trigger([| box this; box <| DataErrorsChangedEventArgs propName |])
+
   let rec updateValidationError model name = function
-    | TwoWayValidate { Validate = validate } ->
-        let oldErrors =
-          match errorsByBindingName.TryGetValue name with
-          | (true, errors) -> errors
-          | (false, _) -> []
-        let newErrors = validate model
-        if oldErrors <> newErrors then
-          log "[%s] ErrorsChanged \"%s\"" propNameChain name
-          errorsByBindingName.[name] <- newErrors
-          errorsChanged.Trigger([| box this; box <| DataErrorsChangedEventArgs name |])
+    | TwoWayValidate { Validate = validate; Errors = errors } ->
+        match validate model with
+        | [||] ->
+          errors.Value.Clear()
+          removeError name
+        | propErrors ->
+          let errors = errors.Value
+          errors.Clear()
+          propErrors |> Seq.iter errors.Add
+          //TODO : Implement Merge
+          setError errors name
+        notifyPropertyChanged "HasErrors"
     | OneWay _
     | OneWayLazy _
     | OneWaySeq _
@@ -410,7 +426,8 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
         Some <| TwoWayValidate {
           Get = measure name "get" d.Get
           Set = fun obj m -> set obj m |> dispatch'
-          Validate = measure name "validate" d.Validate }
+          Validate = measure name "validate" d.Validate
+          Errors = Lazy<_>()   }
     | CmdData d ->
         let exec = measure name "exec" d.Exec
         let canExec = measure name "canExec" d.CanExec
@@ -738,9 +755,9 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     [<CLIEvent>]
     member __.ErrorsChanged = errorsChanged.Publish
     member __.HasErrors =
-      errorsByBindingName.Count > 0
+      errors.Count > 0
     member __.GetErrors propName =
       log "[%s] GetErrors %s" propNameChain (propName |> Option.ofObj |> Option.defaultValue "<null>")
-      match errorsByBindingName.TryGetValue propName with
-      | true, errs -> upcast errs
+      match errors.TryGetValue propName with
+      | true, err -> upcast err
       | false, _ -> upcast []
