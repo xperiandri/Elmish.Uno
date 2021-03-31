@@ -766,4 +766,4 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       log "[%s] GetErrors %s" propNameChain (propName |> Option.ofObj |> Option.defaultValue "<null>")
       match errors.TryGetValue propName with
       | true, err -> upcast err
-      | false, _ -> upcast []
+      | false, _ -> null
