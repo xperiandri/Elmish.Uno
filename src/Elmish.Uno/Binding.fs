@@ -529,6 +529,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
@@ -560,6 +565,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
@@ -591,6 +601,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
@@ -622,6 +637,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayValidate
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
@@ -655,6 +675,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
@@ -688,6 +713,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
@@ -721,6 +751,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
@@ -754,6 +789,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
@@ -787,6 +827,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
@@ -820,6 +865,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
@@ -853,6 +903,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
@@ -886,6 +941,11 @@ type Binding private () =
   ///   Wraps the dispatch function with additional behavior, such as
   ///   throttling, debouncing, or limiting.
   /// </param>
+  /// <param name="errorItemEquals">
+  ///   Indicates whether two collection errors are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
   static member twoWayOptValidate
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
@@ -1695,6 +1755,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
@@ -1726,6 +1791,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
@@ -1757,6 +1827,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
@@ -1788,6 +1863,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayValidate
         (get: 'model -> 'a,
          set: 'a -> 'msg,
@@ -1821,6 +1901,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
@@ -1854,6 +1939,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
@@ -1887,6 +1977,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
@@ -1920,6 +2015,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
@@ -1953,6 +2053,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
@@ -1986,6 +2091,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
@@ -2019,6 +2129,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
@@ -2052,6 +2167,11 @@ module Extensions =
     ///   Wraps the dispatch function with additional behavior, such as
     ///   throttling, debouncing, or limiting.
     /// </param>
+    /// <param name="errorItemEquals">
+    ///   Indicates whether two collection errors are equal. Good candidates are
+    ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+    /// </param>
+    /// <param name="getErrorId"> Gets the unique identifier of a error. </param>
     static member twoWayOptValidate
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
