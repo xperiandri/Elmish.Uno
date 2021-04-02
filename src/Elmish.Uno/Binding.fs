@@ -538,16 +538,16 @@ type Binding private () =
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
        validate: 'model -> obj seq,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >>defaultArg getErrorId id>> box
       Validate = validate >> Seq.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -574,16 +574,16 @@ type Binding private () =
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
        validate: 'model -> obj voption,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -610,16 +610,16 @@ type Binding private () =
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
        validate: 'model -> obj option,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
       Validate = validate >> Option.toArray
-      GetErrorId = unbox<'e> >> getErrorId >> box
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -646,16 +646,16 @@ type Binding private () =
       (get: 'model -> 'a,
        set: 'a -> 'model -> 'msg,
        validate: 'model -> Result<'ignored, obj>,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> box
       Set = unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -684,16 +684,16 @@ type Binding private () =
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
        validate: 'model -> obj seq,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> Seq.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -722,16 +722,16 @@ type Binding private () =
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
        validate: 'model -> obj voption,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -760,16 +760,16 @@ type Binding private () =
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
        validate: 'model -> obj option,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> Option.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -798,16 +798,16 @@ type Binding private () =
       (get: 'model -> 'a voption,
        set: 'a voption -> 'model -> 'msg,
        validate: 'model -> Result<'ignored, obj>,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> ValueOption.map box >> ValueOption.toObj
       Set = ValueOption.ofObj >> ValueOption.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -836,16 +836,16 @@ type Binding private () =
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
        validate: 'model -> obj seq,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> Seq.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -874,16 +874,16 @@ type Binding private () =
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
        validate: 'model -> obj voption,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -912,16 +912,16 @@ type Binding private () =
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
        validate: 'model -> obj option,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> Option.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -950,16 +950,16 @@ type Binding private () =
       (get: 'model -> 'a option,
        set: 'a option -> 'model -> 'msg,
        validate: 'model -> Result<'ignored, obj>,
-       getErrorId: 'e -> 'id,
-       errorItemEquals: 'e -> 'e -> bool,
+       ?getErrorId: 'e -> 'id,
+       ?errorItemEquals: 'e -> 'e -> bool,
        ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
       : string -> Binding<'model, 'msg> =
     TwoWayValidateData {
       Get = get >> Option.map box >> Option.toObj
       Set = Option.ofObj >> Option.map unbox<'a> >> set
-      GetErrorId = unbox<'e> >> getErrorId >> box
+      GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
       Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-      ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+      ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
       WrapDispatch = defaultArg wrapDispatch id
     } |> createBinding
 
@@ -1764,16 +1764,16 @@ module Extensions =
         (get: 'model -> 'a,
          set: 'a -> 'msg,
          validate: 'model -> obj list,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> Seq.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1800,16 +1800,16 @@ module Extensions =
         (get: 'model -> 'a,
          set: 'a -> 'msg,
          validate: 'model -> obj voption,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> ValueOption.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1836,16 +1836,16 @@ module Extensions =
         (get: 'model -> 'a,
          set: 'a -> 'msg,
          validate: 'model -> obj option,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p  _ -> p |> unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> Option.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1872,16 +1872,16 @@ module Extensions =
         (get: 'model -> 'a,
          set: 'a -> 'msg,
          validate: 'model -> Result<'ignored, obj>,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> box
         Set = fun p _ -> p |> unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1910,16 +1910,16 @@ module Extensions =
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
          validate: 'model -> obj list,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> Seq.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1948,16 +1948,16 @@ module Extensions =
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
          validate: 'model -> obj voption,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> ValueOption.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -1986,16 +1986,16 @@ module Extensions =
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
          validate: 'model -> obj option,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> Option.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2024,16 +2024,16 @@ module Extensions =
         (get: 'model -> 'a voption,
          set: 'a voption -> 'msg,
          validate: 'model -> Result<'ignored, obj>,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> ValueOption.map box >> ValueOption.toObj
         Set = fun p _ -> p |> ValueOption.ofObj |> ValueOption.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2062,16 +2062,16 @@ module Extensions =
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
          validate: 'model -> obj list,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> Seq.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2100,16 +2100,16 @@ module Extensions =
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
          validate: 'model -> obj voption,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
-        GetErrorId = unbox<'e> >> getErrorId >> box
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
         Validate = validate >> ValueOption.toArray
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2138,16 +2138,16 @@ module Extensions =
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
          validate: 'model -> obj option,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
         Validate = validate >> Option.toArray
-        GetErrorId = unbox<'e> >> getErrorId >> box
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
@@ -2176,16 +2176,16 @@ module Extensions =
         (get: 'model -> 'a option,
          set: 'a option -> 'msg,
          validate: 'model -> Result<'ignored, obj>,
-         getErrorId: 'e -> 'id,
-         errorItemEquals: 'e -> 'e -> bool,
+         ?getErrorId: 'e -> 'id,
+         ?errorItemEquals: 'e -> 'e -> bool,
          ?wrapDispatch: Dispatch<'msg> -> Dispatch<'msg>)
         : string -> Binding<'model, 'msg> =
       TwoWayValidateData {
         Get = get >> Option.map box >> Option.toObj
         Set = fun p _ -> p |> Option.ofObj |> Option.map unbox<'a> |> set
         Validate = validate >> ValueOption.ofError >> ValueOption.toArray
-        GetErrorId = unbox<'e> >> getErrorId >> box
-        ErrorItemEquals = fun x y -> errorItemEquals (unbox<'e> x) (unbox<'e> y)
+        GetErrorId = unbox<'e> >> defaultArg getErrorId id >> box
+        ErrorItemEquals = fun x y -> (defaultArg errorItemEquals (=)) (unbox<'e> x) (unbox<'e> y)
         WrapDispatch = defaultArg wrapDispatch id
       } |> createBinding
 
