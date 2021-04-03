@@ -158,7 +158,7 @@ module Helpers =
       Set = unbox<'a> >> set
       Validate = validate >> ValueOption.toArray
       WrapDispatch = id
-      GetErrorId = getErrorId
+      GetErrorId = getErrorId >> box
       ErrorItemEquals = errorItemEquals
     })
 
