@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="5.0">
+    <id>Elmish.Uno</id>
+    <version>1.0.0$versionSuffix$</version>
+    <title>Elmish.Uno</title>
+	<readme>docs\README.md</readme>
+    <authors>XperiAndri,dim-37</authors>
+    <owners>XperiAndri,dim-37</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/XperiAndri/Elmish.Uno</projectUrl>
+    <description>F# bindings for using Elmish in Uno</description>
+    <tags>Uno F# fsharp Elmish Elm</tags>
+    <repository type="git" url="https://github.com/xperiandri/Elmish.Uno.git" branch="$branch$" commit="$commitid$" />
+    <dependencies>
+      <group targetFramework="MonoAndroid">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="tizen4">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="UAP10.0.17134">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+      </group>
+      <group targetFramework="xamarinios">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="xamarinmac">
+        <dependency id="Elmish" version="3.1.0" />
+        <dependency id="FSharp.Core" version="5.0.1" />
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+    </dependencies>
+  </metadata>
+  
+  <files>
+	<file src="README.md" target="docs\README.md" />
+  
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\MonoAndroid\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\MonoAndroid\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\MonoAndroid\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\MonoAndroid\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\MonoAndroid\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\MonoAndroid\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\net5.0\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\net5.0\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\net5.0\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\net5.0\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\net5.0\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\net5.0\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\netcoreapp3.1\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\netcoreapp3.1\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\netcoreapp3.1\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\netcoreapp3.1\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\netcoreapp3.1\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\netcoreapp3.1\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\netstandard2.0\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\netstandard2.0\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\netstandard2.0\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\netstandard2.0\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\netstandard2.0\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\netstandard2.0\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\tizen4\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\tizen4\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\tizen4\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\tizen4\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\tizen4\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\tizen4\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.dll" target="lib\uap10.0.17134\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.Mobile.dll" target="lib\uap10.0.17134\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.Mobile.pdb" target="lib\uap10.0.17134\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.Mobile.pri" target="lib\uap10.0.17134\Elmish.Uno.Mobile.pri" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.pdb" target="lib\uap10.0.17134\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\Elmish.Uno.xml" target="lib\uap10.0.17134\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Uwp\bin\Release\FSharp.Core.xml" target="lib\uap10.0.17134\FSharp.Core.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\xamarinios\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\xamarinios\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\xamarinios\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\xamarinios\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\xamarinios\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\xamarinios\Elmish.Uno.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\xamarinmac\Elmish.Uno.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\xamarinmac\Elmish.Uno.Mobile.dll" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\xamarinmac\Elmish.Uno.Mobile.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.xml" target="lib\xamarinmac\Elmish.Uno.Mobile.xml" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.pdb" target="lib\xamarinmac\Elmish.Uno.pdb" />
+    <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.xml" target="lib\xamarinmac\Elmish.Uno.xml" />
+  </files>
+</package>
