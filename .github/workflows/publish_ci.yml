@@ -1,0 +1,43 @@
+name: publish to MyGet
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.200
+        
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    
+    - uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: '5.x'
+    
+    - name: Restore NuGet Packages
+      run: |
+        nuget restore 'src\\Elmish.Uno.Mobile\\Elmish.Uno.Mobile.fsproj' -ConfigFile 'NuGet.Config'
+        nuget restore 'src\\Elmish.Uno.Uwp\\Elmish.Uno.Uwp.csproj' -ConfigFile 'NuGet.Config'
+        
+    - name: Build with dotnet
+      run: |
+        dotnet build 'src\\Elmish.Uno.Mobile\\Elmish.Uno.Mobile.fsproj' -c Release
+        msbuild 'src\\Elmish.Uno.Uwp\\Elmish.Uno.Uwp.csproj' /p:BuildProjectReferences=false /p:Configuration=Release
+        nuget pack 'Elmish.Uno.1.0.0.nuspec' -Properties Configuration=Release
+        
+    - name: MyGet push
+      run: |
+        dotnet nuget push -s 'https://www.myget.org/F/elmish_uno/api/v3/index.json' -k ${{secrets.MyGet_Key}} *.nupkg
