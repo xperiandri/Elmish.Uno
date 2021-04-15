@@ -1,0 +1,74 @@
+﻿<local:ShellBase
+  x:Class="SolutionTemplate.Shell"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:Custom="using:Microsoft.Toolkit.Uwp.UI.Triggers"
+  xmlns:Custom1="using:Microsoft.Toolkit.Uwp.UI.Converters"
+  xmlns:Custom2="using:SolutionTemplate.Converter"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="using:SolutionTemplate"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+  xmlns:tctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:textensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+  x:Name="shell"
+  d:DesignHeight="300"
+  d:DesignWidth="400"
+  NavigationFailedCommand="{Binding Notifications.NavigationFailedCommand}"
+  mc:Ignorable="d">
+  <local:ShellBase.Resources>
+    <XamlUICommand
+      x:Key="RemoveNotificationCommand"
+      Command="{Binding DataContext.Notifications.RemoveNotificationCommand, ElementName=shell}"
+      Description="Закрыть оповешение" />
+    <DataTemplate x:Key="NotificationItemTemplate">
+      <Grid>
+        <muxc:InfoBar
+          Title="{Binding Title}"
+          CloseButtonCommand="{StaticResource RemoveNotificationCommand}"
+          CloseButtonCommandParameter="{Binding}"
+          IsClosable="{Binding IsClosable}"
+          IsIconVisible="True"
+          IsOpen="{Binding IsOpen}"
+          Message="{Binding Text}"
+          Severity="{Binding Type, Converter={StaticResource StringToSeverityConvector}}" />
+      </Grid>
+    </DataTemplate>
+  </local:ShellBase.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Frame
+      x:Name="RootFrame"
+      Grid.RowSpan="2"
+      x:FieldModifier="Public"
+      NavigationFailed="OnNavigationFailed" />
+    <ItemsControl
+      x:Name="notificationsContainer"
+      Grid.Row="1"
+      ItemTemplate="{StaticResource NotificationItemTemplate}"
+      ItemsSource="{Binding Notifications.Notifications}" />
+    <!--<VisualStateManager.VisualStateGroups>
+      <VisualStateGroup x:Name="NetworkStateGroup">
+        <VisualState x:Name="Connected">
+          <VisualState.StateTriggers>
+            <Custom:NetworkConnectionStateTrigger ConnectionState="Connected" />
+          </VisualState.StateTriggers>
+        </VisualState>
+        <VisualState x:Name="Disconnected">
+          <VisualState.Setters>
+            <Setter Target="shell.(extensions:StatusBarExtensions.BackgroundColor)" Value="Red" />
+            <Setter Target="shell.(extensions:StatusBarExtensions.ForegroundColor)" Value="White" />
+            <Setter Target="shell.(extensions:ApplicationViewExtensions.Title)" Value="Отсутствует подключение к сети" />
+          </VisualState.Setters>
+          <VisualState.StateTriggers>
+            <Custom:NetworkConnectionStateTrigger ConnectionState="Disconnected" />
+          </VisualState.StateTriggers>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>-->
+  </Grid>
+
+</local:ShellBase>

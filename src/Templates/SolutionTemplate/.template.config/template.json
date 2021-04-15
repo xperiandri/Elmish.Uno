@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "SecretCircle",
+    "classifications": [ "Web", "Uno Platform", "WebAssembly", "Android", "iOS", "Windows", "macOS" ],
+    "name": "Elmish Uno Solution Template",
+    "shortName": "elmish-unoapp",
+    "defaultName": "SolutionTemplate",
+    "identity": "Elmish.Uno.ProjectTemplates.Dotnet.SolutionTemplate",
+    "tags": {
+        "language": "[F#]",
+        "type": "project"
+    },
+    "sourceName": "SolutionTemplate",
+    "preferNameDirectory": true
+}
