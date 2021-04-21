@@ -1,4 +1,3 @@
-﻿
-namespace Elmish.Uno.Samples.Skia.Gtk
+﻿namespace Elmish.Uno.Samples.Skia.Gtk
 {
 }

@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns="http://tizen.org/ns/packages" api-version="5" package="com.example.Samples.Skia.Tizen" version="1.0.0">
   <profile name="common" />
   <ui-application appid="com.example.Samples.Skia.Tizen"
-					exec="Samples.Skia.Tizen.dll"
-					type="dotnet"
-					multiple="false"
-					taskmanage="true"
-					nodisplay="false"
-					launch_mode="single">
+                  exec="Samples.Skia.Tizen.dll"
+                  type="dotnet"
+                  multiple="false"
+                  taskmanage="true"
+                  nodisplay="false"
+                  launch_mode="single">
     <label>Samples.Skia.Tizen</label>
     <icon>Icon.png</icon>
     <metadata key="http://tizen.org/metadata/prefer_dotnet_aot" value="false" />

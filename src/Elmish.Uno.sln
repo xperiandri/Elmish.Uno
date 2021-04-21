@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 		..\global.json = ..\global.json
-		..\nuget.config = ..\nuget.config
+		..\NuGet.Config = ..\NuGet.Config
 		..\README.md = ..\README.md
 		..\RELEASE_NOTES.md = ..\RELEASE_NOTES.md
 		..\TUTORIAL.md = ..\TUTORIAL.md
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Mobile", "Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj", "{910A4D58-ADB0-46E5-9587-9DBD132771CB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BBAFEB1E-93C0-4C7E-8E0A-026BB05C88EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmish.Uno.Uwp", "Elmish.Uno.Uwp\Elmish.Uno.Uwp.csproj", "{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
 EndProject

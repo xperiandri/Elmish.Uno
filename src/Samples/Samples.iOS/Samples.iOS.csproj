@@ -3,11 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{67476367-BB0B-4A84-B8BB-7ED4ED2F1CD6}</ProjectGuid>
+    <ProjectGuid>{0AB98FD6-322A-468F-9228-D66B5AD46C15}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Elmish.Uno.Samples</RootNamespace>
     <AssemblyName>Samples.iOS</AssemblyName>
+    <LangVersion>9.0</LangVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <NuGetPackageImportStamp>
@@ -121,14 +122,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI" Version="3.7.*" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
     <PackageReference Include="Uno.Extensions.Logging.OSLog " Version="1.0.*" />
+    <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
+    <PackageReference Include="Uno.WinUI" Version="3.7.*" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Contents.json" Visible="false" />
@@ -147,10 +147,6 @@
     <Folder Include="Media\LaunchImages" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj">
-      <Project>{910a4d58-adb0-46e5-9587-9dbd132771cb}</Project>
-      <Name>Elmish.Uno.Mobile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
       <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
       <Name>Elmish.Uno</Name>
@@ -160,6 +156,6 @@
       <Name>Samples</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

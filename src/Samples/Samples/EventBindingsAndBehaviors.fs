@@ -2,7 +2,7 @@
 
 open Elmish
 open Elmish.Uno
-open Windows.UI.Xaml
+open Microsoft.UI.Xaml
 open Windows.UI.Core
 
 type Position = { X: int; Y: int }

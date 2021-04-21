@@ -8,13 +8,13 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -29,10 +29,12 @@ namespace Elmish.Uno.Samples
         {
             this.InitializeComponent();
 
+#if !(NET5_0 && WINDOWS)
             SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemNavigationManagerBackRequested;
-            KeyboardAccelerator GoBack = new KeyboardAccelerator() { Key = VirtualKey.GoBack };
+#endif
+            KeyboardAccelerator GoBack = new () { Key = VirtualKey.GoBack };
             GoBack.Invoked += BackInvoked;
-            KeyboardAccelerator AltLeft = new KeyboardAccelerator() { Key = VirtualKey.Left };
+            KeyboardAccelerator AltLeft = new () { Key = VirtualKey.Left };
             AltLeft.Invoked += BackInvoked;
             this.KeyboardAccelerators.Add(GoBack);
             this.KeyboardAccelerators.Add(AltLeft);
@@ -60,11 +62,13 @@ namespace Elmish.Uno.Samples
             return false;
         }
 
+#if !(NET5_0 && WINDOWS)
         private void OnSystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
         {
             OnBackRequested();
             e.Handled = true;
         }
+#endif
 
         private void OnBackButtonClick(object sender, RoutedEventArgs e) => OnBackRequested();
 

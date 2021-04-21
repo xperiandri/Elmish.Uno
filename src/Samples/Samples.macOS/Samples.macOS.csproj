@@ -3,11 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{39D21008-549B-42ED-8640-3B9AAEFB2921}</ProjectGuid>
+    <ProjectGuid>{E967D746-48C0-4FE5-A09A-18DDF632E6B4}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Elmish.Uno.Samples</RootNamespace>
     <AssemblyName>Samples.macOS</AssemblyName>
+    <LangVersion>9.0</LangVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -63,16 +64,15 @@
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI" Version="3.7.*" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
+    <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
+    <PackageReference Include="Uno.WinUI" Version="3.7.*" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png" />
@@ -103,10 +103,6 @@
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj">
-      <Project>{910a4d58-adb0-46e5-9587-9dbd132771cb}</Project>
-      <Name>Elmish.Uno.Mobile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
       <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
       <Name>Elmish.Uno</Name>
@@ -125,14 +121,12 @@
         is properly adding the local System.Memory to the Reference item group.
     -->
     <ItemGroup>
-      <_ReferenceToRemove Include="@(Reference)" Condition="'%(Reference.Identity)'=='System.Memory'" />
       <Reference Remove="@(_ReferenceToRemove)" />
       <Reference Include="System.Memory" />
     </ItemGroup>
   </Target>
   <Target Name="VS16_RemoveSystemMemory" BeforeTargets="FindReferenceAssembliesForReferences">
     <ItemGroup>
-      <_ReferencePathToRemove Include="@(ReferencePath)" Condition="'%(ReferencePath.NuGetPackageId)'=='System.Memory'" />
       <ReferencePath Remove="@(_ReferencePathToRemove)" />
     </ItemGroup>
   </Target>

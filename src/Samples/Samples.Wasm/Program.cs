@@ -1,16 +1,15 @@
-﻿using System;
+using System;
+using Microsoft.UI.Xaml;
 
-using Windows.UI.Xaml;
-
-namespace Elmish.Uno.Samples.Wasm
+namespace Samples.Wasm
 {
-    public static class Program
+    public class Program
     {
-        private static App app;
+        private static App _app;
 
-        private static int Main(string[] args)
+        static int Main(string[] args)
         {
-            Windows.UI.Xaml.Application.Start(_ => app = new App());
+            Microsoft.UI.Xaml.Application.Start(_ => _app = new App());
 
             return 0;
         }

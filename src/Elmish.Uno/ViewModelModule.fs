@@ -1,8 +1,8 @@
 ﻿namespace Elmish.Uno
 
 open System
-open Windows.UI.Xaml
 open Windows.UI.Core
+open Microsoft.UI.Xaml
 
 open Elmish
 open Elmish.Uno

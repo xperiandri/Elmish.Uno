@@ -4,6 +4,7 @@
     <OutputType Condition="'$(Configuration)'=='Release'">WinExe</OutputType>
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
     <UseWPF>true</UseWPF>
     <RootNamespace>Elmish.Uno.Samples</RootNamespace>
   </PropertyGroup>
@@ -13,20 +14,16 @@
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI.Skia.Wpf" Version="3.7.*" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
+    <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
+    <PackageReference Include="Uno.WinUI.Skia.Wpf" Version="3.7.*" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj" />
-    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
     <ProjectReference Include="..\Samples.Skia.WPF\Samples.Skia.WPF.csproj" />
-    <ProjectReference Include="..\Samples\Samples.fsproj" />
   </ItemGroup>
 </Project>

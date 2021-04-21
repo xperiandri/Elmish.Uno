@@ -7,8 +7,8 @@ open Elmish.Uno
 open Windows.ApplicationModel.Core
 open Windows.UI.Core
 open Windows.UI.ViewManagement
-open Windows.UI.Xaml
-open Windows.UI.Xaml.Controls
+open Microsoft.UI.Xaml
+open Microsoft.UI.Xaml.Controls
 
 module Win1 =
 

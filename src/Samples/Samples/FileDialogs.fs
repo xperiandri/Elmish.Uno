@@ -6,8 +6,6 @@ open System.Threading
 open System.Windows
 open Elmish
 open Elmish.Uno
-open Windows.ApplicationModel.Core
-open Windows.UI.Core
 
 type Model =
   { CurrentTime: DateTimeOffset

@@ -6,39 +6,41 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.11">
+    <PackageReference Include="Microsoft.WinUI" Version="3.0.0-preview3.201113.0" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <!--
       If, in the same solution, you are referencing a project that uses https://github.com/onovotny/MSBuildSdkExtras,
       you need to make sure that the version provided here matches https://github.com/novotnyllc/MSBuildSdkExtras/blob/main/Source/MSBuild.Sdk.Extras/DefaultItems/ImplicitPackages.targets#L11.
       This is not an issue when libraries are referenced through nuget packages. See https://github.com/unoplatform/uno/issues/446 for more details.
       -->
+      <Version>6.2.11</Version>
     </PackageReference>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.5.0" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.*" />
     <PackageReference Include="Uno.Core" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Toolkit" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp" Version="7.0.*" />
   </ItemGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{E025D4A5-F4D9-44CF-80DF-B81A9EE5DB0E}</ProjectGuid>
+    <ProjectGuid>{4477AD7B-7B4A-48CC-B800-3E4B05664F46}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Elmish.Samples</RootNamespace>
     <AssemblyName>Samples.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <IsWinUIAlpha>true</IsWinUIAlpha>
     <PackageCertificateKeyFile>Samples.Uwp_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -136,10 +138,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\Elmish.Uno.Uwp\Elmish.Uno.Uwp.csproj">
-      <Project>{e8fab67c-c113-4e2c-b28c-7ba8eb3559c3}</Project>
-      <Name>Elmish.Uno.Uwp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
       <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
       <Name>Elmish.Uno</Name>
@@ -156,7 +154,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Samples.UWP_TemporaryKey.pfx" />
+    <None Include="Samples_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -167,7 +165,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

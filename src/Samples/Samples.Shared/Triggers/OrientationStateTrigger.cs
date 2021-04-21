@@ -8,10 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.UI.Xaml;
 
-using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
-using Windows.UI.Xaml;
 
 namespace Microsoft.Toolkit.Uwp.UI.Triggers
 {

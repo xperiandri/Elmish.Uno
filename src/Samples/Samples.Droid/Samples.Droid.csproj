@@ -5,6 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <LangVersion>9.0</LangVersion>
     <ProjectGuid>{3DE4429B-5BB1-423F-B529-8AD31E841DB3}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -67,15 +68,14 @@
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI" Version="3.7.*" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.33" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
+    <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
+    <PackageReference Include="Uno.WinUI" Version="3.7.*" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.33" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -97,10 +97,6 @@
     <LinkDescription Include="LinkerConfig.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj">
-      <Project>{910a4d58-adb0-46e5-9587-9dbd132771cb}</Project>
-      <Name>Elmish.Uno.Mobile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
       <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
       <Name>Elmish.Uno</Name>
@@ -110,7 +106,7 @@
       <Name>Samples</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- This will force the generation of the APK when not building inside visual studio -->
   <Target Name="GenerateBuild" DependsOnTargets="SignAndroidPackage" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)'==''" />
