@@ -29,13 +29,11 @@ jobs:
     
     - name: Restore NuGet Packages
       run: |
-        nuget restore 'src\\Elmish.Uno.Mobile\\Elmish.Uno.Mobile.fsproj' -ConfigFile 'NuGet.Config'
-        nuget restore 'src\\Elmish.Uno.Uwp\\Elmish.Uno.Uwp.csproj' -ConfigFile 'NuGet.Config'
+        nuget restore 'src\\Elmish.Uno.sln' -ConfigFile 'NuGet.Config'
         
     - name: Build with dotnet
       run: |
-        dotnet build 'src\\Elmish.Uno.Mobile\\Elmish.Uno.Mobile.fsproj' -c Release
-        msbuild 'src\\Elmish.Uno.Uwp\\Elmish.Uno.Uwp.csproj' /p:BuildProjectReferences=false /p:Configuration=Release
+        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU"
         nuget pack 'Elmish.Uno.1.0.0.nuspec' -Properties Configuration=Release
         
     - name: MyGet push
