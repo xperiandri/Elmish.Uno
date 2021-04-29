@@ -34,7 +34,9 @@ jobs:
     - name: Build with dotnet
       run: |
         msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU"
-        nuget pack 'Elmish.Uno.1.0.0.nuspec' -Properties Configuration=Release
+        $nuspec = get-content 'Elmish.Uno.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"} 
+        set-content 'Elmish.Uno.nuspec' -value $nuspec
+        nuget pack 'Elmish.Uno.nuspec' -Properties Configuration=Release
         
     - name: MyGet push
       run: |
