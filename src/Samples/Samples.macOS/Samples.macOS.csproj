@@ -28,22 +28,17 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <Profiling>true</Profiling>
-    <HttpClientHandler>
-    </HttpClientHandler>
-    <LinkMode>
-    </LinkMode>
-    <XamMacArch>
-    </XamMacArch>
-    <NoWarn>
-    </NoWarn>
+    <HttpClientHandler></HttpClientHandler>
+    <LinkMode></LinkMode>
+    <XamMacArch></XamMacArch>
+    <NoWarn></NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -53,13 +48,9 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler>
-    </HttpClientHandler>
-    <XamMacArch>
-    </XamMacArch>
-    <NoWarn>
-    </NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <HttpClientHandler></HttpClientHandler>
+    <XamMacArch></XamMacArch>
+    <NoWarn></NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -71,15 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
-    <PackageReference Include="FSharp.Core" Version="5.0.0" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.0-build.*" />
+    <PackageReference Include="FSharp.Core" Version="5.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI" Version="3.5.1" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.1" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
+    <PackageReference Include="Uno.UI" Version="3.7.*" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
   </ItemGroup>
   <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
   <ItemGroup>

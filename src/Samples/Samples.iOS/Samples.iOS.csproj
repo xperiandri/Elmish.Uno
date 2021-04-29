@@ -120,15 +120,15 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="5.0.0" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.0-build.*" />
+    <PackageReference Include="FSharp.Core" Version="5.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
-    <PackageReference Include="Uno.UI" Version="3.5.1" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.1" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
+    <PackageReference Include="Uno.UI" Version="3.7.*" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
+    <PackageReference Include="Uno.Extensions.Logging.OSLog " Version="1.0.*" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Contents.json" Visible="false" />
