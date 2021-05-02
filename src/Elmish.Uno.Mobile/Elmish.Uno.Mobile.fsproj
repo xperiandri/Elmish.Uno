@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="IncrementalLoadingCollection.fs" />
     <Compile Include="ViewModelModule.fs" />
     <Compile Include="Navigation.fs" />
   </ItemGroup>

@@ -13,7 +13,8 @@ type internal ViewModel<'model, 'msg>(initialModel: 'model, dispatch: Dispatch<'
   override _.Create<'subModel,'subMsg>(initialModel: 'subModel, dispatch: Dispatch<'subMsg>, bindings: Binding<'subModel, 'subMsg> list, config: ElmConfig, propNameChain: string) = //raise <| NotImplementedException()
     ViewModel<'subModel,'subMsg>(initialModel, dispatch, bindings, config, propNameChain) :> _
 
-  override _.CreateCollection(hasMoreItems, loadMoreitems, collection) = raise <| NotImplementedException()
+  override this.CreateCollection(hasMoreItems, loadMoreItems: LoadMoreItems<'msg>, collection: 't seq) =
+    IncrementalLoadingCollection<'t>(collection, hasMoreItems, loadMoreItems >> this.Dispatch) :> _
 
 
 [<AbstractClass;Sealed>]
