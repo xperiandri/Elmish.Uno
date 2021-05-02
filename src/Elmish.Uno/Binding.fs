@@ -4,6 +4,14 @@
 
 open System
 open Elmish
+open System.Threading.Tasks
+
+type internal HasMoreItems = unit -> bool
+type internal LoadMoreItems<'msg> = uint * TaskCompletionSource<uint> -> 'msg
+[<Struct>]
+type internal IncrementalLoadingData<'msg> =
+  | Static
+  | Loadable of hasMoreItems : HasMoreItems * loadMoreItems : LoadMoreItems<'msg>
 
 type internal OneWayData<'model, 'a> = {
   Get: 'model -> 'a
@@ -15,12 +23,13 @@ type internal OneWayLazyData<'model, 'a, 'b> = {
   Equals: 'a -> 'a -> bool
 }
 
-type internal OneWaySeqLazyData<'model, 'a, 'b, 'id> = {
+type internal OneWaySeqLazyData<'model, 'msg, 'a, 'b, 'id> = {
   Get: 'model -> 'a
   Map: 'a -> 'b seq
   Equals: 'a -> 'a -> bool
   GetId: 'b -> 'id
   ItemEquals: 'b -> 'b -> bool
+  IncrementalLoading: IncrementalLoadingData<'msg>
 }
 
 type internal TwoWayData<'model, 'msg, 'a> = {
@@ -69,6 +78,7 @@ and internal SubModelSeqData<'model, 'msg, 'bindingModel, 'bindingMsg, 'id> = {
   GetId: 'bindingModel -> 'id
   GetBindings: unit -> Binding<'bindingModel, 'bindingMsg> list
   ToMsg: 'id * 'bindingMsg -> 'msg
+  IncrementalLoading: IncrementalLoadingData<'msg>
 }
 
 
@@ -76,7 +86,7 @@ and internal SubModelSeqData<'model, 'msg, 'bindingModel, 'bindingMsg, 'id> = {
 and internal BindingData<'model, 'msg> =
   | OneWayData of OneWayData<'model, obj>
   | OneWayLazyData of OneWayLazyData<'model, obj, obj>
-  | OneWaySeqLazyData of OneWaySeqLazyData<'model, obj, obj, obj>
+  | OneWaySeqLazyData of OneWaySeqLazyData<'model,'msg, obj, obj, obj>
   | TwoWayData of TwoWayData<'model, 'msg, obj>
   | TwoWayValidateData of TwoWayValidateData<'model, 'msg, obj, obj, obj>
   | CmdData of CmdData<'model, 'msg>
@@ -150,6 +160,7 @@ module internal BindingData =
         GetId = d.GetId
         GetBindings = d.GetBindings
         ToMsg = d.ToMsg >> boxMsg
+        IncrementalLoading = d.IncrementalLoading
       }
     | SubModelSelectedItemData d -> SubModelSelectedItemData {
         Get = d.Get
@@ -175,6 +186,7 @@ module internal BindingData =
           Equals = d.Equals
           GetId = d.GetId
           ItemEquals = d.ItemEquals
+          IncrementalLoading = d.IncrementalLoading
         } |> OneWaySeqLazyData
     | TwoWayData d ->
         { Get = f >> d.Get
@@ -211,6 +223,7 @@ module internal BindingData =
           GetId = d.GetId
           GetBindings = d.GetBindings
           ToMsg = d.ToMsg
+          IncrementalLoading = d.IncrementalLoading
         } |> SubModelSeqData
     | SubModelSelectedItemData d ->
         { Get = f >> d.Get
@@ -395,8 +408,7 @@ type Binding private () =
   ///   Indicates whether two collection items are equal. Good candidates are
   ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
   /// </param>
-  /// <param name="getId">Gets a unique identifier for a collection
-  /// item.</param>
+  /// <param name="getId">Gets a unique identifier for a collection item.</param>
   static member oneWaySeq
       (get: 'model -> #seq<'a>,
        itemEquals: 'a -> 'a -> bool,
@@ -408,6 +420,42 @@ type Binding private () =
       Equals = fun _ _ -> false
       GetId = unbox<'a> >> getId >> box
       ItemEquals = fun a b -> itemEquals (unbox<'a> a) (unbox<'a> b)
+      IncrementalLoading = Static
+    } |> createBinding
+
+  /// <summary>
+  ///   Creates a one-way binding to a sequence of items, each uniquely
+  ///   identified by the value returned by <paramref name="getId"/>. The
+  ///   binding is backed by a persistent <c>ObservableCollection</c>, so only
+  ///   changed items (as determined by <paramref name="itemEquals" />) will be
+  ///   replaced. If the items are complex and you want them updated instead of
+  ///   replaced, consider using <see cref="subModelSeq" />.
+  /// </summary>
+  /// <param name="get">Gets the collection from the model.</param>
+  /// <param name="itemEquals">
+  ///   Indicates whether two collection items are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getId">Gets a unique identifier for a collection item.</param>
+  /// <param name="hasMoreItems">Function that returns if more items are available.</param>
+  /// <param name="loadMoreItems">
+  ///   Function that constructs a message and
+  ///   completes <see ref="T:TaskCompletionSource`1">TaskCompletionSource</see> when items are loaded
+  /// </param>
+  static member oneWaySeq
+      (get: 'model -> #seq<'a>,
+       itemEquals: 'a -> 'a -> bool,
+       getId: 'a -> 'id,
+       hasMoreItems: HasMoreItems,
+       loadMoreItems: LoadMoreItems<'msg>)
+      : string -> Binding<'model, 'msg> =
+    OneWaySeqLazyData {
+      Get = box
+      Map = unbox<'model> >> get >> Seq.map box
+      Equals = fun _ _ -> false
+      GetId = unbox<'a> >> getId >> box
+      ItemEquals = fun a b -> itemEquals (unbox<'a> a) (unbox<'a> b)
+      IncrementalLoading = Loadable(hasMoreItems, loadMoreItems)
     } |> createBinding
 
 
@@ -447,8 +495,54 @@ type Binding private () =
       Equals = fun x y -> equals (unbox<'a> x) (unbox<'a> y)
       GetId = unbox<'b> >> getId >> box
       ItemEquals = fun x y -> itemEquals (unbox<'b> x) (unbox<'b> y)
+      IncrementalLoading = Static
     } |> createBinding
 
+  /// <summary>
+  ///   Creates a one-way binding to a sequence of items, each uniquely
+  ///   identified by the value returned by <paramref name="getId"/>. The
+  ///   binding will only be updated if the output of <paramref name="get" />
+  ///   changes, as determined by <paramref name="equals" />. The binding is
+  ///   backed by a persistent
+  ///   <c>ObservableCollection</c>, so only changed items (as determined by
+  ///   <paramref name="itemEquals" />) will be replaced. If the items are
+  ///   complex and you want them updated instead of replaced, consider using
+  ///   <see cref="subModelSeq" />.
+  /// </summary>
+  /// <param name="get">Gets the intermediate value from the model.</param>
+  /// <param name="equals">
+  ///   Indicates whether two intermediate values are equal. Good candidates are
+  ///   <c>elmEq</c> and <c>refEq</c>.
+  /// </param>
+  /// <param name="map">Transforms the value into the final collection.</param>
+  /// <param name="itemEquals">
+  ///   Indicates whether two collection items are equal. Good candidates are
+  ///   <c>elmEq</c>, <c>refEq</c>, or simply <c>(=)</c>.
+  /// </param>
+  /// <param name="getId">Gets a unique identifier for a collection
+  /// item.</param>
+  /// <param name="hasMoreItems">Function that returns if more items are available.</param>
+  /// <param name="loadMoreItems">
+  ///   Function that constructs a message and
+  ///   completes <see ref="T:TaskCompletionSource`1">TaskCompletionSource</see> when items are loaded
+  /// </param>
+  static member oneWaySeqLazy
+      (get: 'model -> 'a,
+       equals: 'a -> 'a -> bool,
+       map: 'a -> #seq<'b>,
+       itemEquals: 'b -> 'b -> bool,
+       getId: 'b -> 'id,
+       hasMoreItems: HasMoreItems,
+       loadMoreItems: LoadMoreItems<'msg>)
+      : string -> Binding<'model, 'msg> =
+    OneWaySeqLazyData {
+      Get = get >> box
+      Map = unbox<'a> >> map >> Seq.map box
+      Equals = fun x y -> equals (unbox<'a> x) (unbox<'a> y)
+      GetId = unbox<'b> >> getId >> box
+      ItemEquals = fun x y -> itemEquals (unbox<'b> x) (unbox<'b> y)
+      IncrementalLoading = Loadable(hasMoreItems, loadMoreItems)
+    } |> createBinding
 
   /// <summary>Creates a two-way binding.</summary>
   /// <param name="get">Gets the value from the model.</param>
@@ -1526,8 +1620,49 @@ type Binding private () =
       GetId = unbox<'bindingModel> >> getId >> box
       GetBindings = bindings >> List.map boxBinding
       ToMsg = fun (id, msg) -> toMsg (unbox<'id> id, unbox<'bindingMsg> msg)
+      IncrementalLoading = Static
     } |> createBinding
 
+  /// <summary>
+  ///   Creates a binding to a sequence of sub-models, each uniquely identified
+  ///   by the value returned by <paramref name="getId" />. The sub-models have
+  ///   their own bindings and message type. You typically bind this to the
+  ///   <c>ItemsSource</c> of an <c>ItemsControl</c>, <c>ListView</c>,
+  ///   <c>TreeView</c>, etc.
+  /// </summary>
+  /// <param name="getSubModels">Gets the sub-models from the model.</param>
+  /// <param name="toBindingModel">
+  ///   Converts the models to the model used by the bindings.
+  /// </param>
+  /// <param name="getId">Gets a unique identifier for a sub-model.</param>
+  /// <param name="toMsg">
+  ///   Converts the sub-model ID and messages used in the bindings to parent
+  ///   model messages (e.g. a parent message union case that wraps the
+  ///   sub-model ID and message type).
+  /// </param>
+  /// <param name="hasMoreItems">Function that returns if more items are available.</param>
+  /// <param name="loadMoreItems">
+  ///   Function that constructs a message and
+  ///   completes <see ref="T:TaskCompletionSource`1">TaskCompletionSource</see> when items are loaded
+  /// </param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  static member subModelSeq
+      (getSubModels: 'model -> #seq<'subModel>,
+       toBindingModel: 'model * 'subModel -> 'bindingModel,
+       getId: 'bindingModel -> 'id,
+       toMsg: 'id * 'bindingMsg -> 'msg,
+       hasMoreItems: HasMoreItems,
+       loadMoreItems: LoadMoreItems<'msg>,
+       bindings: unit -> Binding<'bindingModel, 'bindingMsg> list)
+      : string -> Binding<'model, 'msg> =
+    SubModelSeqData {
+      GetModels = fun m ->
+        m |> getSubModels |> Seq.map (fun sub -> toBindingModel (m, sub) |> box)
+      GetId = unbox<'bindingModel> >> getId >> box
+      GetBindings = bindings >> List.map boxBinding
+      ToMsg = fun (id, msg) -> toMsg (unbox<'id> id, unbox<'bindingMsg> msg)
+      IncrementalLoading = Loadable(hasMoreItems, loadMoreItems)
+    } |> createBinding
 
   /// <summary>
   ///   Creates a binding to a sequence of sub-models, each uniquely identified
@@ -1555,6 +1690,43 @@ type Binding private () =
       GetId = unbox<'model * 'subModel> >> snd >> getId >> box
       GetBindings = bindings >> List.map boxBinding
       ToMsg = fun (id, msg) -> toMsg (unbox<'id> id, unbox<'subMsg> msg)
+      IncrementalLoading = Static
+    } |> createBinding
+
+  /// <summary>
+  ///   Creates a binding to a sequence of sub-models, each uniquely identified
+  ///   by the value returned by <paramref name="getId" />. The sub-models have
+  ///   their own bindings and message type. You typically bind this to the
+  ///   <c>ItemsSource</c> of an <c>ItemsControl</c>, <c>ListView</c>,
+  ///   <c>TreeView</c>, etc.
+  /// </summary>
+  /// <param name="getSubModels">Gets the sub-models from the model.</param>
+  /// <param name="getId">Gets a unique identifier for a sub-model.</param>
+  /// <param name="toMsg">
+  ///   Converts the sub-model ID and messages used in the bindings to parent
+  ///   model messages (e.g. a parent message union case that wraps the
+  ///   sub-model ID and message type).
+  /// </param>
+  /// <param name="hasMoreItems">Function that returns if more items are available.</param>
+  /// <param name="loadMoreItems">
+  ///   Function that constructs a message and
+  ///   completes <see ref="T:TaskCompletionSource`1">TaskCompletionSource</see> when items are loaded
+  /// </param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  static member subModelSeq
+      (getSubModels: 'model -> #seq<'subModel>,
+       getId: 'subModel -> 'id,
+       toMsg: 'id * 'subMsg -> 'msg,
+       hasMoreItems: HasMoreItems,
+       loadMoreItems: LoadMoreItems<'msg>,
+       bindings: unit -> Binding<'model * 'subModel, 'subMsg> list)
+      : string -> Binding<'model, 'msg> =
+    SubModelSeqData {
+      GetModels = fun m -> m |> getSubModels |> Seq.map (fun sub -> (m, sub) |> box)
+      GetId = unbox<'model * 'subModel> >> snd >> getId >> box
+      GetBindings = bindings >> List.map boxBinding
+      ToMsg = fun (id, msg) -> toMsg (unbox<'id> id, unbox<'subMsg> msg)
+      IncrementalLoading = Loadable(hasMoreItems, loadMoreItems)
     } |> createBinding
 
 
@@ -1578,6 +1750,37 @@ type Binding private () =
       GetId = unbox<'model * 'subModel> >> snd >> getId >> box
       GetBindings = bindings >> List.map boxBinding
       ToMsg = fun (_, msg) -> unbox<'msg> msg
+      IncrementalLoading = Static
+    } |> createBinding
+
+  /// <summary>
+  ///   Creates a binding to a sequence of sub-models, each uniquely identified
+  ///   by the value returned by <paramref name="getId" />. The sub-models have
+  ///   their own bindings. You typically bind this to the <c>ItemsSource</c> of
+  ///   an
+  ///   <c>ItemsControl</c>, <c>ListView</c>, <c>TreeView</c>, etc.
+  /// </summary>
+  /// <param name="getSubModels">Gets the sub-models from the model.</param>
+  /// <param name="getId">Gets a unique identifier for a sub-model.</param>
+/// <param name="hasMoreItems">Function that returns if more items are available.</param>
+  /// <param name="loadMoreItems">
+  ///   Function that constructs a message and
+  ///   completes <see ref="T:TaskCompletionSource`1">TaskCompletionSource</see> when items are loaded
+  /// </param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  static member subModelSeq
+      (getSubModels: 'model -> #seq<'subModel>,
+       getId: 'subModel -> 'id,
+       hasMoreItems: HasMoreItems,
+       loadMoreItems: LoadMoreItems<'msg>,
+       bindings: unit -> Binding<'model * 'subModel, 'msg> list)
+      : string -> Binding<'model, 'msg> =
+    SubModelSeqData {
+      GetModels = fun m -> m |> getSubModels |> Seq.map (fun sub -> (m, sub) |> box)
+      GetId = unbox<'model * 'subModel> >> snd >> getId >> box
+      GetBindings = bindings >> List.map boxBinding
+      ToMsg = fun (_, msg) -> unbox<'msg> msg
+      IncrementalLoading = Loadable(hasMoreItems, loadMoreItems)
     } |> createBinding
 
 

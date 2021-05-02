@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 using Elmish.Uno;
@@ -13,7 +14,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Elmish.Windows
+namespace Elmish.Uno
 {
     public class DynamicCustomProperty<TValue> : ICustomProperty
     {
@@ -42,12 +43,18 @@ namespace Elmish.Windows
         }
     }
 
-    internal class ViewModel<TModel, TMsg> : Uno.ViewModel<TModel, TMsg>, ICustomPropertyProvider
+    internal class ViewModel<TModel, TMsg> : ViewModelBase<TModel, TMsg>, ICustomPropertyProvider
     {
         public ViewModel(TModel initialModel, FSharpFunc<TMsg, Unit> dispatch, FSharpList<Binding<TModel, TMsg>> bindings, ElmConfig config, string propNameChain) : base(initialModel, dispatch, bindings, config, propNameChain) { }
 
-        public override Uno.ViewModel<object, object> Create(object initialModel, FSharpFunc<object, Unit> dispatch, FSharpList<Binding<object, object>> bindings, ElmConfig config, string propNameChain)
-         => new ViewModel<object, object>(initialModel, dispatch, bindings, config, propNameChain);
+        public override ViewModelBase<TSubModel, TSubMsg> Create<TSubModel, TSubMsg>(TSubModel initialModel, FSharpFunc<TSubMsg, Unit> dispatch, FSharpList<Binding<TSubModel, TSubMsg>> bindings, ElmConfig config, string propNameChain)
+         => new ViewModel<TSubModel, TSubMsg>(initialModel, dispatch, bindings, config, propNameChain);
+
+        public override ObservableCollection<a> CreateCollection<a>(FSharpFunc<Unit, bool> hasMoreItems, FSharpFunc<Tuple<uint, TaskCompletionSource<uint>>, TMsg> loadMoreitems, System.Collections.Generic.IEnumerable<a> collection)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private ICustomProperty GetProperty(string name)
         {
@@ -97,17 +104,13 @@ namespace Elmish.Windows
 
         public Type Type => CurrentModel.GetType();
     }
-}
 
-namespace Elmish.Uno
-{
-    [RequireQualifiedAccess, CompilationMapping(SourceConstructFlags.Module)]
     public static class ViewModel
     {
         public static object DesignInstance<TModel, TMsg>(TModel model, FSharpList<Binding<TModel, TMsg>> bindings)
         {
             var emptyDispatch = FuncConvert.FromAction((TMsg msg) => { });
-            return new Elmish.Windows.ViewModel<TModel, TMsg>(model, emptyDispatch, bindings, ElmConfig.Default, "main");
+            return new ViewModel<TModel, TMsg>(model, emptyDispatch, bindings, ElmConfig.Default, "main");
         }
 
         public static object DesignInstance<T, TModel, TMsg>(TModel model, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
@@ -153,7 +156,7 @@ namespace Elmish.Uno
                 }
                 var bindedModel = ProgramModule.view(program).Invoke(model);
                 var Bindings = bindedModel.Invoke(dispatch);
-                var viewModel = new Elmish.Windows.ViewModel<TModel, TMsg>(model, dispatch, Bindings, config, "main");
+                var viewModel = new ViewModel<TModel, TMsg>(model, dispatch, Bindings, config, "main");
                 element.DataContext = viewModel;
                 lastModel.contents = FSharpOption<ViewModel<TModel, TMsg>>.Some(viewModel);
             }

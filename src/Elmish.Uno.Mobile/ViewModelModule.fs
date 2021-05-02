@@ -7,6 +7,15 @@ open Windows.UI.Core
 open Elmish
 open Elmish.Uno
 
+type internal ViewModel<'model, 'msg>(initialModel: 'model, dispatch: Dispatch<'msg>, bindings: Binding<'model, 'msg> list, config, propNameChain) =
+  inherit ViewModelBase<'model, 'msg>(initialModel, dispatch, bindings, config, propNameChain)
+
+  override _.Create<'subModel,'subMsg>(initialModel: 'subModel, dispatch: Dispatch<'subMsg>, bindings: Binding<'subModel, 'subMsg> list, config: ElmConfig, propNameChain: string) = //raise <| NotImplementedException()
+    ViewModel<'subModel,'subMsg>(initialModel, dispatch, bindings, config, propNameChain) :> _
+
+  override _.CreateCollection(hasMoreItems, loadMoreitems, collection) = raise <| NotImplementedException()
+
+
 [<AbstractClass;Sealed>]
 type ViewModel() =
   /// Starts the Elmish dispatch loop, setting the bindings as the DataContext
