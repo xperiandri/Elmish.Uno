@@ -8,7 +8,7 @@ open Windows.UI.Xaml.Data
 type IncrementalLoadingCollection<'t> =
   inherit ObservableCollection<'t>
 
-  val has: HasMoreItems
+  val has: unit -> bool
   val load: uint * TaskCompletionSource<uint> -> unit
 
   new (hasMoreItems, loadMoreItems) =

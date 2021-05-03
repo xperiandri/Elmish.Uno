@@ -368,7 +368,7 @@ and [<AllowNullLiteral; AbstractClass>] internal ViewModelBase<'model, 'msg>
         false
 
   abstract member CreateCollection
-    : hasMoreItems: HasMoreItems * loadMoreitems: LoadMoreItems<'msg> * collection: 'a seq
+    : hasMoreItems: HasMoreItems<'model> * loadMoreitems: LoadMoreItems<'msg> * collection: 'a seq
     -> ObservableCollection<'a>
 
   member private this.InitializeBinding name bindingData getInitializedBindingByName =

@@ -7,14 +7,14 @@ open Windows.UI.Core
 open Elmish
 open Elmish.Uno
 
-type internal ViewModel<'model, 'msg>(initialModel: 'model, dispatch: Dispatch<'msg>, bindings: Binding<'model, 'msg> list, config, propNameChain) =
+type internal ViewModel<'model, 'msg>(initialModel: 'model, dispatch: Dispatch<'msg>, bindings: Binding<'model, 'msg> list, config: ElmConfig, propNameChain: string) =
   inherit ViewModelBase<'model, 'msg>(initialModel, dispatch, bindings, config, propNameChain)
 
-  override _.Create<'subModel,'subMsg>(initialModel: 'subModel, dispatch: Dispatch<'subMsg>, bindings: Binding<'subModel, 'subMsg> list, config: ElmConfig, propNameChain: string) = //raise <| NotImplementedException()
-    ViewModel<'subModel,'subMsg>(initialModel, dispatch, bindings, config, propNameChain) :> _
+  override _.Create<'subModel,'subMsg>(initialModel, dispatch, bindings, config, propNameChain) =
+    upcast ViewModel<'subModel,'subMsg>(initialModel, dispatch, bindings, config, propNameChain)
 
   override this.CreateCollection(hasMoreItems, loadMoreItems: LoadMoreItems<'msg>, collection: 't seq) =
-    IncrementalLoadingCollection<'t>(collection, hasMoreItems, loadMoreItems >> this.Dispatch) :> _
+    IncrementalLoadingCollection<'t>(collection, (fun () -> hasMoreItems this.CurrentModel), loadMoreItems >> this.Dispatch) :> _
 
 
 [<AbstractClass;Sealed>]
