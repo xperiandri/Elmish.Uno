@@ -2,9 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
-
-using Elmish.Uno;
 
 using Microsoft.FSharp.Collections;
 using Microsoft.FSharp.Core;
@@ -13,7 +12,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Elmish.Windows
+namespace Elmish.Uno
 {
     public class DynamicCustomProperty<TValue> : ICustomProperty
     {
@@ -42,12 +41,23 @@ namespace Elmish.Windows
         }
     }
 
-    internal class ViewModel<TModel, TMsg> : Uno.ViewModel<TModel, TMsg>, ICustomPropertyProvider
+    internal class ViewModel<TModel, TMsg> : ViewModelBase<TModel, TMsg>, ICustomPropertyProvider
     {
         public ViewModel(TModel initialModel, FSharpFunc<TMsg, Unit> dispatch, FSharpList<Binding<TModel, TMsg>> bindings, ElmConfig config, string propNameChain) : base(initialModel, dispatch, bindings, config, propNameChain) { }
 
-        public override Uno.ViewModel<object, object> Create(object initialModel, FSharpFunc<object, Unit> dispatch, FSharpList<Binding<object, object>> bindings, ElmConfig config, string propNameChain)
-         => new ViewModel<object, object>(initialModel, dispatch, bindings, config, propNameChain);
+        public override ViewModelBase<TSubModel, TSubMsg> Create<TSubModel, TSubMsg>(TSubModel initialModel, FSharpFunc<TSubMsg, Unit> dispatch, FSharpList<Binding<TSubModel, TSubMsg>> bindings, ElmConfig config, string propNameChain)
+         => new ViewModel<TSubModel, TSubMsg>(initialModel, dispatch, bindings, config, propNameChain);
+
+        public override ObservableCollection<T> CreateCollection<T>(FSharpFunc<TModel, bool> hasMoreItems, FSharpFunc<Tuple<uint, TaskCompletionSource<uint>>, TMsg> loadMoreitems, System.Collections.Generic.IEnumerable<T> collection)
+        {
+            void LoadMoreitems(uint count, TaskCompletionSource<uint> tcs)
+            {
+                var msg = loadMoreitems.Invoke(new Tuple<uint, TaskCompletionSource<uint>>(count, tcs));
+                Dispatch.Invoke(msg);
+            }
+            return new IncrementalLoadingCollection<T>(collection, () => hasMoreItems.Invoke(this.currentModel), LoadMoreitems);
+        }
+
 
         private ICustomProperty GetProperty(string name)
         {
@@ -62,7 +72,7 @@ namespace Elmish.Windows
                     return new DynamicCustomProperty<object>(name, () => TryGetMember(oneWayLazy));
                 case VmBinding<TModel, TMsg>.OneWaySeq oneWaySeq:
                     return new DynamicCustomProperty<ObservableCollection<object>>(name,
-                        () => (ObservableCollection<object>) TryGetMember(oneWaySeq));
+                        () => (ObservableCollection<object>)TryGetMember(oneWaySeq));
                 case VmBinding<TModel, TMsg>.TwoWay twoWay:
                     return new DynamicCustomProperty<object>(name, () => TryGetMember(twoWay), value => TrySetMember(value, twoWay));
                 case VmBinding<TModel, TMsg>.TwoWayValidate twoWayValidate:
@@ -75,11 +85,11 @@ namespace Elmish.Windows
                     return new DynamicCustomProperty<ViewModel<object, object>>(name,
                         () => TryGetMember(subModel) as ViewModel<object, object>);
                 case VmBinding<TModel, TMsg>.SubModelSeq subModelSeq:
-                    return new DynamicCustomProperty<ObservableCollection<Uno.ViewModel<object, object>>>(name,
-                        () => (ObservableCollection<Uno.ViewModel<object, object>>) TryGetMember(subModelSeq));
+                    return new DynamicCustomProperty<ObservableCollection<ViewModelBase<object, object>>>(name,
+                        () => (ObservableCollection<ViewModelBase<object, object>>)TryGetMember(subModelSeq));
                 case VmBinding<TModel, TMsg>.SubModelSelectedItem subModelSelectedItem:
                     return new DynamicCustomProperty<ViewModel<object, object>>(name,
-                        () => (ViewModel<object, object>) TryGetMember(subModelSelectedItem));
+                        () => (ViewModel<object, object>)TryGetMember(subModelSelectedItem));
                 case VmBinding<TModel, TMsg>.Cached cached:
                     return new DynamicCustomProperty<object>(name,
                         () => TryGetMember(cached), value => TrySetMember(value, cached));
@@ -97,17 +107,13 @@ namespace Elmish.Windows
 
         public Type Type => CurrentModel.GetType();
     }
-}
 
-namespace Elmish.Uno
-{
-    [RequireQualifiedAccess, CompilationMapping(SourceConstructFlags.Module)]
     public static class ViewModel
     {
         public static object DesignInstance<TModel, TMsg>(TModel model, FSharpList<Binding<TModel, TMsg>> bindings)
         {
             var emptyDispatch = FuncConvert.FromAction((TMsg msg) => { });
-            return new Elmish.Windows.ViewModel<TModel, TMsg>(model, emptyDispatch, bindings, ElmConfig.Default, "main");
+            return new ViewModel<TModel, TMsg>(model, emptyDispatch, bindings, ElmConfig.Default, "main");
         }
 
         public static object DesignInstance<T, TModel, TMsg>(TModel model, Program<T, TModel, TMsg, FSharpList<Binding<TModel, TMsg>>> program)
@@ -153,7 +159,7 @@ namespace Elmish.Uno
                 }
                 var bindedModel = ProgramModule.view(program).Invoke(model);
                 var Bindings = bindedModel.Invoke(dispatch);
-                var viewModel = new Elmish.Windows.ViewModel<TModel, TMsg>(model, dispatch, Bindings, config, "main");
+                var viewModel = new ViewModel<TModel, TMsg>(model, dispatch, Bindings, config, "main");
                 element.DataContext = viewModel;
                 lastModel.contents = FSharpOption<ViewModel<TModel, TMsg>>.Some(viewModel);
             }

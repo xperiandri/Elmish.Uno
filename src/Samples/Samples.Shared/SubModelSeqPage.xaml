@@ -1,13 +1,15 @@
-﻿<Page d:DataContext="{d:DesignInstance Type=samples:DesignData, IsDesignTimeCreatable=True}"
+﻿<Page
   x:Class="Elmish.Uno.Samples.SubModelSeq.SubModelSeqPage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:cmp="using:Elmish.Uno.Samples.Components"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
   xmlns:samples="using:Elmish.Uno.Samples"
+  mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-  mc:Ignorable="d">
+  d:DataContext="{d:DesignInstance Type=samples:DesignData, IsDesignTimeCreatable=True}">
 
   <Grid d:DataContext="{Binding SubModelSeq}" Padding="0,10">
     <Grid.RowDefinitions>
@@ -17,9 +19,9 @@
 
     <StackPanel
       Grid.Row="0"
-      Padding="0,10"
       HorizontalAlignment="Center"
-      Orientation="Horizontal">
+      Orientation="Horizontal"
+      Padding="0,10">
       <Button
         Width="150"
         Margin="10"
@@ -31,16 +33,16 @@
         Command="{Binding ToggleGlobalState}"
         Content="Toggle global state" />
     </StackPanel>
-    <TreeView Grid.Row="1" ItemsSource="{Binding Counters}">
-      <TreeView.ItemContainerStyle>
-        <Style TargetType="TreeViewItem">
-          <Setter Property="IsExpanded" Value="True" />
+    <muxc:TreeView Grid.Row="1" ItemsSource="{Binding Counters}">
+      <muxc:TreeView.ItemContainerStyle>
+        <Style TargetType="muxc:TreeViewItem">
           <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="IsExpanded" Value="True" />
         </Style>
-      </TreeView.ItemContainerStyle>
-      <TreeView.ItemTemplate>
+      </muxc:TreeView.ItemContainerStyle>
+      <muxc:TreeView.ItemTemplate>
         <DataTemplate>
-          <TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
+          <muxc:TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -93,9 +95,9 @@
                 <Run Text="{Binding GlobalState}" />
               </TextBlock>
             </Grid>
-          </TreeViewItem>
+          </muxc:TreeViewItem>
         </DataTemplate>
-      </TreeView.ItemTemplate>
-    </TreeView>
+      </muxc:TreeView.ItemTemplate>
+    </muxc:TreeView>
   </Grid>
 </Page>
