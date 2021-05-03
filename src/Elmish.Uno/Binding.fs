@@ -6,12 +6,12 @@ open System
 open Elmish
 open System.Threading.Tasks
 
-type internal HasMoreItems = unit -> bool
+type internal HasMoreItems<'model> = 'model -> bool
 type internal LoadMoreItems<'msg> = uint * TaskCompletionSource<uint> -> 'msg
 [<Struct>]
-type internal IncrementalLoadingData<'msg> =
+type internal IncrementalLoadingData<'model,'msg> =
   | Static
-  | Loadable of hasMoreItems : HasMoreItems * loadMoreItems : LoadMoreItems<'msg>
+  | Loadable of hasMoreItems : HasMoreItems<'model> * loadMoreItems : LoadMoreItems<'msg>
 
 type internal OneWayData<'model, 'a> = {
   Get: 'model -> 'a
@@ -29,7 +29,7 @@ type internal OneWaySeqLazyData<'model, 'msg, 'a, 'b, 'id> = {
   Equals: 'a -> 'a -> bool
   GetId: 'b -> 'id
   ItemEquals: 'b -> 'b -> bool
-  IncrementalLoading: IncrementalLoadingData<'msg>
+  IncrementalLoading: IncrementalLoadingData<'model,'msg>
 }
 
 type internal TwoWayData<'model, 'msg, 'a> = {
@@ -78,7 +78,7 @@ and internal SubModelSeqData<'model, 'msg, 'bindingModel, 'bindingMsg, 'id> = {
   GetId: 'bindingModel -> 'id
   GetBindings: unit -> Binding<'bindingModel, 'bindingMsg> list
   ToMsg: 'id * 'bindingMsg -> 'msg
-  IncrementalLoading: IncrementalLoadingData<'msg>
+  IncrementalLoading: IncrementalLoadingData<'model,'msg>
 }
 
 
@@ -119,13 +119,28 @@ module internal BindingData =
       : Dispatch<'boxedMsg> -> Dispatch<'boxedMsg> =
     ((>>) boxMsg) >> strongWrapDispatch >> ((>>) unboxMsg)
 
+  let boxIncrementalLoading
+    (boxMsg: 'msg -> 'boxedMsg) =
+    function
+    | Static -> Static
+    | Loadable (has, load) ->
+      let load' = load >> boxMsg
+      Loadable(has, load')
+
   let boxMsg
       (unboxMsg: 'boxedMsg -> 'msg)
       (boxMsg: 'msg -> 'boxedMsg)
       : BindingData<'model, 'msg> -> BindingData<'model, 'boxedMsg> = function
     | OneWayData d -> d |> OneWayData
     | OneWayLazyData d -> d |> OneWayLazyData
-    | OneWaySeqLazyData d -> d |> OneWaySeqLazyData
+    | OneWaySeqLazyData d -> OneWaySeqLazyData {
+        Get = d.Get
+        Map = d.Map
+        Equals = d.Equals
+        GetId = d.GetId
+        ItemEquals = d.ItemEquals
+        IncrementalLoading = boxIncrementalLoading boxMsg d.IncrementalLoading
+      }
     | TwoWayData d -> TwoWayData {
         Get = d.Get
         Set = fun v m -> d.Set v m |> boxMsg
@@ -160,7 +175,7 @@ module internal BindingData =
         GetId = d.GetId
         GetBindings = d.GetBindings
         ToMsg = d.ToMsg >> boxMsg
-        IncrementalLoading = d.IncrementalLoading
+        IncrementalLoading = boxIncrementalLoading boxMsg d.IncrementalLoading
       }
     | SubModelSelectedItemData d -> SubModelSelectedItemData {
         Get = d.Get
@@ -168,6 +183,13 @@ module internal BindingData =
         SubModelSeqBindingName = d.SubModelSeqBindingName
         WrapDispatch = boxWrapDispatch unboxMsg boxMsg d.WrapDispatch
       }
+
+  let mapIncrementalLoading f =
+    function
+    | Static -> Static
+    | Loadable (has, load) ->
+      Loadable(f >> has, load)
+
 
   let mapModel f data =
     let binaryHelper binary x m = (x, f m) ||> binary
@@ -186,7 +208,7 @@ module internal BindingData =
           Equals = d.Equals
           GetId = d.GetId
           ItemEquals = d.ItemEquals
-          IncrementalLoading = d.IncrementalLoading
+          IncrementalLoading = mapIncrementalLoading f d.IncrementalLoading
         } |> OneWaySeqLazyData
     | TwoWayData d ->
         { Get = f >> d.Get
@@ -223,7 +245,7 @@ module internal BindingData =
           GetId = d.GetId
           GetBindings = d.GetBindings
           ToMsg = d.ToMsg
-          IncrementalLoading = d.IncrementalLoading
+          IncrementalLoading = mapIncrementalLoading f d.IncrementalLoading
         } |> SubModelSeqData
     | SubModelSelectedItemData d ->
         { Get = f >> d.Get
@@ -446,7 +468,7 @@ type Binding private () =
       (get: 'model -> #seq<'a>,
        itemEquals: 'a -> 'a -> bool,
        getId: 'a -> 'id,
-       hasMoreItems: HasMoreItems,
+       hasMoreItems: HasMoreItems<'model>,
        loadMoreItems: LoadMoreItems<'msg>)
       : string -> Binding<'model, 'msg> =
     OneWaySeqLazyData {
@@ -532,7 +554,7 @@ type Binding private () =
        map: 'a -> #seq<'b>,
        itemEquals: 'b -> 'b -> bool,
        getId: 'b -> 'id,
-       hasMoreItems: HasMoreItems,
+       hasMoreItems: HasMoreItems<'model>,
        loadMoreItems: LoadMoreItems<'msg>)
       : string -> Binding<'model, 'msg> =
     OneWaySeqLazyData {
@@ -1651,7 +1673,7 @@ type Binding private () =
        toBindingModel: 'model * 'subModel -> 'bindingModel,
        getId: 'bindingModel -> 'id,
        toMsg: 'id * 'bindingMsg -> 'msg,
-       hasMoreItems: HasMoreItems,
+       hasMoreItems: HasMoreItems<'model>,
        loadMoreItems: LoadMoreItems<'msg>,
        bindings: unit -> Binding<'bindingModel, 'bindingMsg> list)
       : string -> Binding<'model, 'msg> =
@@ -1717,7 +1739,7 @@ type Binding private () =
       (getSubModels: 'model -> #seq<'subModel>,
        getId: 'subModel -> 'id,
        toMsg: 'id * 'subMsg -> 'msg,
-       hasMoreItems: HasMoreItems,
+       hasMoreItems: HasMoreItems<'model>,
        loadMoreItems: LoadMoreItems<'msg>,
        bindings: unit -> Binding<'model * 'subModel, 'subMsg> list)
       : string -> Binding<'model, 'msg> =
@@ -1771,7 +1793,7 @@ type Binding private () =
   static member subModelSeq
       (getSubModels: 'model -> #seq<'subModel>,
        getId: 'subModel -> 'id,
-       hasMoreItems: HasMoreItems,
+       hasMoreItems: HasMoreItems<'model>,
        loadMoreItems: LoadMoreItems<'msg>,
        bindings: unit -> Binding<'model * 'subModel, 'msg> list)
       : string -> Binding<'model, 'msg> =

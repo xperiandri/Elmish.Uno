@@ -48,14 +48,14 @@ namespace Elmish.Uno
         public override ViewModelBase<TSubModel, TSubMsg> Create<TSubModel, TSubMsg>(TSubModel initialModel, FSharpFunc<TSubMsg, Unit> dispatch, FSharpList<Binding<TSubModel, TSubMsg>> bindings, ElmConfig config, string propNameChain)
          => new ViewModel<TSubModel, TSubMsg>(initialModel, dispatch, bindings, config, propNameChain);
 
-        public override ObservableCollection<T> CreateCollection<T>(FSharpFunc<Unit, bool> hasMoreItems, FSharpFunc<Tuple<uint, TaskCompletionSource<uint>>, TMsg> loadMoreitems, System.Collections.Generic.IEnumerable<T> collection)
+        public override ObservableCollection<T> CreateCollection<T>(FSharpFunc<TModel, bool> hasMoreItems, FSharpFunc<Tuple<uint, TaskCompletionSource<uint>>, TMsg> loadMoreitems, System.Collections.Generic.IEnumerable<T> collection)
         {
             void LoadMoreitems(uint count, TaskCompletionSource<uint> tcs)
             {
                 var msg = loadMoreitems.Invoke(new Tuple<uint, TaskCompletionSource<uint>>(count, tcs));
                 Dispatch.Invoke(msg);
             }
-            return new IncrementalLoadingCollection<T>(collection, () => hasMoreItems.Invoke(null), LoadMoreitems);
+            return new IncrementalLoadingCollection<T>(collection, () => hasMoreItems.Invoke(this.currentModel), LoadMoreitems);
         }
 
 
@@ -85,8 +85,8 @@ namespace Elmish.Uno
                     return new DynamicCustomProperty<ViewModel<object, object>>(name,
                         () => TryGetMember(subModel) as ViewModel<object, object>);
                 case VmBinding<TModel, TMsg>.SubModelSeq subModelSeq:
-                    return new DynamicCustomProperty<ObservableCollection<Uno.ViewModel<object, object>>>(name,
-                        () => (ObservableCollection<Uno.ViewModel<object, object>>)TryGetMember(subModelSeq));
+                    return new DynamicCustomProperty<ObservableCollection<ViewModelBase<object, object>>>(name,
+                        () => (ObservableCollection<ViewModelBase<object, object>>)TryGetMember(subModelSeq));
                 case VmBinding<TModel, TMsg>.SubModelSelectedItem subModelSelectedItem:
                     return new DynamicCustomProperty<ViewModel<object, object>>(name,
                         () => (ViewModel<object, object>)TryGetMember(subModelSelectedItem));
