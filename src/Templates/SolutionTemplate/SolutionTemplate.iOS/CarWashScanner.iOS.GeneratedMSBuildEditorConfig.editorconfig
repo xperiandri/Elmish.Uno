@@ -1,0 +1,385 @@
+is_global = true
+build_property.TargetPlatformIdentifier = Windows
+build_property.TargetFramework = 
+build_property.TargetFramework = 
+build_property.ProjectTypeGuidsProperty = {FEACFBD2-3405-455C-9665-78FE426C6842},{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}
+build_property.MSBuildProjectFullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\CarWashScanner.iOS.csproj
+build_property.RootNamespace = SolutionTemplate
+build_property.DefineConstantsProperty = __IOS__,__MOBILE__,__UNIFIED__,DEBUG
+build_property.Configuration = Debug
+build_property.IntermediateOutputPath = obj\iPhoneSimulator\Debug\
+build_property.AndroidApplication = 
+build_property.OutputType = Exe
+build_property.MSBuildProjectName = CarWashScanner.iOS
+build_property.BuildingProject = false
+build_property.DesignTimeBuild = true
+build_property.UseWPF = 
+build_property.IsUnoHead = 
+build_property.UnoRemoteControlPort = 
+build_property.UnoRemoteControlHost = 
+build_property.TSBindingsPath = 
+build_property.UseUnoXamlParser = 
+build_property.UnoSkipUserControlsInVisualTree = 
+build_property.ShouldWriteErrorOnInvalidXaml = 
+build_property.IsUiAutomationMappingEnabled = 
+build_property.ShouldAnnotateGeneratedXaml = 
+build_property.DefaultLanguage = 
+build_property.UnoPlatformTelemetryOptOut = 
+build_property.ExcludeXamlNamespacesProperty = win,not_mux,android,not_ios
+build_property.IncludeXamlNamespacesProperty = xamarin,not_win,legacy,ios,not_android,not_wasm,not_macos,not_skia,not_netstdref
+build_property.XamlGeneratorAnalyzerSuppressionsProperty = nventive.Usage-NV0056,nventive.Usage-NV0058,nventive.Usage-NV1003,nventive.Usage-NV0085,nventive.Usage-NV2001,nventive.Usage-NV2003,nventive.Usage-NV2004,nventive.Usage-NV2005
+build_property.LegacyTypesProperty = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = {FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}
+build_property.PublishSingleFile = 
+build_property.IncludeAllContentForSelfExtract = 
+build_property._SupportedPlatformList = 
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.iOS/Controls/ScannerWrapper.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\Controls\ScannerWrapper.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\Controls\ScannerWrapper.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/CardRegistrationPage.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = CardRegistrationPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\CardRegistrationPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\CardRegistrationPage.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/ChangeCarInfo.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = Controls\ChangeCarInfo.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ChangeCarInfo.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ChangeCarInfo.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/FooterNavMenu.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = Controls\FooterNavMenu.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\FooterNavMenu.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\FooterNavMenu.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/RePrintOrContinue.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = Controls\RePrintOrContinue.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\RePrintOrContinue.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\RePrintOrContinue.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/ServiceItem.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = Controls\ServiceItem.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ServiceItem.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ServiceItem.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/OrderPage.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = OrderPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\OrderPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\OrderPage.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ResourceDictionaries/FontSizes.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = ResourceDictionaries\FontSizes.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\FontSizes.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\FontSizes.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ScannerPage.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = ScannerPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ScannerPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ScannerPage.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ResourceDictionaries/Styles.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = ResourceDictionaries\Styles.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\Styles.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\Styles.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/SettingsPage.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = SettingsPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\SettingsPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\SettingsPage.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Shell.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = Shell.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Shell.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Shell.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/App.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = ApplicationDefinition
+build_metadata.AdditionalFiles.Link = App.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\App.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\App.xaml
+
+[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Strings/en/Resources.resw]
+build_metadata.AdditionalFiles.SourceItemGroup = PRIResource
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Strings\en\Resources.resw
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Strings\en\Resources.resw
+
+[C:/Users/otwel/.nuget/packages/disposablefixer/3.3.0/analyzers/dotnet/cs/DisposableFixer.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\disposablefixer\3.3.0\analyzers\dotnet\cs\DisposableFixer.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\disposablefixer\3.3.0\analyzers\dotnet\cs\DisposableFixer.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.coreanalyzers/0.1.2/analyzers/dotnet/cs/ErrorProne.NET.Core.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\ErrorProne.NET.Core.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\ErrorProne.NET.Core.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.coreanalyzers/0.1.2/analyzers/dotnet/cs/ErrorProne.Net.CoreAnalyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\ErrorProne.Net.CoreAnalyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\ErrorProne.Net.CoreAnalyzers.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.coreanalyzers/0.1.2/analyzers/dotnet/cs/RuntimeContracts.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\RuntimeContracts.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.coreanalyzers\0.1.2\analyzers\dotnet\cs\RuntimeContracts.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.structs/0.1.2/analyzers/dotnet/cs/ErrorProne.NET.Core.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\ErrorProne.NET.Core.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\ErrorProne.NET.Core.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.structs/0.1.2/analyzers/dotnet/cs/ErrorProne.Net.StructAnalyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\ErrorProne.Net.StructAnalyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\ErrorProne.Net.StructAnalyzers.dll
+
+[C:/Users/otwel/.nuget/packages/errorprone.net.structs/0.1.2/analyzers/dotnet/cs/RuntimeContracts.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\RuntimeContracts.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\errorprone.net.structs\0.1.2\analyzers\dotnet\cs\RuntimeContracts.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/Microsoft.CodeAnalysis.NetAnalyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.NetAnalyzers.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/cs/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\cs\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\cs\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/de/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\de\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\de\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/es/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\es\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\es\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/fr/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\fr\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\fr\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/it/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\it\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\it\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/ja/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ja\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ja\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/ko/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ko\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ko\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/pl/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\pl\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\pl\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/pt-BR/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\pt-BR\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\pt-BR\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/ru/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ru\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\ru\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/tr/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\tr\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\tr\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/zh-Hans/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\zh-Hans\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\zh-Hans\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/microsoft.codeanalysis.netanalyzers/5.0.3/analyzers/dotnet/cs/zh-Hant/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\zh-Hant\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\microsoft.codeanalysis.netanalyzers\5.0.3\analyzers\dotnet\cs\zh-Hant\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.CSharp.Analyzers.CodeFixes.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.CodeFixes.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.CodeFixes.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.CSharp.Analyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.CSharp.Workspaces.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Workspaces.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Workspaces.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.CSharp.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.CSharp.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.Common.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Common.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Common.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.Core.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Core.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Core.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.Workspaces.Common.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Workspaces.Common.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Workspaces.Common.dll
+
+[C:/Users/otwel/.nuget/packages/roslynator.analyzers/3.1.0/analyzers/dotnet/cs/Roslynator.Workspaces.Core.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Workspaces.Core.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\roslynator.analyzers\3.1.0\analyzers\dotnet\cs\Roslynator.Workspaces.Core.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/Uno.Analyzers.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\Uno.Analyzers.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\Uno.Analyzers.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/CommonServiceLocator.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\CommonServiceLocator.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\CommonServiceLocator.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Microsoft.ApplicationInsights.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.ApplicationInsights.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.ApplicationInsights.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Microsoft.DotNet.PlatformAbstractions.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.DotNet.PlatformAbstractions.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.DotNet.PlatformAbstractions.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Microsoft.Extensions.Logging.Abstractions.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.Extensions.Logging.Abstractions.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.Extensions.Logging.Abstractions.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Microsoft.Extensions.Logging.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.Extensions.Logging.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Microsoft.Extensions.Logging.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Mono.Cecil.Mdb.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Mdb.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Mdb.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Mono.Cecil.Pdb.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Pdb.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Pdb.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Mono.Cecil.Rocks.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Rocks.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.Rocks.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Mono.Cecil.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Mono.Cecil.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/System.Diagnostics.DiagnosticSource.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\System.Diagnostics.DiagnosticSource.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\System.Diagnostics.DiagnosticSource.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Uno.Core.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.Core.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.Core.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Uno.UI.SourceGenerators.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.UI.SourceGenerators.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.UI.SourceGenerators.dll
+
+[C:/Users/otwel/.nuget/packages/uno.ui/3.5.1/analyzers/dotnet/cs/Uno.Xaml.dll]
+build_metadata.AdditionalFiles.SourceItemGroup = Analyzer
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.Xaml.dll
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\.nuget\packages\uno.ui\3.5.1\analyzers\dotnet\cs\Uno.Xaml.dll

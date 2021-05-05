@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="5.0">
+    <id>Elmish.Uno.ProjectTemplates.Dotnet</id>
+    <version>1.0.0$versionSuffix$</version>
+    <title>Elmish.Uno.Templates</title>
+    <authors>XperiAndri,dim-37</authors>
+    <owners>XperiAndri,dim-37</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/XperiAndri/Elmish.Uno</projectUrl>
+    <description>Elmish.Uno Project Templates</description>
+    <tags>Uno F# fsharp Elmish Elm</tags>
+    <repository type="git" url="https://github.com/xperiandri/Elmish.Uno.git" branch="$branch$" commit="$commitid$" />
+    <packageTypes>
+      <packageType name="Template" />
+    </packageTypes>	
+  </metadata>
+  <files>
+    <file src="SolutionTemplate\**\*.*" exclude="SolutionTemplate\**\bin\**\*.*;SolutionTemplate\**\obj\**\*.*" target="SolutionTemplate" />
+	<file src="..\..\.editorconfig" target="SolutionTemplate" />
+  </files>  
+</package>

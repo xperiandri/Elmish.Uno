@@ -38,6 +38,12 @@ jobs:
         set-content 'Elmish.Uno.nuspec' -value $nuspec
         nuget pack 'Elmish.Uno.nuspec' -Properties Configuration=Release
         
+    - name: Pack Templates
+      run: |
+        $nuspec = get-content 'src\\Templates\\Templates.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"} 
+        set-content 'src\\Templates\\Templates.nuspec' -value $nuspec
+        nuget pack 'src\\Templates\\Templates.nuspec' -Properties Configuration=Release
+        
     - name: MyGet push
       run: |
         dotnet nuget push -s 'https://www.myget.org/F/elmish_uno/api/v3/index.json' -k ${{secrets.MyGet_Key}} *.nupkg
