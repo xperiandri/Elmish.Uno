@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{1FFD10B1-6291-4F8E-98E5-F5235C1B54B8}</ProjectGuid>
@@ -61,11 +62,8 @@
     <Reference Include="System.Memory" />
   </ItemGroup>
   <ItemGroup>
-
-
-
     <PackageReference Include="Elmish" Version="3.1.0" />
-		<PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
+    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
@@ -95,7 +93,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
   </ItemGroup>
-  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" Condition="Exists('..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems')" />
+  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png" />
@@ -112,7 +110,11 @@
     <ImageAsset Include="Assets.xcassets\unologo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\unologo.imageset\unoplatform.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Fonts\" />
+    <Folder Include="Assets.xcassets\unologo.imageset\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
@@ -134,11 +136,11 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="VS16Mac_RemoveSystemMemory" BeforeTargets="ResolveAssemblyReferences">
     <!--
-				VS4Mac seems to process System.Memory differently, and removes
-				the System.Memory local reference if the package is transitively referenced.
-				We remove the Reference added by the nuget targets so that ResolveAssemblyReferences
-				is properly adding the local System.Memory to the Reference item group.
-		-->
+        VS4Mac seems to process System.Memory differently, and removes
+        the System.Memory local reference if the package is transitively referenced.
+        We remove the Reference added by the nuget targets so that ResolveAssemblyReferences
+        is properly adding the local System.Memory to the Reference item group.
+    -->
     <ItemGroup>
       <Reference Remove="@(_ReferenceToRemove)" />
       <Reference Include="System.Memory" />

@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +14,7 @@
     <Compile Include="Pages.fs" />
     <Compile Include="Models\Models.fs" />
     <Compile Include="Programs\Messages.fs" />
-    <Compile Include="Programs\NotificationProgram.fs" />
+    <Compile Include="Programs\Notification.Program.fs" />
     <Compile Include="Programs\App.Program.fs" />
     <Compile Include="Host.fs" />
   </ItemGroup>

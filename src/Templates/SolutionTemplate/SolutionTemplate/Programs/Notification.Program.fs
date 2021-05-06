@@ -1,12 +1,8 @@
-namespace SolutionTemplate.Programs.Notification
+﻿namespace SolutionTemplate.Programs.Notification
 
-
-open System
 
 open Elmish
 open Elmish.Uno
-open Elmish.Uno.Navigation
-open SolutionTemplate
 open SolutionTemplate.Pages
 open SolutionTemplate.Models
 open SolutionTemplate.Programs.Messages
@@ -18,29 +14,20 @@ type Model =
 type Msg =
     | AddNotification of Notification
     | RemoveNotification of Notification
-    | NavigationalError of String
-    | SetCloseNotification of Notification
-    | TimerTick
-    interface IAppMsg
+    | NavigationFailed of NavigationError
+    | ScheduleCloseNotification of Notification
 
-type public Program() =
+type public Program () =
 
-    let closeNotification notification (time: int) (dispatch: Dispatch<ProgramMessage<RootMsg, Msg>>) =
-        ignore
-        <| Async.RunSynchronously(
-            Async.StartChild
-            <| async {
-                do! Async.Sleep time
-                do dispatch (Local <| RemoveNotification notification)
-               }
-        )
-
-    let asyncSetNotificationTimer notification =
-        async { return (SetCloseNotification notification) |> Local }
+    let closeNotification notification (time : int) (dispatch : Dispatch<ProgramMessage<RootMsg, Msg>>) =
+        async {
+            do! Async.Sleep time
+            do dispatch (Local <| RemoveNotification notification)
+        } |> Async.StartChild |> Async.RunSynchronously |> ignore
 
     member p.Initial = Model.Initial
 
-    member p.Update msg (m: Model): Model * Cmd<ProgramMessage<RootMsg, Msg>> =
+    member p.Update msg (m: Model) : Model * Cmd<ProgramMessage<RootMsg, Msg>> =
         match msg with
         | AddNotification notification ->
             match m.Notifications
@@ -68,8 +55,8 @@ type public Program() =
 
                 { m with
                       Notifications = n |> Seq.toList },
-                Cmd.OfAsync.result (asyncSetNotificationTimer (notification))
-        | SetCloseNotification notification ->
+                ScheduleCloseNotification notification |> Local |> Cmd.ofMsg
+        | ScheduleCloseNotification notification ->
             match notification.LifeTime with
             | ValueSome timeout ->
                 m,
@@ -82,12 +69,15 @@ type public Program() =
                 |> List.filter (fun n -> n.Text <> notification.Text)
 
             { m with Notifications = n }, Cmd.none
+        | NavigationFailed error ->
+            let n = Notification.Error $"Failed to load {error.SourcePageType.FullName}" (error.Exception.ToString ())
+            m, AddNotification n |> Local |> Cmd.ofMsg
 
     member p.Bindings(): Binding<Model, Msg> list =
-        [ "NavigationalErrorCommand"
-          |> Binding.cmdParam (fun o m -> NavigationalError(o :?> string))
+        [ "NavigationFailedCommand"
+          |> Binding.cmdParam (fun o _ -> NavigationFailed (o :?> NavigationError))
           "RemoveNotificationCommand"
-          |> Binding.cmdParam (fun o m -> RemoveNotification(o :?> Notification))
+          |> Binding.cmdParam (fun o _ -> RemoveNotification (o :?> Notification))
 
           "Notifications"
           |> Binding.oneWaySeq ((fun m -> m.Notifications |> Seq.rev), (=), (fun i -> i.Text)) ]

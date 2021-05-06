@@ -1,12 +1,13 @@
-﻿using System;
+﻿#if __ANDROID__ || __IOS__ || __MACOS__ || WINDOWS_UWP
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using SolutionTemplate;
-//HAS_UNO_SKIA
+
 [assembly: AssemblyCompany(AssemblyInfo.Company)]
 [assembly: AssemblyProduct(AssemblyInfo.Product)]
-[assembly: AssemblyCopyright("Copyright © " + AssemblyInfo.Company + " 2020")]
+[assembly: AssemblyCopyright("Copyright © " + AssemblyInfo.Company + " 2021")]
 [assembly: AssemblyTrademark("")]
 
 namespace SolutionTemplate
@@ -19,3 +20,4 @@ namespace SolutionTemplate
         internal const string Description = " It's Uno template";
     }
 }
+#endif

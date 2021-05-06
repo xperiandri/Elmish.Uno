@@ -1,4 +1,4 @@
-namespace SolutionTemplate.Programs.App
+﻿namespace SolutionTemplate.Programs.App
 
 open System
 open Elmish
@@ -17,7 +17,6 @@ type Msg =
     | ResetSearchText
     | SetSearchText of string
     | NotificationMsg of Notification.Msg
-    interface IAppMsg
 
 type Program(notificationProgram: Notification.Program) =
 

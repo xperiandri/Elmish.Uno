@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType Condition="'$(Configuration)'=='Release'">WinExe</OutputType>
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
+    <LangVersion>9.0</LangVersion>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -11,10 +12,6 @@
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-
     <PackageReference Include="DisposableFixer" Version="3.3.0" />
     <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,14 +23,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.*" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
     <PackageReference Include="Uno.UI.Skia.Wpf" Version="3.7.*" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.WindowsStateTriggers" Version="1.1.1-uno.*" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />

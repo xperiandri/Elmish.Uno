@@ -1,4 +1,4 @@
-module SolutionTemplate.Host
+﻿module SolutionTemplate.Host
 
 open System
 open System.Collections.Generic
@@ -15,7 +15,7 @@ open SolutionTemplate.Programs
 
 let configureHost (builder : IConfigurationBuilder) =
 
-    if not (DeviceInfo.Platform = DevicePlatform.UWP) then
+    if DeviceInfo.Platform <> DevicePlatform.UWP then
         let root = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "root")
         Directory.CreateDirectory(root) |> ignore
         let inMemoryCollection = seq {
@@ -48,11 +48,11 @@ let configureConfiguration (ctx : HostBuilderContext) (builder : IConfigurationB
     //            }
     //        | name when name.Equals(Environments.Development, StringComparison.CurrentCultureIgnoreCase) ->
     //            seq {
-    //                yield struct("GraphQL:Endpoint", "https://brzfrebo-dev.azurewebsites.net/GraphQL")
+    //                yield struct("GraphQL:Endpoint", "https://host.net/GraphQL")
     //            }
     //        | name when name.Equals("Production", StringComparison.CurrentCultureIgnoreCase) ->
     //            seq {
-    //                yield struct("GraphQL:Endpoint", "https://brzfrebo.azurewebsites.net/GraphQL")
+    //                yield struct("GraphQL:Endpoint", "https://host.net/GraphQL")
     //            }
     //        | _ -> raise <| NotSupportedException ()
 
@@ -67,7 +67,6 @@ let configureServices (ctx : HostBuilderContext) (services : IServiceCollection)
         .AddScoped<Notification.Program>()
         .AddScoped<App.Program>()
     |> ignore
-    //()
 
 [<CompiledName("CreateDefaultBuilder")>]
 let createDefaultBuilder () =

@@ -1,9 +1,8 @@
-namespace SolutionTemplate.Programs.Messages
+﻿namespace SolutionTemplate.Programs.Messages
 
 open Elmish
 
 open SolutionTemplate.Models
-
 
 type ProgramMessage<'globalMsg, 'localMsg> =
     | Local of 'localMsg

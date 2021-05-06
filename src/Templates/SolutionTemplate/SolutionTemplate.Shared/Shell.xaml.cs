@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -13,59 +13,39 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using System.Windows.Input;
-using System.Timers;
-using Microsoft.Toolkit.Uwp.Helpers;
+
+using SolutionTemplate.Pages;
 
 namespace SolutionTemplate
 {
     public abstract partial class ShellBase : UserControl
     {
-        #region NavigationalErrorCommand
+        #region NavigationFailedCommand
 
         /// <summary>
-        /// NavigateError Dependency Property
+        /// NavigationFailedCommand Dependency Property
         /// </summary>
-        public static readonly DependencyProperty NavigationalErrorCommandProperty =
-            DependencyProperty.Register(nameof(NavigationalErrorCommand), typeof(ICommand), typeof(ShellBase),
+        public static readonly DependencyProperty NavigationFailedCommandProperty =
+            DependencyProperty.Register(nameof(NavigationFailedCommand), typeof(ICommand), typeof(ShellBase),
                 new PropertyMetadata((ICommand)null));
 
         /// <summary>
-        /// Gets or sets the NavigateError property. This dependency property
-        /// indicates ....
+        /// Gets or sets the NavigationFailedCommand property. This dependency property
+        /// contains a command that is invoked when navigation fails.
         /// </summary>
-        public ICommand NavigationalErrorCommand
+        public ICommand NavigationFailedCommand
         {
-            get => (ICommand)GetValue(NavigationalErrorCommandProperty);
-            set => SetValue(NavigationalErrorCommandProperty, value);
+            get => (ICommand)GetValue(NavigationFailedCommandProperty);
+            set => SetValue(NavigationFailedCommandProperty, value);
         }
 
         #endregion
     }
     public partial class Shell : ShellBase, INavigate
     {
-        public Frame RootFrame => this.rootFrame;
-
-        //public InAppNotification Notification => this.notification;
-        private System.Timers.Timer timer;
         public Shell()
         {
             this.InitializeComponent();
-            //this.notification.AnimationDuration = TimeSpan.FromMilliseconds(100);
-            RootFrame.Navigated += RootFrame_Navigated;
-            DataContextChanged += OnDataContextChanged;
-        }
-
-        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            if (RootFrame.Content is Control control)
-            {
-                //var expression = control.GetBindingExpression(Control.DataContextProperty);
-                //var binding = new Binding{ Path = expression.ParentBinding.Path, Source = DataContext };
-                ////binding.Source = DataContext;
-
-                //control.SetBinding(DataContextProperty, binding);
-            }
         }
 
         /// <summary>
@@ -76,22 +56,12 @@ namespace SolutionTemplate
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
 
-            //this.notification.Show($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
-            //Notifications.Add(new NotificationData("Error", $"Failed to load {e.SourcePageType.FullName}: {e.Exception}","Error"));
-            NavigationalErrorCommand?.Execute($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
-
+            var error = new NavigationError(() => e.Handled, h => e.Handled = h, e.Exception, e.SourcePageType);
+            NavigationFailedCommand?.Execute(error);
         }
-        private void OnDataContextChanged(object sender, DataContextChangedEventArgs e)
-        {
-            //Root.DataContext = null;
-            //RootFrame.DataContext = e.NewValue;
-            //Root.DataContext = DependencyProperty.UnsetValue;
-            //Root.SetBinding(DataContextProperty, new Binding() { Source = e.NewValue });
-        }
-        public bool Navigate(Type sourcePageType) => this.rootFrame.Navigate(sourcePageType, null);
 
-        public bool Navigate(Type sourcePageType, object parameter) => this.rootFrame.Navigate(sourcePageType, parameter);
+        public bool Navigate(Type sourcePageType) => this.RootFrame.Navigate(sourcePageType, null);
 
-        //public void Dismiss() => this.notification.Dismiss();
+        public bool Navigate(Type sourcePageType, object parameter) => this.RootFrame.Navigate(sourcePageType, parameter);
     }
 }

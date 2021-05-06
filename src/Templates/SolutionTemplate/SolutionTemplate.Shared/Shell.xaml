@@ -14,7 +14,7 @@
   x:Name="shell"
   d:DesignHeight="300"
   d:DesignWidth="400"
-  NavigationalErrorCommand="{Binding Notifications.NavigationalErrorCommand}"
+  NavigationFailedCommand="{Binding Notifications.NavigationFailedCommand}"
   mc:Ignorable="d">
   <local:ShellBase.Resources>
     <XamlUICommand
@@ -41,7 +41,8 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <Frame
-      x:Name="rootFrame"
+      x:Name="RootFrame"
+      x:FieldModifier="Public"
       Grid.RowSpan="2"
       NavigationFailed="OnNavigationFailed" />
     <ItemsControl

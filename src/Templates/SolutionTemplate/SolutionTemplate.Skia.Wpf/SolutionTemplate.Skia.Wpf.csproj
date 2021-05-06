@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" Condition="Exists('..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems')" />
-  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
   <Import Project="..\Solution.Build.props" />
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
@@ -15,13 +14,10 @@
     <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.*" />
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
     <PackageReference Include="Uno.UI.Skia.Wpf" Version="3.7.*" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
-    
-    <PackageReference Include="Uno.WindowsStateTriggers" Version="1.1.1-uno.*" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
@@ -29,4 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
   </ItemGroup>
+  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
 </Project>

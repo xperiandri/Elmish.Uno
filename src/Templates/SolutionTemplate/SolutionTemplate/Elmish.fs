@@ -23,9 +23,8 @@ module Dispatching =
         : Dispatch<'msg> =
         let subject = Subject.broadcast
         subject |> configure |> Observable.add dispatch
-        fun msg -> async.Return(subject.OnNext msg) |> Async.Start
+        subject.OnNext >> async.Return >> Async.Start
 
     let throttle<'msg> =
         Observable.throttle (TimeSpan.FromMilliseconds 500.)
         |> asDispatchWrapper<'msg>
-

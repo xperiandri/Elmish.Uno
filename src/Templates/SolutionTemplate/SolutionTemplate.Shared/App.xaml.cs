@@ -41,7 +41,9 @@ namespace SolutionTemplate
     {
 
         private readonly IServiceProvider serviceProvider;
+#pragma warning disable IDE0044 // Add readonly modifier
         private IServiceScope scope;
+#pragma warning restore IDE0044 // Add readonly modifier
         private readonly Lazy<Shell> shell = new Lazy<Shell>();
 
         private global::Windows.UI.Xaml.Window window;
@@ -127,7 +129,6 @@ namespace SolutionTemplate
             }
         }
 
-
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
@@ -141,7 +142,6 @@ namespace SolutionTemplate
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
-
 
         /// <summary>
         /// Configures global logging

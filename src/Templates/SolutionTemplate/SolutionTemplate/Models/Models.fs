@@ -1,19 +1,4 @@
-namespace SolutionTemplate.Models
-
-
-open System
-open System.Threading.Tasks
-open Elmish
-
-type CardCode = string
-type CarId = Guid
-type CarRId = string
-type OrderId = Guid
-type ClientId = Guid
-
-type IAppMsg =
-    interface
-    end
+﻿namespace SolutionTemplate.Models
 
 type InfoBarSeverity =
     | Informational = 0
