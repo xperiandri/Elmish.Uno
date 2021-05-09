@@ -4,6 +4,7 @@
     <id>Elmish.Uno</id>
     <version>1.0.0$versionSuffix$</version>
     <title>Elmish.Uno</title>
+	<readme>docs\README.md</readme>
     <authors>XperiAndri,dim-37</authors>
     <owners>XperiAndri,dim-37</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -56,6 +57,8 @@
   </metadata>
   
   <files>
+	<file src="README.md" target="docs\README.md" />
+  
     <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.dll" target="lib\MonoAndroid\Elmish.Uno.dll" />
     <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.dll" target="lib\MonoAndroid\Elmish.Uno.Mobile.dll" />
     <file src="src\Elmish.Uno.Mobile\bin\Release\netstandard2.0\Elmish.Uno.Mobile.pdb" target="lib\MonoAndroid\Elmish.Uno.Mobile.pdb" />

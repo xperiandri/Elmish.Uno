@@ -4,6 +4,7 @@
     <id>Elmish.Uno.ProjectTemplates.Dotnet</id>
     <version>1.0.0$versionSuffix$</version>
     <title>Elmish.Uno.Templates</title>
+	<readme>docs\README.md</readme>
     <authors>XperiAndri,dim-37</authors>
     <owners>XperiAndri,dim-37</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -18,6 +19,8 @@
   </metadata>
   <files>
     <file src="SolutionTemplate\**\*.*" exclude="SolutionTemplate\**\bin\**\*.*;SolutionTemplate\**\obj\**\*.*" target="SolutionTemplate" />
-	<file src="..\..\.editorconfig" target="SolutionTemplate" />
+	
+	<file src="..\..\README.md" target="docs\" />
+	<file src="..\..\.editorconfig" target="SolutionTemplate\.editorconfig" />
   </files>  
 </package>
