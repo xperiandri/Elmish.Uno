@@ -46,7 +46,13 @@ namespace SolutionTemplate
 #pragma warning restore IDE0044 // Add readonly modifier
         private readonly Lazy<Shell> shell = new Lazy<Shell>();
 
+//-:cnd:noEmit
+#if NET5_0 && WINDOWS
+        private Window window;
+#else
         private global::Windows.UI.Xaml.Window window;
+#endif
+//+:cnd:noEmit
 
         internal IServiceProvider ServiceProvider => scope.ServiceProvider;
         /// <summary>
@@ -68,7 +74,11 @@ namespace SolutionTemplate
 #pragma warning restore DF0021 // Marks indisposed objects assigned to a field, originated from method invocation.
 #pragma warning restore DF0025 // Marks indisposed objects assigned to a field, originated from method invocation.
             this.InitializeComponent();
-
+//-:cnd:noEmit
+#if HAS_UNO || NETFX_CORE
+            this.Suspending += OnSuspending;
+#endif
+//+:cnd:noEmit
         }
 
         private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services) =>
@@ -89,8 +99,21 @@ namespace SolutionTemplate
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+//-:cnd:noEmit
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // this.DebugSettings.EnableFrameRateCounter = true;
+            }
+#endif
 
+#if NET5_0 && WINDOWS
+            window = new Window();
+            window.Activate();
+#else
             window = global::Windows.UI.Xaml.Window.Current;
+#endif
+//+:cnd:noEmit
 
             var shell = this.shell.Value;
             var rootFrame = shell.RootFrame;
@@ -115,7 +138,11 @@ namespace SolutionTemplate
                 window.Content = shell;
             }
 
+//-:cnd:noEmit
+#if !(NET5_0 && WINDOWS)
             if (e.PrelaunchActivated == false)
+#endif
+//+:cnd:noEmit
             {
                 if (shell.RootFrame.Content == null)
                 {
@@ -150,7 +177,17 @@ namespace SolutionTemplate
         {
             var factory = LoggerFactory.Create(builder =>
             {
+//-:cnd:noEmit
+#if __WASM__
+                builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
+#elif __IOS__
+                builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
+#elif NETFX_CORE
+                builder.AddDebug();
+#else
                 builder.AddConsole();
+#endif
+//+:cnd:noEmit
 
                 // Exclude logs below this level
                 builder.SetMinimumLevel(LogLevel.Information);
