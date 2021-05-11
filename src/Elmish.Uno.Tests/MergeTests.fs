@@ -39,7 +39,7 @@ let ``starting from empty, when items merged, should contain those items and cal
 
     testObservableCollectionContainsDataInArray observableCollection array
     test <@ createTracker.Count = array.Length @>
-    test <@ updateTracker.Count = 0 @>
+    test <@ updateTracker.Count = array.Length @>
   }
 
 [<Fact>]
@@ -86,11 +86,11 @@ let ``starting with random items, when merging after an addition, should contain
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 1 @>
-    test <@ updateTracker.Count = array2.Length - 1 @>
+    test <@ updateTracker.Count = array2.Length @>
   }
 
 [<Fact>]
@@ -105,7 +105,7 @@ let ``starting with random items, when merging after a removal, should contain t
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -128,7 +128,7 @@ let ``starting with random items, when merging after a move, should contain the 
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -152,11 +152,11 @@ let ``starting with random items, when merging after a replacement, should conta
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 1 @>
-    test <@ updateTracker.Count = array2.Length - 1 @>
+    test <@ updateTracker.Count = array2.Length @>
   }
 
 [<Fact>]
@@ -173,7 +173,7 @@ let ``starting with random items, when merging after swapping two adjacent items
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -195,7 +195,7 @@ let ``starting with random items, when merging after swapping two items, should 
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -213,7 +213,7 @@ let ``starting with random items, when merging after shuffling, should contain t
     let createTracker = InvokeTester2 createAsId
     let updateTracker = InvokeTester updateNoOp
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>

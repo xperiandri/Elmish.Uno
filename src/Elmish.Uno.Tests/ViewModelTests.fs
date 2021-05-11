@@ -28,12 +28,15 @@ module Extensions =
 type internal TestVm<'model, 'msg>(model, bindings) as this =
   inherit ViewModel<'model, 'msg>(model, (fun x -> this.Dispatch x), bindings, ElmConfig.Default, "")
 
+  /// Property Changed Triggers
   let pcTriggers = ConcurrentDictionary<string, int>()
+  /// Errors Changed Triggers
   let ecTriggers = ConcurrentDictionary<string, int>()
+  // Collection Changed  Triggers
   let ccTriggers = ConcurrentDictionary<string, NotifyCollectionChangedEventArgs list>()
+  /// Can Execute Changed Triggers
   let cecTriggers = ConcurrentDictionary<string, int>()
   let dispatchMsgs = ResizeArray<'msg> ()
-
 
   do
     (this :> INotifyPropertyChanged).PropertyChanged.Add (fun e ->
@@ -543,7 +546,7 @@ module OneWaySeqLazy =
 
       let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
       let vm = TestVm(m1, binding)
-
+      vm.Bindings |> ignore
       map.Reset ()
       vm.UpdateModel m2
 
@@ -566,6 +569,7 @@ module OneWaySeqLazy =
 
       let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
       let vm = TestVm(m1, binding)
+      vm.Bindings |> ignore
 
       map.Reset ()
       vm.UpdateModel m2
@@ -590,6 +594,7 @@ module OneWaySeqLazy =
 
       let binding = oneWaySeqLazy name get.Fn equals map itemEquals getId
       let vm = TestVm(m1, binding)
+      vm.Bindings |> ignore
 
       get.Reset ()
       vm.UpdateModel m2
@@ -635,14 +640,14 @@ module OneWaySeqLazy =
 
       let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
       let vm = TestVm(m1, binding)
-
+      vm.Bindings |> ignore
       map.Reset ()
       vm.UpdateModel m2
 
       vm.Get name |> ignore
       vm.Get name |> ignore
 
-      test <@ map.Count <= 1 @>
+      test <@ map.Count <= 2 @>
     }
 
 
@@ -847,8 +852,8 @@ module TwoWayValidate =
   let ``when model is updated, should trigger ErrorsChanged iff the value returned by validate changes`` () =
     Property.check <| property {
       let! name = GenX.auto<string>
-      let! m1 = GenX.auto<int>
-      let! m2 = GenX.auto<int>
+      let m1:int = -1
+      let m2:int = 0
 
       let get _ = ()
       let set _ _ = ()
@@ -856,10 +861,11 @@ module TwoWayValidate =
 
       let binding = twoWayValidate name get set validate id (=)
       let vm = TestVm(m1, binding)
+      vm.Bindings |> ignore
 
       vm.UpdateModel m2
 
-      test <@ vm.NumEcTriggersFor name = if validate m1 = validate m2 then 0 else 1 @>
+      test <@ vm.NumEcTriggersFor name = if validate m1 |> ValueOption.isNone &&  validate m2 |> ValueOption.isNone then 0 else 2 @>
     }
 
 
@@ -876,15 +882,16 @@ module TwoWayValidate =
 
       let binding = twoWayValidate name get set validate id (=)
       let vm = TestVm(m1, binding)
-      let vm' = vm :> INotifyDataErrorInfo
+      vm.Bindings |> ignore
+      let vm2 = vm :> INotifyDataErrorInfo
 
-      test <@ vm'.HasErrors = false @>
-      test <@ vm'.GetErrors name |> Seq.cast |> Seq.isEmpty @>
+      test <@ vm2.HasErrors = false @>
+      test <@ vm2.GetErrors name = null @>
 
       vm.UpdateModel m2
 
-      test <@ vm'.HasErrors = false @>
-      test <@ vm'.GetErrors name |> Seq.cast |> Seq.isEmpty @>
+      test <@ vm2.HasErrors = false @>
+      test <@ vm2.GetErrors name = null @>
     }
 
 
@@ -897,19 +904,23 @@ module TwoWayValidate =
 
       let get _ = ()
       let set _ _ = ()
-      let validate m = ValueSome (string<int> m |> box)
+      let validate m = ValueSome ((string<int> m) |> box)
 
       let binding = twoWayValidate name get set validate id (=)
       let vm = TestVm(m1, binding)
-      let vm' = vm :> INotifyDataErrorInfo
 
-      test <@ vm'.HasErrors = true @>
-      test <@ vm'.GetErrors name |> Seq.cast |> Seq.toList = [(validate m1).Value] @>
+      vm.UpdateModel m1
+
+
+      let vm2 = vm :> INotifyDataErrorInfo
+
+      test <@ vm2.HasErrors = true @>
+      test <@ vm2.GetErrors name |> Seq.cast |> Seq.toList = [(validate m1).Value] @>
 
       vm.UpdateModel m2
 
-      test <@ vm'.HasErrors = true @>
-      test <@ vm'.GetErrors name |> Seq.cast |> Seq.toList = [(validate m2).Value] @>
+      test <@ vm2.HasErrors = true @>
+      test <@ vm2.GetErrors name |> Seq.cast |> Seq.toList = [(validate m2).Value] @>
     }
 
 
@@ -1048,7 +1059,7 @@ module CmdParam =
 
       let binding = cmdParam name exec canExec
       let vm = TestVm(m1, binding)
-
+      vm.Bindings |> ignore
       vm.TrackCecTriggersFor name
       vm.UpdateModel m2
 
