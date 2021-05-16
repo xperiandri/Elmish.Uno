@@ -7,6 +7,7 @@ open System.ComponentModel
 open System.Dynamic
 open System.Reflection
 open Microsoft.FSharp.Reflection
+open FSharp.Collections.Immutable
 
 open Elmish
 open Elmish.Uno
@@ -15,169 +16,46 @@ open Elmish.Uno
 [<AutoOpen>]
 module internal ViewModelHelpers =
 
-  let elmStyleMerge
-        getSourceId
-        getTargetId
-        create
+  let updateObservableCollection
+        (create: 's -> 'id -> 't)
         update
-        (target: ObservableCollection<_>)
-        (source: _ array) =
-    (*
-     * Based on Elm's HTML.keyed
-     * https://guide.elm-lang.org/optimization/keyed.html
-     * https://github.com/elm/virtual-dom/blob/5a5bcf48720bc7d53461b3cd42a9f19f119c5503/src/Elm/Kernel/VirtualDom.js#L980-L1226
-     *)
-    let removals = Dictionary<_, _> ()
-    let additions = Dictionary<_, _> ()
+        (target: ObservableCollection<'t>, getTargetId: 't -> 'id)
+        (source: 's array, getSourceId: 's -> 'id) =
 
-    let recordRemoval curTargetIdx curTarget curTargetId =
-      removals.Add(curTargetId, (curTargetIdx, curTarget))
-    let recordAddition curSourceIdx curSource curSourceId =
-      additions.Add(curSourceId, (curSourceIdx, curSource))
+    let kvp (k, v) = KeyValuePair<_,_>(k, v)
 
-    let mutable curSourceIdx = 0
-    let mutable curTargetIdx = 0
+    let targetIds = target |> Seq.map getTargetId |> Seq.toFlatList
+    let sourceIds = source |> Seq.map getSourceId |> Seq.toFlatList
 
-    let mutable shouldContinue = true
+    let targetIdsSet = targetIds |> HashSet.ofSeq
+    let sourceIdsSet = sourceIds |> HashSet.ofSeq
 
-    let sourceCount = source.Length
-    let targetCount = target.Count
+    let targetIdsMap = targetIds |> Seq.mapi (fun i id -> kvp(id, i)) |> Seq.toHashMap
 
-    while (shouldContinue && curSourceIdx < sourceCount && curTargetIdx < targetCount) do
-      let curSource = source.[curSourceIdx]
-      let curTarget = target.[curTargetIdx]
-
-      let curSourceId = getSourceId curSource
-      let curTargetId = getTargetId curTarget
-
-      if curSourceId = curTargetId then
-        update curTarget curSource curTargetIdx
-
-        curSourceIdx <- curSourceIdx + 1
-        curTargetIdx <- curTargetIdx + 1
-      else
-        let mNextSource =
-          source
-          |> Array.tryItem (curSourceIdx + 1)
-          |> Option.map (fun s ->
-            let id = getSourceId s
-            s, id, id = curTargetId) // true => need to add
-
-        let mNextTarget =
-          if curTargetIdx + 1 < targetCount then target.[curTargetIdx + 1] |> Some else None
-          |> Option.map (fun t ->
-            let id = getTargetId t
-            t, id, id = curSourceId) // true => need to remove
-
-        match mNextSource, mNextTarget with
-        | Some (nextSource, _, true), Some (nextTarget, _, true) -> // swap adjacent
-            target.[curTargetIdx] <- nextTarget
-            target.[curTargetIdx + 1] <- curTarget
-
-            update curTarget nextSource (curTargetIdx + 1)
-            update nextTarget curSource curTargetIdx
-
-            curSourceIdx <- curSourceIdx + 2
-            curTargetIdx <- curTargetIdx + 2
-        |               None, Some (nextTarget, _, true)
-        | Some (_, _, false), Some (nextTarget, _, true) -> // remove
-            recordRemoval curTargetIdx curTarget curTargetId
-
-            update nextTarget curSource curTargetIdx
-
-            curSourceIdx <- curSourceIdx + 1
-            curTargetIdx <- curTargetIdx + 2
-        | Some (nextSource, _, true), None
-        | Some (nextSource, _, true), Some (_, _, false) -> // add
-            recordAddition curSourceIdx curSource curSourceId
-
-            update curTarget nextSource (curTargetIdx + 1)
-
-            curSourceIdx <- curSourceIdx + 2
-            curTargetIdx <- curTargetIdx + 1
-        | Some (_, _, false),               None
-        |               None, Some (_, _, false)
-        |               None,               None -> // source and target have different lengths and we have reached the end of one
-            shouldContinue <- false
-        | Some (nextSource, nextSourceId, false), Some (nextTarget, nextTargetId, false) ->
-            if nextSourceId = nextTargetId then // replace
-              recordRemoval curTargetIdx curTarget curTargetId
-              recordAddition curSourceIdx curSource curSourceId
-
-              update nextTarget nextSource (curTargetIdx + 1)
-
-              curSourceIdx <- curSourceIdx + 2
-              curTargetIdx <- curTargetIdx + 2
-            else // collections very different
-              shouldContinue <- false
-
-    // replace many
-    while (curSourceIdx < sourceCount && curTargetIdx < targetCount) do
-      let curSource = source.[curSourceIdx]
-      let curTarget = target.[curTargetIdx]
-
-      let curSourceId = getSourceId curSource
-      let curTargetId = getTargetId curTarget
-
-      recordRemoval curTargetIdx curTarget curTargetId
-      recordAddition curSourceIdx curSource curSourceId
-
-      curSourceIdx <- curSourceIdx + 1
-      curTargetIdx <- curTargetIdx + 1
-
-    // remove many
-    for i in targetCount - 1..-1..curTargetIdx do
-      let t = target.[i]
-      let id = getTargetId t
-      recordRemoval i t id
-
-    // add many
-    for i in curSourceIdx..sourceCount - 1 do
-      let s = source.[i]
-      let id = getSourceId s
-      recordAddition i s id
-
-    let moves =
-      additions
-      |> Seq.toList
-      |> List.collect (fun (Kvp (id, (sIdx, s))) ->
-        match removals.TryGetValue id with
-        | (false, _) -> []
-        | (true, (tIdx, t)) ->
-            removals.Remove id |> ignore
-            additions.Remove id |> ignore
-            (tIdx, sIdx, t, s) |> List.singleton)
-
-    let actuallyRemove () =
-      Seq.empty
-      |> Seq.append (removals |> Seq.map (Kvp.value >> fst))
-      |> Seq.append (moves |> Seq.map (fun (tIdx, _, _, _) -> tIdx))
+    let removes =
+      targetIdsSet.Except sourceIdsSet
+      |> Seq.map (fun id -> targetIdsMap.[id])
       |> Seq.sortDescending
-      |> Seq.iter target.RemoveAt
+      |> Seq.toFlatList
 
-    let actuallyAdd () =
-      Seq.empty
-      |> Seq.append (additions |> Seq.map (fun (Kvp (id, (idx, s))) -> idx, create s id))
-      |> Seq.append (moves |> Seq.map (fun (_, sIdx, t, _) -> sIdx, t))
-      |> Seq.sortBy fst
-      |> Seq.iter target.Insert
+    removes |> Seq.iter target.RemoveAt
 
-    match moves, removals.Count, additions.Count with
-    | [ (tIdx, sIdx, _, _) ], 0, 0 -> // single move
-        target.Move(tIdx, sIdx)
-    | [ (t1Idx, s1Idx, _, _); (t2Idx, s2Idx, _, _) ], 0, 0 when t1Idx = s2Idx && t2Idx = s1Idx-> // single swap
-        let temp = target.[t1Idx]
-        target.[t1Idx] <- target.[t2Idx]
-        target.[t2Idx] <- temp
-    | _, rc, _ when rc = targetCount && rc > 0 -> // remove everything (implies moves = [])
-        target.Clear ()
-        actuallyAdd ()
-    | _ ->
-        actuallyRemove ()
-        actuallyAdd ()
+    let sourceIdsMap = sourceIds |> Seq.mapi (fun i id -> kvp(id, i)) |> Seq.toHashMap
+    let adds =
+      sourceIdsSet.Except targetIdsSet
+      |> Seq.map (fun id -> id, sourceIdsMap.[id])
+      |> Seq.sortBy (fun (_, idx) -> idx)
+      |> Seq.toFlatList
 
-    // update moved elements
-    moves |> Seq.iter (fun (_, sIdx, t, s) -> update t s sIdx)
+    adds |> Seq.iter (fun (id, index) -> target.Insert(index, create (source.[index]) id))
+
+    sourceIds
+    |> Seq.iter (fun id ->
+      let newIdx = sourceIdsMap.[id]
+      let oldIdx = target |> Seq.mapi (fun i t -> i, getTargetId t) |> Seq.where (fun (_, tId) -> id = tId) |> Seq.map fst |> Seq.head
+      if newIdx <> oldIdx then target.Move(oldIdx, newIdx)
+      update newIdx
+    )
 
 
 type internal OneWayBinding<'model, 'a> = {
@@ -204,11 +82,11 @@ type internal TwoWayBinding<'model, 'msg, 'a> = {
   Set: 'a -> 'model -> unit
 }
 
-type internal TwoWayValidateBinding<'model, 'msg,'id, 'a, 'e> = {
+type internal TwoWayValidateBinding<'model, 'msg, 'a, 'e, 'errorId> = {
   Get: 'model -> 'a
   Set: 'a -> 'model -> unit
   Validate: 'model -> obj array
-  GetErrorId: 'e -> 'id
+  GetErrorId: 'e -> 'errorId
   ErrorItemEquals: 'e -> 'e -> bool
   Errors : ObservableCollection<'e> Lazy
 }
@@ -323,18 +201,20 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       errorsChanged.Trigger([| box this; box <| DataErrorsChangedEventArgs propName |])
 
   let rec updateValidationError model name = function
-    | TwoWayValidate { Validate = validate; Errors = errors; GetErrorId = getErrorId; ErrorItemEquals = errorItemEquals} ->
+    | TwoWayValidate { Validate = validate; Errors = errors; GetErrorId = getErrorId; ErrorItemEquals = errorItemEquals } ->
         match validate model with
         | [||] ->
           errors.Value.Clear()
           removeError name
         | propErrors ->
           let create v _ = v
-          let update oldVal newVal oldIdx =
+          let update idx =
+            let oldVal = errors.Value.[idx]
+            let newVal = propErrors.[idx]
             if not (errorItemEquals newVal oldVal) then
-              errors.Value.[oldIdx] <- newVal
+              errors.Value.[idx] <- newVal
           setError errors.Value name
-          elmStyleMerge getErrorId getErrorId create update errors.Value propErrors
+          updateObservableCollection create update (errors.Value, getErrorId) (propErrors, getErrorId)
         notifyPropertyChanged "HasErrors"
     | OneWay _
     | OneWayLazy _
@@ -632,11 +512,13 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
           let intermediate = b.Get newModel
           if not <| b.Equals intermediate (b.Get currentModel) then
             let create v _ = v
-            let update oldVal newVal oldIdx =
-              if not (b.ItemEquals newVal oldVal) then
-                b.Values.[oldIdx] <- newVal
             let newVals = intermediate |> b.Map |> Seq.toArray
-            elmStyleMerge b.GetId b.GetId create update b.Values newVals
+            let update idx =
+              let oldVal = b.Values.[idx]
+              let newVal = newVals.[idx]
+              if not (b.ItemEquals newVal oldVal) then
+                b.Values.[idx] <- newVal
+            updateObservableCollection create update (b.Values, b.GetId) (newVals, b.GetId)
           false
       | Cmd _
       | CmdParam _ ->
@@ -660,9 +542,9 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
           let create m id =
             let chain = getPropChainForItem bindingName (id |> string)
             this.Create(m, (fun msg -> b.ToMsg (id, msg) |> dispatch), b.GetBindings (), config, chain)
-          let update (vm: ViewModel<_, _>) m _ = vm.UpdateModel m
           let newSubModels = newModel |> b.GetModels |> Seq.toArray
-          elmStyleMerge b.GetId getTargetId create update b.Vms newSubModels
+          let update idx = b.Vms.[idx].UpdateModel newSubModels.[idx]
+          updateObservableCollection create update (b.Vms, getTargetId) (newSubModels, b.GetId)
           false
       | SubModelSelectedItem b ->
           b.Get newModel <> b.Get currentModel

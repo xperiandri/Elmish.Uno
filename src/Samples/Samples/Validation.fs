@@ -60,14 +60,12 @@ let bindings : Binding<Model, Msg> list = [
     (fun m -> m.Value),
     NewValue,
     (fun m ->  validateInt42 m.Value),
-    id,
-    (=))
+    id)
   "Password" |> Binding.twoWayValidate(
     (fun m -> m.Password),
     NewPassword,
     (fun m -> validatePassword m.Password),
-    id,
-    (=))
+    id)
   "Submit" |> Binding.cmdIf(
     (fun _ -> Submit),
     (fun m -> (match validateInt42 m.Value with Ok _ -> true | Error _ -> false) && (validatePassword m.Password |> List.isEmpty)))
