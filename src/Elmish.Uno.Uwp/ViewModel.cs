@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 
@@ -51,6 +52,7 @@ namespace Elmish.Windows
         private ICustomProperty GetProperty(string name)
         {
             if (name == "CurrentModel") return new DynamicCustomProperty<object>(name, () => this.CurrentModel);
+            if (name == "HasErrors") return new DynamicCustomProperty<bool>(name, () => ((INotifyDataErrorInfo)this).HasErrors);
             if (!this.Bindings.TryGetValue(name, out var binding)) Debugger.Break();
             switch (binding)
             {
@@ -121,7 +123,6 @@ namespace Elmish.Uno
             FSharpFunc<FSharpFunc<TMsg, Unit>, FSharpFunc<TMsg, Unit>> syncDispatch =
               FuncConvert.FromAction(MakeSyncDispatch<TMsg>(element));
             var setSate = FuncConvert.FromAction(MakeSetState(config, element, program, lastModel));
-
             programRun.Invoke(
                 ProgramModule.withSyncDispatch(syncDispatch,
                   ProgramModule.withSetState(setSate, program)));
