@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ValildationControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DesignData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventBindingsAndBehaviorsPage.xaml.cs">
       <DependentUpon>EventBindingsAndBehaviorsPage.xaml</DependentUpon>
@@ -159,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)SubModel\CounterWithClock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
