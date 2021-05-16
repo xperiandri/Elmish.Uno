@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 3.99]" />
+    <PackageReference Include="FSharp.Collections.Immutable" Version="2.0.0-*" />
   </ItemGroup>
 
   <ItemGroup>

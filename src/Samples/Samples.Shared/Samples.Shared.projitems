@@ -18,7 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\ValildationControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ValidationControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DesignData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventBindingsAndBehaviorsPage.xaml.cs">
       <DependentUpon>EventBindingsAndBehaviorsPage.xaml</DependentUpon>

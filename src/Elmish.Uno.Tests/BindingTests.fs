@@ -3630,6 +3630,6 @@ module sorting =
           ]
         let sorted = data |> List.sortWith BindingData.subModelSelectedItemLast
         match sorted with
-        | [_; _; _; _; _; _; _; _; _; _; SubModelSelectedItemData _; SubModelSelectedItemData _] -> ()
+        | [_; _; _; _; _; _; _; _; _; SubModelSelectedItemData _; SubModelSelectedItemData _] -> ()
         | _ -> failwith "SubModelSelectedItemData was not sorted last"
       }
