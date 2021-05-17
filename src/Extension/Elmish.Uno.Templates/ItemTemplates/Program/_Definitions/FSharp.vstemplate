@@ -1,0 +1,15 @@
+﻿<VSTemplate Type="Item" Version="3.0.0"
+    xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+    <TemplateData>
+        <TemplateID>6586d42b-e05e-48e2-a4e0-589c797a103a</TemplateID>
+        <DefaultName>Item.fs</DefaultName>
+        <Name>Program</Name>
+        <Description>A basic Program to Elmish.Uno</Description>
+        <ProjectType>FSharp</ProjectType>
+        <SortOrder>2000</SortOrder>
+			  <Icon>elmish-wpf-logo-ghreadme.ico</Icon>
+    </TemplateData>
+    <TemplateContent>
+        <ProjectItem ReplaceParameters="true">Item.Program.fs</ProjectItem>
+    </TemplateContent>
+</VSTemplate>
