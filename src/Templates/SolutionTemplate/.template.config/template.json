@@ -7,7 +7,7 @@
     "defaultName": "SolutionTemplate",
     "identity": "Elmish.Uno.ProjectTemplates.Dotnet.SolutionTemplate",
     "tags": {
-        "language": "[F#]",
+        "language": "F#",
         "type": "project"
     },
     "sourceName": "SolutionTemplate",
