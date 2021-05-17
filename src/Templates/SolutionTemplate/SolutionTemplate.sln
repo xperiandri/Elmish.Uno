@@ -34,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Wpf.H
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template files", "template files", "{F1EF4961-C2D8-4F10-8E40-F53636382FB0}"
 	ProjectSection(SolutionItems) = preProject
-		..\.template.config\template.json = ..\.template.config\template.json
+		.template.config\elmish-wpf-logo-ghreadme.png = .template.config\elmish-wpf-logo-ghreadme.png
+		.template.config\ide.host.json = .template.config\ide.host.json
+		.template.config\template.json = .template.config\template.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{71DBFAB0-495A-4E57-B8FE-2EB18D99E95B}"
