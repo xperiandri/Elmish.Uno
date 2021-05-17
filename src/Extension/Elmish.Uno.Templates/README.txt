@@ -54,12 +54,12 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 
    ```fsproj
    <Project Sdk="Microsoft.NET.Sdk">
-     
+
      <PropertyGroup>
        <TargetFramework>net5.0-windows</TargetFramework>  <!-- Or another target framework -->
        <UseWpf>true</UseWpf>
      </PropertyGroup>
-     
+
      <!-- other stuff -->
    ```
 
@@ -77,7 +77,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
    type Model =
      { Count: int
        StepSize: int }
-   
+
    let init () =
      { Count = 0
        StepSize = 1 }
@@ -108,7 +108,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 
    ```F#
    open Elmish.Uno
-   
+
    let bindings () =
      [
        "CounterValue" |> Binding.oneWay (fun m -> m.Count)
@@ -126,7 +126,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 
    ```F#
    open Elmish.WPF
-   
+
    let main window =
      Program.mkSimpleWpf init update bindings
      |> Program.runElmishLoop window
@@ -149,13 +149,13 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
      {
        this.Activated += StartElmish;
      }
-   
+
      private void StartElmish(object sender, EventArgs e)
      {
        this.Activated -= StartElmish;
        Program.main(MainWindow);
      }
-   
+
    }
    ```
 

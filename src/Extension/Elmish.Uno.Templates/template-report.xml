@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TemplateReport>
   <ItemTemplates>
-    <ItemTemplate Path="ItemTemplates\Program\_Definitions\FSharp.vstemplate" Name="Program" Description="A basic Program to Elmish.Uno" ProjectType="FSharp" ProjectSubType="" />
+    <ItemTemplate Path="ItemTemplates\Uno\_Definitions\FSharp.vstemplate" Name="Uno Program" Description="&#xA;      A basic Program template for Elmish.Uno.&#xA;      Note, .Program suffix will be added to input file name.&#xA;    " ProjectType="FSharp" ProjectSubType="" />
   </ItemTemplates>
   <ProjectTemplates />
   <Snippets />
