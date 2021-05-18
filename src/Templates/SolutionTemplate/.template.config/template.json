@@ -1,7 +1,18 @@
 {
     "$schema": "http://json.schemastore.org/template",
     "author": "SecretCircle",
-    "classifications": [ "Web", "Uno Platform", "WebAssembly", "Android", "iOS", "Windows", "macOS" ],
+    "classifications": [
+        "Cross-platform",
+        "Web",
+        "Uno Platform",
+        "WebAssembly",
+        "Android",
+        "iOS",
+        "Windows",
+        "Linux",
+        "Tizen",
+        "macOS"
+    ],
     "name": "Elmish Uno Solution Template",
     "shortName": "elmish-unoapp",
     "defaultName": "SolutionTemplate",
