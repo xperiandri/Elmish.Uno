@@ -18,7 +18,9 @@ using SolutionTemplate.Pages;
 
 namespace SolutionTemplate
 {
+#pragma warning disable CA1010 // Generic interface should also be implemented
     public abstract partial class ShellBase : UserControl
+#pragma warning restore CA1010 // Generic interface should also be implemented
     {
         #region NavigationFailedCommand
 
@@ -41,7 +43,13 @@ namespace SolutionTemplate
 
         #endregion
     }
+#pragma warning disable CA1724
+#pragma warning disable CA1501
+#pragma warning disable CA1010 // Generic interface should also be implemented
     public partial class Shell : ShellBase, INavigate
+#pragma warning restore CA1010 // Generic interface should also be implemented
+#pragma warning disable CA1501
+#pragma warning disable CA1724
     {
         public Shell()
         {

@@ -30,6 +30,7 @@ type Program(notificationProgram: Notification.Program) =
         match msg with
         | Msg.ResetSearchText -> { m with Text = String.Empty }, Cmd.none
         | Msg.SetSearchText text -> { m with Text = text }, Cmd.none
+        | Msg.NotificationMsg _ -> m, Cmd.none
 
     let updateGlobal (msg: RootMsg) (m: Model): Model * Cmd<ProgramMessage<RootMsg, Msg>> =
         let addNotification notification: Cmd<ProgramMessage<RootMsg, Msg>> =

@@ -200,6 +200,10 @@ csharp_preserve_single_line_blocks                                       = true
 ###############################
 # VB Coding Conventions       #
 ###############################
+
+# DF0000: Marks undisposed anonymous objects from object creations.
+dotnet_diagnostic.DF0033.severity = none
+
 [*.vb]
 # Modifier preferences
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async : suggestion
@@ -832,3 +836,23 @@ dotnet_diagnostic.CA5403.severity = warning
 
 # CA9999: Analyzer version mismatch
 dotnet_diagnostic.CA9999.severity = warning
+
+###############################
+# Code Analysis Exceptions    #
+###############################
+[{Main.cs,**Activity.cs,Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
+# CA1501: Avoid excessive inheritance
+dotnet_diagnostic.CA1501.severity = none
+
+[{Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
+csharp_style_expression_bodied_constructors = false
+
+[{App.xaml.cs,Main.cs,Shell.xaml.cs}]
+# CA1724: Type names should not match namespaces
+dotnet_diagnostic.CA1724.severity = none
+
+[*]
+# DF0033: Previous value of property 'Child' might no be disposed
+dotnet_diagnostic.DF0033.severity = none

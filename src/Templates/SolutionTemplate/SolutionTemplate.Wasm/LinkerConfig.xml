@@ -1,9 +1,12 @@
 ﻿<linker>
-  <assembly fullname="CarWashScanner.Wasm" />
+  <assembly fullname="SolutionTemplate.Wasm" />
+  <assembly fullname="SolutionTemplate" />
   <assembly fullname="Uno.UI" />
-
+  <assembly fullname="Microsoft.Xaml.Interactions">
+    <type fullname="Microsoft.Xaml.Interactions.Core.EventTriggerBehavior"/>
+  </assembly>
   <assembly fullname="System.Core">
 	<!-- This is required by JSon.NET and any expression.Compile caller -->
-	<type fullname="System.Linq.Expressions*" />
+	  <type fullname="System.Linq.Expressions*" />
   </assembly>
 </linker>

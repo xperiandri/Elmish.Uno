@@ -37,7 +37,9 @@ namespace SolutionTemplate
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
+#pragma warning disable CA1724
     public sealed partial class App : Application
+#pragma warning restore CA1724
     {
 
         private readonly IServiceProvider serviceProvider;
@@ -97,7 +99,9 @@ namespace SolutionTemplate
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
+#pragma warning disable CA1725 // Parameter names should match base declaration
         protected override void OnLaunched(LaunchActivatedEventArgs e)
+#pragma warning restore CA1725 // Parameter names should match base declaration
         {
 //-:cnd:noEmit
 #if DEBUG
@@ -129,7 +133,9 @@ namespace SolutionTemplate
                 // Place the frame in the current Window
                 Windows.UI.Xaml.Window.Current.Content = shell;
 
+#pragma warning disable CA1062 // Validate arguments of public methods
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+#pragma warning restore CA1062 // Validate arguments of public methods
                 {
                     //TODO: Load state from previously suspended application
                 }
@@ -177,6 +183,7 @@ namespace SolutionTemplate
         {
             var factory = LoggerFactory.Create(builder =>
             {
+#pragma warning disable DF0000
 //-:cnd:noEmit
 #if __WASM__
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
@@ -226,6 +233,7 @@ namespace SolutionTemplate
             });
 
             global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
+#pragma warning restore DF0000
         }
     }
 }

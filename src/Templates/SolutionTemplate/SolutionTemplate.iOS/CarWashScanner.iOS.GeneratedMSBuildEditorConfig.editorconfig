@@ -3,14 +3,14 @@ build_property.TargetPlatformIdentifier = Windows
 build_property.TargetFramework = 
 build_property.TargetFramework = 
 build_property.ProjectTypeGuidsProperty = {FEACFBD2-3405-455C-9665-78FE426C6842},{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}
-build_property.MSBuildProjectFullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\CarWashScanner.iOS.csproj
+build_property.MSBuildProjectFullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.iOS\SolutionTemplate.iOS.csproj
 build_property.RootNamespace = SolutionTemplate
 build_property.DefineConstantsProperty = __IOS__,__MOBILE__,__UNIFIED__,DEBUG
 build_property.Configuration = Debug
 build_property.IntermediateOutputPath = obj\iPhoneSimulator\Debug\
 build_property.AndroidApplication = 
 build_property.OutputType = Exe
-build_property.MSBuildProjectName = CarWashScanner.iOS
+build_property.MSBuildProjectName = SolutionTemplate.iOS
 build_property.BuildingProject = false
 build_property.DesignTimeBuild = true
 build_property.UseWPF = 
@@ -36,89 +36,89 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = 
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.iOS/Controls/ScannerWrapper.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.iOS/Controls/ScannerWrapper.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = 
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\Controls\ScannerWrapper.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.iOS\Controls\ScannerWrapper.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.iOS\Controls\ScannerWrapper.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.iOS\Controls\ScannerWrapper.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/CardRegistrationPage.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/CardRegistrationPage.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = CardRegistrationPage.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\CardRegistrationPage.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\CardRegistrationPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\CardRegistrationPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\CardRegistrationPage.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/ChangeCarInfo.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Controls/ChangeCarInfo.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = Controls\ChangeCarInfo.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ChangeCarInfo.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ChangeCarInfo.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\ChangeCarInfo.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\ChangeCarInfo.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/FooterNavMenu.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Controls/FooterNavMenu.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = Controls\FooterNavMenu.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\FooterNavMenu.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\FooterNavMenu.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\FooterNavMenu.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\FooterNavMenu.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/RePrintOrContinue.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Controls/RePrintOrContinue.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = Controls\RePrintOrContinue.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\RePrintOrContinue.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\RePrintOrContinue.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\RePrintOrContinue.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\RePrintOrContinue.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Controls/ServiceItem.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Controls/ServiceItem.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = Controls\ServiceItem.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ServiceItem.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Controls\ServiceItem.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\ServiceItem.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Controls\ServiceItem.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/OrderPage.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/OrderPage.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = OrderPage.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\OrderPage.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\OrderPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\OrderPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\OrderPage.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ResourceDictionaries/FontSizes.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/ResourceDictionaries/FontSizes.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = ResourceDictionaries\FontSizes.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\FontSizes.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\FontSizes.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ResourceDictionaries\FontSizes.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ResourceDictionaries\FontSizes.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ScannerPage.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/ScannerPage.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = ScannerPage.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ScannerPage.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ScannerPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ScannerPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ScannerPage.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/ResourceDictionaries/Styles.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/ResourceDictionaries/Styles.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = ResourceDictionaries\Styles.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\Styles.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\ResourceDictionaries\Styles.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ResourceDictionaries\Styles.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\ResourceDictionaries\Styles.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/SettingsPage.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/SettingsPage.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = SettingsPage.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\SettingsPage.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\SettingsPage.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\SettingsPage.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\SettingsPage.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Shell.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Shell.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = Page
 build_metadata.AdditionalFiles.Link = Shell.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Shell.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Shell.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Shell.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Shell.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/App.xaml]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/App.xaml]
 build_metadata.AdditionalFiles.SourceItemGroup = ApplicationDefinition
 build_metadata.AdditionalFiles.Link = App.xaml
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\App.xaml
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\App.xaml
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\App.xaml
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\App.xaml
 
-[C:/Users/otwel/source/repos/Car wash scanner1/CarWashScanner/CarWashScanner.Shared/Strings/en/Resources.resw]
+[C:/Users/otwel/source/repos/Car wash scanner1/SolutionTemplate/SolutionTemplate.Shared/Strings/en/Resources.resw]
 build_metadata.AdditionalFiles.SourceItemGroup = PRIResource
 build_metadata.AdditionalFiles.Link = 
-build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Strings\en\Resources.resw
-build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\CarWashScanner\CarWashScanner.Shared\Strings\en\Resources.resw
+build_metadata.AdditionalFiles.FullPath = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Strings\en\Resources.resw
+build_metadata.AdditionalFiles.Identity = C:\Users\otwel\source\repos\Car wash scanner1\SolutionTemplate\SolutionTemplate.Shared\Strings\en\Resources.resw
 
 [C:/Users/otwel/.nuget/packages/disposablefixer/3.3.0/analyzers/dotnet/cs/DisposableFixer.dll]
 build_metadata.AdditionalFiles.SourceItemGroup = Analyzer

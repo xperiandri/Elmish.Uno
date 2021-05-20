@@ -7,7 +7,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.11">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10">
       <!--
       If, in the same solution, you are referencing a project that uses https://github.com/onovotny/MSBuildSdkExtras,
       you need to make sure that the version provided here matches https://github.com/onovotny/MSBuildSdkExtras/blob/master/Source/MSBuild.Sdk.Extras/DefaultItems/ImplicitPackages.targets#L11.
@@ -170,6 +170,9 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SolutionTemplate.Uwp_temporarykey.pfx" />
   </ItemGroup>
   <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

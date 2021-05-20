@@ -19,7 +19,7 @@ namespace SolutionTemplate
         internal const string AssemblyBaseName = "Simple template";
         internal const string Company = "Template company";
         internal const string Product = "Template";
-        internal const string Description = " It's Uno template";
+        internal const string Description = "It's Uno template";
     }
 }
 #endif

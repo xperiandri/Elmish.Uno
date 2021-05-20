@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace SolutionTemplate.Controls
 {
+#pragma warning disable CA1010 // Generic interface should also be implemented
     public sealed partial class ValidationControl : ContentControl
+#pragma warning restore CA1010 // Generic interface should also be implemented
     {
         #region PropertyName
 
@@ -43,7 +45,11 @@ namespace SolutionTemplate.Controls
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the PropertyName property.
         /// </summary>
+#pragma warning disable RCS1163 // Unused parameter.
+#pragma warning disable CA1801 // Review unused parameters
         private void OnPropertyNameChanged(string oldPropertyName, string newPropertyName)
+#pragma warning restore CA1801 // Review unused parameters
+#pragma warning restore RCS1163 // Unused parameter.
          => ResetErrors(newPropertyName);
 
         #endregion
@@ -109,7 +115,11 @@ namespace SolutionTemplate.Controls
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the ErrorContentStyle property.
         /// </summary>
-        protected void OnErrorContentStyleChanged(Style oldErrorContentStyle, Style newErrorContentStyle)
+#pragma warning disable RCS1163 // Unused parameter.
+#pragma warning disable CA1801 // Review unused parameters
+        private void OnErrorContentStyleChanged(Style oldErrorContentStyle, Style newErrorContentStyle)
+#pragma warning restore CA1801 // Review unused parameters
+#pragma warning restore RCS1163 // Unused parameter.
          => TrySetStyle();
 
         #endregion

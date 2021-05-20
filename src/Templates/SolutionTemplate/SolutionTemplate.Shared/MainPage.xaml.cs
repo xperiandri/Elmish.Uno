@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,11 @@ namespace SolutionTemplate
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+#pragma warning disable CA1501
+#pragma warning disable CA1010 // Generic interface should also be implemented
     public sealed partial class MainPage : Page
+#pragma warning restore CA1010 // Generic interface should also be implemented
+#pragma warning restore CA1501
     {
         public MainPage()
         {
