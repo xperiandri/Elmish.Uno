@@ -10,12 +10,12 @@
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <WasmShellILLinkerEnabled>False</WasmShellILLinkerEnabled>
+    <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <WasmShellILLinkerEnabled>False</WasmShellILLinkerEnabled>
+    <WasmShellILLinkerEnabled>true</WasmShellILLinkerEnabled>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.png" />
@@ -77,12 +77,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-		<!--<PackageReference Include="DisposableFixer" Version="3.3.0" />
+    <!--<PackageReference Include="DisposableFixer" Version="3.3.0" />
 
-		<PackageReference Include="Elmish" Version="3.1.0" />
-		<PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
+    <PackageReference Include="Elmish" Version="3.1.0" />
+    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
 
-		<PackageReference Include="FSharp.Core" Version="5.0.*" />
+    <PackageReference Include="FSharp.Core" Version="5.0.*" />
 
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.0.1" />
@@ -93,24 +93,24 @@
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.3.4" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.3.4" />
 
-		<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
 
-		<PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.2-uno.*" />
 
-		<PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>-->
+    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>-->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
