@@ -4,12 +4,12 @@
     "classifications": [ "Web", "Uno Platform", "WebAssembly", "Android", "iOS", "Windows", "macOS" ],
     "name": "Elmish Uno Solution Template",
     "shortName": "elmish-unoapp",
-    "defaultName": "SolutionTemplate",
-    "identity": "Elmish.Uno.ProjectTemplates.Dotnet.SolutionTemplate",
+    "defaultName": "App13",
+    "identity": "Elmish.Uno.ProjectTemplates.Dotnet.App13",
     "tags": {
         "language": "F#",
         "type": "project"
     },
-    "sourceName": "SolutionTemplate",
+    "sourceName": "App13",
     "preferNameDirectory": true
 }
