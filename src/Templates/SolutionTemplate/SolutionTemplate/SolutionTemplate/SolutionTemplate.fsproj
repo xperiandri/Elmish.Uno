@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Elmish.fs" />
+    <Compile Include="Pages.fs" />
+    <Compile Include="Models\Models.fs" />
+    <Compile Include="Programs\Messages.fs" />
+    <Compile Include="Programs\Notification.Program.fs" />
+    <Compile Include="Programs\App.Program.fs" />
+    <Compile Include="Host.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elmish" Version="3.1.0" />
+    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
+
+    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.1.1" />
+    <PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
+
+    <PackageReference Include="Uno.Core" Version="2.3.0" />
+    <PackageReference Include="Uno.UI" Version="3.7.*" />
+
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.*" />
+
+    <PackageReference Include="FSharpPlus" Version="1.1.*" />
+    <PackageReference Include="FSharpx.Extras" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
+  </ItemGroup>
+
+
+
+</Project>
