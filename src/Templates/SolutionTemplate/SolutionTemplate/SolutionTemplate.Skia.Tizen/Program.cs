@@ -1,5 +1,4 @@
-﻿using Tizen.Applications;
-using Uno.UI.Runtime.Skia;
+﻿using Uno.UI.Runtime.Skia;
 
 namespace SolutionTemplate.Skia.Tizen
 {

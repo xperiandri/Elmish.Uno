@@ -1,57 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Tizen.NET.Sdk/1.1.6">
 	<Import Project="..\..\Solution.Build.props" />
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>tizen50</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <DefineConstants>$(DefineConstants);__TIZEN__;</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="lib\" />
-    <Folder Include="res\" />
-  </ItemGroup>
-  <ItemGroup Condition="exists('..\SolutionTemplate.UWP')">
-    <EmbeddedResource Include="..\SolutionTemplate.UWP\Package.appxmanifest" LogicalName="Package.appxmanifest" />
-    <Content Include="..\SolutionTemplate.UWP\Assets\StoreLogo.png" Link="Assets\StoreLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
-  </ItemGroup>
-  <ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>tizen50</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<DefineConstants>$(DefineConstants);__TIZEN__;</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Folder Include="lib\" />
+		<Folder Include="res\" />
+	</ItemGroup>
+	<ItemGroup Condition="exists('..\SolutionTemplate.UWP')">
+		<EmbeddedResource Include="..\SolutionTemplate.UWP\Package.appxmanifest" LogicalName="Package.appxmanifest" />
+		<Content Include="..\SolutionTemplate.UWP\Assets\StoreLogo.png" Link="Assets\StoreLogo.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
+	</ItemGroup>
+	<ItemGroup>
 
-    <PackageReference Include="DisposableFixer" Version="3.3.0" />
-    <PackageReference Include="Elmish" Version="3.1.0" />
-    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
-    <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="DisposableFixer" Version="3.3.0" />
+		<PackageReference Include="Elmish" Version="3.1.0" />
+		<PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
+		<PackageReference Include="FSharp.Core" Version="5.0.*" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="SkiaSharp.Views" Version="2.80.2" />
-    <PackageReference Include="Uno.UI.Skia.Tizen" Version="3.7.4" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.4" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+		<PackageReference Include="SkiaSharp.Views" Version="2.80.2" />
+		<PackageReference Include="Uno.UI.Skia.Tizen" Version="3.7.4" />
+		<PackageReference Include="Uno.UI.RemoteControl" Version="3.7.4" Condition="'$(Configuration)'=='Debug'" />
 
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.*" />
 
-    <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
-  </ItemGroup>
-  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
+		<PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
+	</ItemGroup>
+	<Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
 </Project>
