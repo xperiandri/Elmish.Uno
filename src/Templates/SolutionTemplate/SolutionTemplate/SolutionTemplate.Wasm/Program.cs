@@ -1,7 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
-
-namespace SolutionTemplate.Wasm
+﻿namespace SolutionTemplate.Wasm
 {
     public class Program
     {

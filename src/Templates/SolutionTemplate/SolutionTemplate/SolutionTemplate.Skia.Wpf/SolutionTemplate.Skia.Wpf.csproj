@@ -1,45 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\Solution.Build.props" />
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
 
-    <PackageReference Include="DisposableFixer" Version="3.3.0" />
-    <PackageReference Include="Elmish" Version="3.1.0" />
-    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
-    <PackageReference Include="FSharp.Core" Version="5.0.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="DisposableFixer" Version="3.3.0" />
+		<PackageReference Include="Elmish" Version="3.1.0" />
+		<PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
+		<PackageReference Include="FSharp.Core" Version="5.0.*" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Uno.UI.Skia.Wpf" Version="3.7.4" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.4" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+		<PackageReference Include="Uno.UI.Skia.Wpf" Version="3.7.4" />
+		<PackageReference Include="Uno.UI.RemoteControl" Version="3.7.4" Condition="'$(Configuration)'=='Debug'" />
 
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
+		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.*" />
 
-    <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
-  </ItemGroup>
-  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
+		<PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.*" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
+	</ItemGroup>
+	<Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
 </Project>
