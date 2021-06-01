@@ -25,9 +25,7 @@ namespace SolutionTemplate
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-#pragma warning disable CA1724
     public sealed partial class App : Application
-#pragma warning restore CA1724
     {
 
 
@@ -58,12 +56,8 @@ namespace SolutionTemplate
                     .ConfigureServices(ConfigureServices)
                     ;
 
-#pragma warning disable DF0021 // Marks indisposed objects assigned to a field, originated from method invocation.
-#pragma warning disable DF0025 // Marks indisposed objects assigned to a field, originated from method invocation.
             serviceProvider = hostBuilder.Build().Services;
             scope = serviceProvider.CreateScope();
-#pragma warning restore DF0021 // Marks indisposed objects assigned to a field, originated from method invocation.
-#pragma warning restore DF0025 // Marks indisposed objects assigned to a field, originated from method invocation.
             this.InitializeComponent();
 //-:cnd:noEmit
 #if HAS_UNO || NETFX_CORE
@@ -76,9 +70,7 @@ namespace SolutionTemplate
             services
             .AddSingleton<Elmish.Uno.Navigation.INavigationService>(provider =>
                 new Elmish.Uno.Navigation.NavigationService(
-#pragma warning disable CS1061
                     shell.Value.RootFrame,
-#pragma warning restore CS1061
                     new Dictionary<string, Type>()
                     {
                         [Pages.Pages.Main] = typeof(MainPage)
@@ -92,7 +84,6 @@ namespace SolutionTemplate
         /// <param name="e">Details about the launch request and process.</param>
 #pragma warning disable CA1725 // Parameter names should match base declaration
         protected override void OnLaunched(LaunchActivatedEventArgs e)
-#pragma warning restore CA1725 // Parameter names should match base declaration
         {
 //-:cnd:noEmit
 #if DEBUG
@@ -110,9 +101,7 @@ namespace SolutionTemplate
 #endif
 //+:cnd:noEmit
             var shell = this.shell.Value;
-#pragma warning disable CS1061
             var rootFrame = shell.RootFrame;
-#pragma warning restore CS1061
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -121,9 +110,7 @@ namespace SolutionTemplate
                 // Create a Frame to act as the navigation context and navigate to the first page
 
                 shell = new Shell();
-#pragma warning disable CS1061
                 rootFrame = shell.RootFrame;
-#pragma warning restore CS1061
                 var viewModel = ServiceProvider.GetRequiredService<AppProgram>();
                 Elmish.Uno.ViewModel.StartLoop(Host.ElmConfig, shell, Elmish.ProgramModule.run, viewModel.Program);
 
@@ -158,6 +145,7 @@ namespace SolutionTemplate
                 window.Activate();
             }
         }
+#pragma warning restore CA1725 // Parameter names should match base declaration
 
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
@@ -180,19 +168,19 @@ namespace SolutionTemplate
         {
             var factory = LoggerFactory.Create(builder =>
             {
-//-:cnd:noEmit
+                //-:cnd:noEmit
 #if __WASM__
-#pragma warning disable DF0000 // Marks indisposed anonymous objects from object creations.
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
-#pragma warning restore DF0000 // Marks indisposed anonymous objects from object creations.
 #elif __IOS__
+#pragma warning disable DF0000 // Marks undisposed anonymous objects from object creations.
                 builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
+#pragma warning restore DF0000 // Marks undisposed anonymous objects from object creations.
 #elif NETFX_CORE
                 builder.AddDebug();
 #else
                 builder.AddConsole();
 #endif
-//+:cnd:noEmit
+                //+:cnd:noEmit
                 // Exclude logs below this level
                 builder.SetMinimumLevel(LogLevel.Information);
 

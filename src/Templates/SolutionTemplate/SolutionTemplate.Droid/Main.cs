@@ -19,12 +19,11 @@ namespace SolutionTemplate.Droid
             ConfigureUniversalImageLoader();
         }
 
-        private void ConfigureUniversalImageLoader()
+        private static void ConfigureUniversalImageLoader()
         {
             // Create global configuration and initialize ImageLoader with this config
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration
-                .Builder(Context)
-                .Build();
+            using var builder = new ImageLoaderConfiguration.Builder(Context);
+            ImageLoaderConfiguration config = builder.Build();
 
             ImageLoader.Instance.Init(config);
 

@@ -2,11 +2,11 @@
 using GLib;
 using Uno.UI.Runtime.Skia;
 
-namespace SolutionTemplate.Skia.Gtk
+namespace SolutionTemplate
 {
-    class Program
+    public partial class App
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             ExceptionManager.UnhandledException += delegate (UnhandledExceptionArgs expArgs)
             {
