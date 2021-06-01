@@ -3,6 +3,7 @@
   <Import Project="..\Solution.Build.props" />
   <Import Project="..\Analyzers.Build.props" />
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -14,6 +15,9 @@
     <RootNamespace>$(AssemblyBaseName)</RootNamespace>
     <AssemblyName>$(AssemblyBaseName).Droid</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <UnoSourceGeneratorCaptureGenerationHostOutput>true</UnoSourceGeneratorCaptureGenerationHostOutput>
+    <UnoUIUseRoslynSourceGenerators>true</UnoUIUseRoslynSourceGenerators>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -64,7 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    
+    <PackageReference Include="DisposableFixer" Version="3.3.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
@@ -91,11 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>

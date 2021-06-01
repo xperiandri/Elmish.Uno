@@ -180,7 +180,7 @@ namespace SolutionTemplate
         {
             var factory = LoggerFactory.Create(builder =>
             {
-                //-:cnd:noEmit
+//-:cnd:noEmit
 #if __WASM__
 #pragma warning disable DF0000 // Marks indisposed anonymous objects from object creations.
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
