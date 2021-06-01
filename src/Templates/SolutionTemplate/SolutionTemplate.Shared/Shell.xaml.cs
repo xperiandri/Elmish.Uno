@@ -18,9 +18,6 @@ using SolutionTemplate.Pages;
 
 namespace SolutionTemplate
 {
-#pragma warning disable CA1010 // Generic interface should also be implemented
-#pragma warning disable CA1501
-#pragma warning disable CA1724 // Generic interface should also be implemented
     public abstract partial class ShellBase : UserControl
     {
         #region NavigationFailedCommand
@@ -46,15 +43,10 @@ namespace SolutionTemplate
     }
 
     public partial class Shell : ShellBase, INavigate
-#pragma warning restore CA1724
-#pragma warning restore CA1501
-#pragma warning restore CA1010 // Generic interface should also be implemented
     {
         public Shell()
         {
-#pragma warning disable IDE0021 // Use expression body for constructors
             this.InitializeComponent();
-#pragma warning restore IDE0021 // Use expression body for constructors
         }
 
         /// <summary>
@@ -64,7 +56,6 @@ namespace SolutionTemplate
         /// <param name="e">Details about the navigation failure</param>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-
             var error = new NavigationError(() => e.Handled, h => e.Handled = h, e.Exception, e.SourcePageType);
             NavigationFailedCommand?.Execute(error);
         }
