@@ -19,7 +19,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ValidationControl.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converter\StringToSeverityConvector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToSeverityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

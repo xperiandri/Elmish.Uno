@@ -2,25 +2,13 @@
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Controls;
-
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace SolutionTemplate.Controls
 {
-#pragma warning disable CA1010 // Generic interface should also be implemented
     public sealed partial class ValidationControl : ContentControl
-#pragma warning restore CA1010 // Generic interface should also be implemented
     {
         #region PropertyName
 

@@ -3,9 +3,10 @@
   <Import Project="..\Solution.Build.props" />
   <Import Project="..\Analyzers.Build.props" />
   <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <LangVersion>9.0</LangVersion>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7CE16AD1-FE6B-405F-B83C-43A05695399C}</ProjectGuid>
@@ -13,20 +14,19 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>$(AssemblyBaseName)</RootNamespace>
-    <AssemblyName>$(AssemblyBaseName).Droid</AssemblyName>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <UnoSourceGeneratorCaptureGenerationHostOutput>true</UnoSourceGeneratorCaptureGenerationHostOutput>
     <UnoUIUseRoslynSourceGenerators>true</UnoUIUseRoslynSourceGenerators>
     <AndroidApplication>true</AndroidApplication>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <ResourcesDirectory>..\SolutionTemplate.Shared\Strings</ResourcesDirectory>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseIntermediateDesignerFile>True</AndroidUseIntermediateDesignerFile>
-    <ResourcesDirectory>..\SolutionTemplate.Shared\Strings</ResourcesDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +57,7 @@
     <EnableLLVM>true</EnableLLVM>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidSupportedAbis>armeabi-v7a;arm64-v8a;x86;x86_64</AndroidSupportedAbis>
+    <NoWarn>DF0001;DF0033</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -84,22 +85,18 @@
     <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.33" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainActivity.cs" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Properties\AndroidManifest.xml" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Resources\AboutResources.txt" />
+    <Compile Include="MainActivity.cs" />
     <Compile Include="Main.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Fonts\uno-fluentui-assets.ttf" />
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\values\Styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj">

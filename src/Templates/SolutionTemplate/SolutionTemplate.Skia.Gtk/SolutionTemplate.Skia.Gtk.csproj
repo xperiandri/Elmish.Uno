@@ -13,9 +13,6 @@
     <Content Include="..\SolutionTemplate.UWP\Assets\StoreLogo.png" Link="Assets\StoreLogo.png" />
     <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
     <NoWarn>1701;1702</NoWarn>
@@ -25,8 +22,6 @@
     <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
-
-    
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
