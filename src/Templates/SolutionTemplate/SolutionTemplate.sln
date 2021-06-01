@@ -3,49 +3,50 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31313.381
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.UWP", "SolutionTemplate\SolutionTemplate.UWP\SolutionTemplate.UWP.csproj", "{7727D8AD-8883-427D-A77A-7C8639ACE4AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.UWP", "SolutionTemplate.UWP\SolutionTemplate.UWP.csproj", "{7727D8AD-8883-427D-A77A-7C8639ACE4AF}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SolutionTemplate.Shared", "SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.shproj", "{6279C845-92F8-4333-AB99-3D213163593C}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SolutionTemplate.Shared", "SolutionTemplate.Shared\SolutionTemplate.Shared.shproj", "{6279C845-92F8-4333-AB99-3D213163593C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{D0794275-3DB9-4DD0-940A-C20B23BB4F10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.Droid", "SolutionTemplate\SolutionTemplate.Droid\SolutionTemplate.Droid.csproj", "{7CE16AD1-FE6B-405F-B83C-43A05695399C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.Droid", "SolutionTemplate.Droid\SolutionTemplate.Droid.csproj", "{7CE16AD1-FE6B-405F-B83C-43A05695399C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.iOS", "SolutionTemplate\SolutionTemplate.iOS\SolutionTemplate.iOS.csproj", "{C306819D-C046-4130-B9EF-68546B2CFBA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.iOS", "SolutionTemplate.iOS\SolutionTemplate.iOS.csproj", "{C306819D-C046-4130-B9EF-68546B2CFBA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Wasm", "SolutionTemplate\SolutionTemplate.Wasm\SolutionTemplate.Wasm.csproj", "{E0107EC1-1D03-4F08-B03D-1899314767C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Wasm", "SolutionTemplate.Wasm\SolutionTemplate.Wasm.csproj", "{E0107EC1-1D03-4F08-B03D-1899314767C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.macOS", "SolutionTemplate\SolutionTemplate.macOS\SolutionTemplate.macOS.csproj", "{4E726E84-2EA2-49D0-9B55-2D30FD5A892C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionTemplate.macOS", "SolutionTemplate.macOS\SolutionTemplate.macOS.csproj", "{4E726E84-2EA2-49D0-9B55-2D30FD5A892C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Wpf.Host", "SolutionTemplate\SolutionTemplate.Skia.Wpf.Host\SolutionTemplate.Skia.Wpf.Host.csproj", "{74B947A6-4CBA-47C5-81AF-0EC827F1B0A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Wpf.Host", "SolutionTemplate.Skia.Wpf.Host\SolutionTemplate.Skia.Wpf.Host.csproj", "{74B947A6-4CBA-47C5-81AF-0EC827F1B0A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Wpf", "SolutionTemplate\SolutionTemplate.Skia.Wpf\SolutionTemplate.Skia.Wpf.csproj", "{1FA66609-7DEA-4521-83E4-DD9452E40133}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Wpf", "SolutionTemplate.Skia.Wpf\SolutionTemplate.Skia.Wpf.csproj", "{1FA66609-7DEA-4521-83E4-DD9452E40133}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Gtk", "SolutionTemplate\SolutionTemplate.Skia.Gtk\SolutionTemplate.Skia.Gtk.csproj", "{00127BDE-81BC-4006-8B12-0C9D6304BA68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Gtk", "SolutionTemplate.Skia.Gtk\SolutionTemplate.Skia.Gtk.csproj", "{00127BDE-81BC-4006-8B12-0C9D6304BA68}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Tizen", "SolutionTemplate\SolutionTemplate.Skia.Tizen\SolutionTemplate.Skia.Tizen.csproj", "{EFF939AA-2044-4573-AABB-C97E6B3953E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionTemplate.Skia.Tizen", "SolutionTemplate.Skia.Tizen\SolutionTemplate.Skia.Tizen.csproj", "{EFF939AA-2044-4573-AABB-C97E6B3953E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{158D2B29-24BF-4A3C-BCEF-DF7246773F74}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Analyzers.Build.props = Analyzers.Build.props
 		global.json = global.json
 		nuget.config = nuget.config
 		Solution.Build.props = Solution.Build.props
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "SolutionTemplate", "SolutionTemplate\SolutionTemplate\SolutionTemplate.fsproj", "{5B45BD3E-38EF-4DC1-8F6A-E421CBCBA46B}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "SolutionTemplate", "SolutionTemplate\SolutionTemplate.fsproj", "{5B45BD3E-38EF-4DC1-8F6A-E421CBCBA46B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{00127bde-81bc-4006-8b12-0c9d6304ba68}*SharedItemsImports = 5
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{1fa66609-7dea-4521-83e4-dd9452e40133}*SharedItemsImports = 5
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{4e726e84-2ea2-49d0-9b55-2d30fd5a892c}*SharedItemsImports = 4
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{7727d8ad-8883-427d-a77a-7c8639ace4af}*SharedItemsImports = 4
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{7ce16ad1-fe6b-405f-b83c-43a05695399c}*SharedItemsImports = 4
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{c306819d-c046-4130-b9ef-68546b2cfba4}*SharedItemsImports = 4
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{e0107ec1-1d03-4f08-b03d-1899314767c1}*SharedItemsImports = 5
-		SolutionTemplate\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{eff939aa-2044-4573-aabb-c97e6b3953e7}*SharedItemsImports = 5
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{00127bde-81bc-4006-8b12-0c9d6304ba68}*SharedItemsImports = 5
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{1fa66609-7dea-4521-83e4-dd9452e40133}*SharedItemsImports = 5
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{4e726e84-2ea2-49d0-9b55-2d30fd5a892c}*SharedItemsImports = 4
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{7727d8ad-8883-427d-a77a-7c8639ace4af}*SharedItemsImports = 4
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{7ce16ad1-fe6b-405f-b83c-43a05695399c}*SharedItemsImports = 4
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{c306819d-c046-4130-b9ef-68546b2cfba4}*SharedItemsImports = 4
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{e0107ec1-1d03-4f08-b03d-1899314767c1}*SharedItemsImports = 5
+		SolutionTemplate.Shared\SolutionTemplate.Shared.projitems*{eff939aa-2044-4573-aabb-c97e6b3953e7}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
