@@ -1,8 +1,8 @@
 ﻿using AppKit;
 
-namespace SolutionTemplate.macOS
+namespace SolutionTemplate
 {
-    static class MainClass
+    public partial class App
     {
         static void Main(string[] args)
         {

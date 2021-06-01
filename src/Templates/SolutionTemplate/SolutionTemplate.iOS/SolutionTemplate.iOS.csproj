@@ -3,15 +3,18 @@
   <Import Project="..\Solution.Build.props" />
   <Import Project="..\Analyzers.Build.props" />
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{C306819D-C046-4130-B9EF-68546B2CFBA4}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SolutionTemplate</RootNamespace>
+    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>SolutionTemplate</AssemblyName>
-    <LangVersion>9.0</LangVersion>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <UnoSourceGeneratorCaptureGenerationHostOutput>true</UnoSourceGeneratorCaptureGenerationHostOutput>
+    <UnoUIUseRoslynSourceGenerators>true</UnoUIUseRoslynSourceGenerators>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <ResourcesDirectory>..\SolutionTemplate.Shared\Strings</ResourcesDirectory>
@@ -112,6 +115,7 @@
     <BundleResource Include="Resources\SplashScreen%402x.png" />
     <BundleResource Include="Resources\SplashScreen%403x.png" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\Fonts\uno-fluentui-assets.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,11 +124,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Fonts\uno-fluentui-assets.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-
-    
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
@@ -139,33 +138,15 @@
     <PackageReference Include="Uno.UI" Version="3.7.4" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\ios-marketing-1024x1024%401x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPad-76x76%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPad-84x84%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPhone-20x20%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPhone-20x20%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPhone-40x40%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\iPhone-60x60%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\LaunchImages.launchimage\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\ios-marketing-1024x1024%401x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPad-76x76%402x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPad-84x84%402x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPhone-20x20%402x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPhone-20x20%403x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPhone-40x40%403x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\AppIcons.appiconset\iPhone-60x60%402x.png" />
+    <ImageAsset Visible="False" Include="Media.xcassets\LaunchImages.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj">

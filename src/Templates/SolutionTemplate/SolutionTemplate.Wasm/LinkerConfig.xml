@@ -1,6 +1,6 @@
 ﻿<linker>
+  <assembly fullname="SolutionTemplate.Programs" />
   <assembly fullname="SolutionTemplate" />
-  <assembly fullname="SolutionTemplate.Wasm" />
   <assembly fullname="Uno.UI" />
   <assembly fullname="Microsoft.Extensions.Hosting">
     <type fullname="Microsoft.Extensions.Hosting.Internal.Host" />
