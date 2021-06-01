@@ -27,6 +27,7 @@
     <PackageReference Include="Uno.UI" Version="3.7.4" />
   </ItemGroup>
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{7727D8AD-8883-427D-A77A-7C8639ACE4AF}</ProjectGuid>
@@ -34,6 +35,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SolutionTemplate</RootNamespace>
     <AssemblyName>$(AssemblyBaseName).UWP</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>

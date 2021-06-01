@@ -14,7 +14,7 @@ trim_trailing_whitespace = true
 indent_size          = 4
 charset              = utf-8-bom
 # Project files
-[*.{csproj,fsproj,vbproj,shproj,projitems,props,config,xaml,xml}]
+[*.{csproj,fsproj,vbproj,shproj,projitems,props,config,xaml,xml,plist}]
 indent_size          = 2
 charset              = utf-8-bom
 ###############################

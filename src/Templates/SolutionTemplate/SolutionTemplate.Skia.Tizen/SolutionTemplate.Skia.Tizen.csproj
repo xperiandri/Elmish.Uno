@@ -3,11 +3,11 @@
   <Import Project="..\Solution.Build.props" />
   <Import Project="..\Analyzers.Build.props" />
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>tizen50</TargetFramework>
     <OutputType>Exe</OutputType>
     <DefineConstants>$(DefineConstants);__TIZEN__;</DefineConstants>
-    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="lib\" />
@@ -22,7 +22,7 @@
   </ItemGroup>
   <ItemGroup>
 
-    
+
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
