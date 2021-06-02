@@ -7,6 +7,9 @@
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
     <LangVersion>9.0</LangVersion>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup Condition="exists('..\SolutionTemplate.UWP')">
     <EmbeddedResource Include="..\SolutionTemplate.UWP\Package.appxmanifest" LogicalName="Package.appxmanifest" />

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SolutionTemplate.Properties {
+namespace SolutionTemplate.WPF.Host.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
