@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 using AppProgram = SolutionTemplate.Programs.App.Program;
 
+//-:cnd:noEmit
 namespace SolutionTemplate
 {
     /// <summary>
@@ -27,23 +26,21 @@ namespace SolutionTemplate
     /// </summary>
     public sealed partial class App : Application
     {
-
-
         private readonly IServiceProvider serviceProvider;
 #pragma warning disable IDE0044 // Add readonly modifier
         private IServiceScope scope;
 #pragma warning restore IDE0044 // Add readonly modifier
         private readonly Lazy<Shell> shell = new Lazy<Shell>();
 
-//-:cnd:noEmit
 #if NET5_0 && WINDOWS
         private Window window;
 
 #else
         private Windows.UI.Xaml.Window window;
 #endif
-//+:cnd:noEmit
+
         internal IServiceProvider ServiceProvider => scope.ServiceProvider;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -51,19 +48,15 @@ namespace SolutionTemplate
         public App()
         {
             InitializeLogging();
-            var hostBuilder =
-                Host.CreateDefaultBuilder()
-                    .ConfigureServices(ConfigureServices)
-                    ;
+            this.InitializeComponent();
 
+            var hostBuilder = Host.CreateDefaultBuilder().ConfigureServices(ConfigureServices);
             serviceProvider = hostBuilder.Build().Services;
             scope = serviceProvider.CreateScope();
-            this.InitializeComponent();
-//-:cnd:noEmit
+
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;
 #endif
-//+:cnd:noEmit
         }
 
         private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services) =>
@@ -82,10 +75,10 @@ namespace SolutionTemplate
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
+#pragma warning disable CA1062 // Validate arguments of public methods
 #pragma warning disable CA1725 // Parameter names should match base declaration
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-//-:cnd:noEmit
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -99,24 +92,16 @@ namespace SolutionTemplate
 #else
             window = Windows.UI.Xaml.Window.Current;
 #endif
-//+:cnd:noEmit
             var shell = this.shell.Value;
+            // Get a Frame to act as the navigation context and navigate to the first page
             var rootFrame = shell.RootFrame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame.Content == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
-
-                shell = new Shell();
-                rootFrame = shell.RootFrame;
                 var viewModel = ServiceProvider.GetRequiredService<AppProgram>();
                 Elmish.Uno.ViewModel.StartLoop(Host.ElmConfig, shell, Elmish.ProgramModule.run, viewModel.Program);
-
-                //rootFrame.NavigationFailed += OnNavigationFailed;
-
-                Windows.UI.Xaml.Window.Current.Content = shell;
 
 #pragma warning disable CA1062 // Validate arguments of public methods
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -128,11 +113,10 @@ namespace SolutionTemplate
                 // Place the frame in the current Window
                 window.Content = shell;
             }
-//-:cnd:noEmit
+
 #if !(NET5_0 && WINDOWS)
-            if (e.PrelaunchActivated == false)
+            if (!e.PrelaunchActivated)
 #endif
-//+:cnd:noEmit
             {
                 if (rootFrame.Content == null)
                 {
@@ -145,6 +129,7 @@ namespace SolutionTemplate
                 window.Activate();
             }
         }
+#pragma warning restore CA1062 // Validate arguments of public methods
 #pragma warning restore CA1725 // Parameter names should match base declaration
 
         /// <summary>
@@ -168,19 +153,16 @@ namespace SolutionTemplate
         {
             var factory = LoggerFactory.Create(builder =>
             {
-                //-:cnd:noEmit
 #if __WASM__
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__
-#pragma warning disable DF0000 // Marks undisposed anonymous objects from object creations.
                 builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
-#pragma warning restore DF0000 // Marks undisposed anonymous objects from object creations.
 #elif NETFX_CORE
                 builder.AddDebug();
 #else
                 builder.AddConsole();
 #endif
-                //+:cnd:noEmit
+
                 // Exclude logs below this level
                 builder.SetMinimumLevel(LogLevel.Information);
 
@@ -221,3 +203,4 @@ namespace SolutionTemplate
         }
     }
 }
+//+:cnd:noEmit
