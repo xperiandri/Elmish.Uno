@@ -46,9 +46,6 @@
     <None Include="wwwroot\web.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Elmish" Version="3.1.0" />
-    <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
-    <PackageReference Include="FSharp.Core" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.*" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.*" />
     <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.0.*" />
