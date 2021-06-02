@@ -60,8 +60,7 @@
     </HttpClientHandler>
     <XamMacArch>
     </XamMacArch>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn>DF0001;DF0033</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
