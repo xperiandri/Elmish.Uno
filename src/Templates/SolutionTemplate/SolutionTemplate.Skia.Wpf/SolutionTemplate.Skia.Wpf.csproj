@@ -5,6 +5,9 @@
   <PropertyGroup>
     <LangVersion>9.0</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>NU1701;NU1702;DF0033</NoWarn>

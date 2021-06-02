@@ -9,6 +9,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <RootNamespace>$(AssemblyBaseName).WPF.Host</RootNamespace>
+    <AssemblyName>$(AssemblyBaseName).App</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>NU1701;NU1702</NoWarn>
