@@ -9,8 +9,8 @@
   xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
   xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters"
   xmlns:tctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
-  xmlns:ttrig="using:Microsoft.Toolkit.Uwp.UI.Triggers"
   xmlns:textensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+  xmlns:ttrig="using:Microsoft.Toolkit.Uwp.UI.Triggers"
   x:Name="shell"
   d:DesignHeight="300"
   d:DesignWidth="400"
@@ -53,7 +53,8 @@
       ItemsSource="{Binding Notifications.Notifications}" />
 
     <VisualStateManager.VisualStateGroups>
-      <VisualStateGroup x:Name="NetworkStateGroup">
+      <!--  TODO: Fix on Android  -->
+      <!--<VisualStateGroup x:Name="NetworkStateGroup">
         <VisualState x:Name="Connected">
           <VisualState.StateTriggers>
             <ttrig:NetworkConnectionStateTrigger ConnectionState="Connected" />
@@ -69,7 +70,7 @@
             <ttrig:NetworkConnectionStateTrigger ConnectionState="Disconnected" />
           </VisualState.StateTriggers>
         </VisualState>
-      </VisualStateGroup>
+      </VisualStateGroup>-->
     </VisualStateManager.VisualStateGroups>
   </Grid>
 
