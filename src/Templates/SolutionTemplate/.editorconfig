@@ -200,7 +200,6 @@ csharp_preserve_single_line_blocks                                       = true
 ###############################
 # VB Coding Conventions       #
 ###############################
-
 [*.vb]
 # Modifier preferences
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async : suggestion
@@ -868,7 +867,7 @@ dotnet_diagnostic.DF0010.severity = silent
 # DF0021: Field is not disposed.
 dotnet_diagnostic.DF0021.severity = silent
 
-[Program.cs]
+[{App.xaml.cs,Program.cs}]
 # CA1724: The type name App conflicts in whole or in part with the namespace name. Change either name to eliminate the conflict.
 dotnet_diagnostic.CA1724.severity = none
 # CA1801: Parameter args of method Main is never used. Remove the parameter or use it in the method body.

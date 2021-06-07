@@ -21,16 +21,16 @@
     <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="Elmish.Uno" Version="1.0.0-ci-*" />
     <PackageReference Include="FSharp.Collections.Immutable" Version="2.0.0-ci-*" />
-    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.1.1" />
+    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.2.0" />
     <PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
-    <PackageReference Include="FSharpPlus" Version="1.1.*" />
+    <PackageReference Include="FSharpPlus" Version="1.2.0" />
     <PackageReference Include="FSharpx.Extras" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
     <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
     <PackageReference Include="Uno.Core" Version="2.3.0" />
-    <PackageReference Include="Uno.UI" Version="3.7.*" />
+    <PackageReference Include="Uno.UI" Version="$(UnoVersion)" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.*" />
   </ItemGroup>
 

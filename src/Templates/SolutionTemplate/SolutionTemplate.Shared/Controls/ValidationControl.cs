@@ -30,13 +30,13 @@ namespace SolutionTemplate.Controls
             set => SetValue(PropertyNameProperty, value);
         }
 
+#pragma warning disable CA1801 // Review unused parameters
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the PropertyName property.
         /// </summary>
-#pragma warning disable CA1801 // Review unused parameters
         private void OnPropertyNameChanged(string oldPropertyName, string newPropertyName)
-#pragma warning restore CA1801 // Review unused parameters
          => ResetErrors(newPropertyName);
+#pragma warning restore CA1801 // Review unused parameters
 
         #endregion
 
@@ -98,15 +98,15 @@ namespace SolutionTemplate.Controls
             set => SetValue(ErrorContentStyleProperty, value);
         }
 
+#pragma warning disable CA1801 // Review unused parameters
+#pragma warning disable RCS1163 // Unused parameter.
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the ErrorContentStyle property.
         /// </summary>
-#pragma warning disable CA1801 // Review unused parameters
-#pragma warning disable RCS1163 // Unused parameter.
         private void OnErrorContentStyleChanged(Style oldErrorContentStyle, Style newErrorContentStyle)
+         => TrySetStyle();
 #pragma warning restore RCS1163 // Unused parameter.
 #pragma warning restore CA1801 // Review unused parameters
-         => TrySetStyle();
 
         #endregion
 

@@ -70,6 +70,16 @@ namespace SolutionTemplate
                     }))
             ;
 
+#pragma warning disable IDE0051 // Remove unused private members
+        private void ResetScope()
+        {
+            scope.Dispose();
+            scope = serviceProvider.CreateScope();
+            var viewModel = ServiceProvider.GetRequiredService<AppProgram>();
+            Elmish.Uno.ViewModel.StartLoop(Host.ElmConfig, shell.Value, Elmish.ProgramModule.run, viewModel.Program);
+        }
+#pragma warning restore IDE0051 // Remove unused private members
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
