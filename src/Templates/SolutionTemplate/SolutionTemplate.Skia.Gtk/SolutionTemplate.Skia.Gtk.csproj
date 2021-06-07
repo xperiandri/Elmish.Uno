@@ -18,22 +18,21 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
-    <NoWarn>1701;1702</NoWarn>
-    <NoWarn>NU1701</NoWarn>
+    <NoWarn>NU1701;NU1702;DF0033</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.*" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.4" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI.Skia.Gtk" Version="3.7.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="$(UnoVersion)" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Skia.Gtk" Version="$(UnoVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />

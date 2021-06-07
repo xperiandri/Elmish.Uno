@@ -12,14 +12,14 @@
       -->
       <Version>6.2.11</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Toolkit" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Include="Microsoft.Toolkit" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.5.0" />
     <PackageReference Include="Uno.Core" Version="2.3.0" />
-    <PackageReference Include="Uno.UI" Version="3.7.4" />
+    <PackageReference Include="Uno.UI" Version="$(UnoVersion)" />
   </ItemGroup>
   <PropertyGroup>
     <LangVersion>9.0</LangVersion>
