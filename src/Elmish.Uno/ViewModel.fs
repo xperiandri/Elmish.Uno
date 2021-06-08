@@ -164,9 +164,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   /// Error messages keyed by property name.
   let errors = Dictionary<string, obj ICollection>()
 
-
   let withCaching b = Cached { Binding = b; Cache = ref None }
-
 
   let log fmt =
     let innerLog (str: string) =
