@@ -188,9 +188,9 @@ Global
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhone.Build.0 = Debug|Any CPU
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhone.Deploy.0 = Debug|Any CPU
-		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|Any CPU
+		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.Build.0 = AppStore|Any CPU
+		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|iPhoneSimulator.Deploy.0 = AppStore|Any CPU
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|x64.ActiveCfg = Debug|Any CPU
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|x64.Build.0 = Debug|Any CPU
 		{7CE16AD1-FE6B-405F-B83C-43A05695399C}.AppStore|x64.Deploy.0 = Debug|Any CPU
