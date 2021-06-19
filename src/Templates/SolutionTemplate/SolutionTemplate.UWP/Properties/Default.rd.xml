@@ -18,13 +18,29 @@
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Application>
     <!--
+      According to https://stackoverflow.com/a/62265908/1149328
+    -->
+    <Namespace Name="SolutionTemplate" Dynamic="Excluded" Serialize="Excluded" />
+    <!--
       An Assembly element with Name="*Application*" applies to all assemblies in
       the application package. The asterisks are not wildcards.
     -->
-    <Assembly Dynamic="Required All" Name="Microsoft.Extensions.Options"/>
-    <Assembly Dynamic="Required All" Name="Microsoft.Extensions.Logging"/>
-    <Assembly Name="*Application*" Dynamic="Required All" />
+    <!--<Assembly Dynamic="Required All" Name="*Application*" />-->
     <!-- Add your application specific runtime directives here. -->
+    <Assembly Dynamic="Required All" Name="Microsoft.Extensions.Hosting" />
+    <Assembly Dynamic="Required All" Name="Microsoft.Extensions.Logging" />
+    <Assembly Dynamic="Required All" Name="Microsoft.Extensions.Options" />
 
+    <!--<Assembly Dynamic="Required All" Name="FSharp.Core" />
+    <Assembly Dynamic="Required All" Name="Elmish" />
+    <Assembly Dynamic="Required All" Name="Elmish.Uno" />
+    <Assembly Dynamic="Required All" Name="Elmish.Uno.Mobile" />
+    <Assembly Dynamic="Required All" Name="FSharp.Collections.Immutable" />
+    <Assembly Dynamic="Required All" Name="FSharp.Control.FusionTasks" />
+    <Assembly Dynamic="Required All" Name="FSharp.Control.Reactive" />
+    <Assembly Dynamic="Required All" Name="FSharpPlus" />
+    <Assembly Dynamic="Required All" Name="System.Collections.Immutable" />
+    <Assembly Dynamic="Required All" Name="Uno.Core" />
+    <Assembly Dynamic="Required All" Name="Xamarin.Essentials" />-->
   </Application>
 </Directives>
