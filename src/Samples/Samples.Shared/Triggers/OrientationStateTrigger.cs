@@ -32,7 +32,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
                         OnEventAction = (instance, source, eventArgs) => OrientationStateTrigger_OrientationChanged(source, eventArgs),
                         OnDetachAction = weakEventListener => DisplayInformation.GetForCurrentView().OrientationChanged -= weakEventListener.OnEvent
                     };
-                DisplayInformation.GetForCurrentView().OrientationChanged += weakEvent.OnEvent;
+                //DisplayInformation.GetForCurrentView().OrientationChanged += weakEvent.OnEvent;
             }
         }
 

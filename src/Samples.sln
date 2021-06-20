@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Samples.Windows.Package", "Samples\Samples.Windows.Package\Samples.Windows.Package.wapproj", "{D3AFA2C6-109D-412E-B972-E815F674AC76}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BBAFEB1E-93C0-4C7E-8E0A-026BB05C88EC}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
@@ -42,8 +44,6 @@ EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Samples", "Samples\Samples\Samples.fsproj", "{25668814-618E-4EBF-BC4D-716F38589F0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Windows.Desktop", "Samples\Samples.Windows.Desktop\Samples.Windows.Desktop.csproj", "{20DCCF18-F496-421B-AD82-B649B441EAF7}"
-EndProject
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Samples.Windows.Package", "Samples\Samples.Windows.Package\Samples.Windows.Package.wapproj", "{D3AFA2C6-109D-412E-B972-E815F674AC76}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

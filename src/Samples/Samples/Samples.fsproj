@@ -29,10 +29,11 @@
 
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
-    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.1.1" />
+    <PackageReference Include="FSharp.Control.FusionTasks" Version="2.2.0" />
     <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.6" Condition="$(TargetFramework.StartsWith('net5.0-windows10'))" />
-    <PackageReference Include="Uno.Core" Version="2.3.0" />
-    <PackageReference Include="Uno.WinUI" Version="3.7.*" Condition="!$(TargetFramework.StartsWith('net5.0-windows10'))" />
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.7" />
+    <PackageReference Include="Uno.Core" Version="2.4.0" />
+    <PackageReference Include="Uno.WinUI" Version="3.8.6" Condition="!$(TargetFramework.StartsWith('net5.0-windows10'))" />
   </ItemGroup>
 
   <ItemGroup>

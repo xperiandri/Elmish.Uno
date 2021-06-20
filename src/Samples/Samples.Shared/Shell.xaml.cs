@@ -22,9 +22,6 @@ namespace Elmish.Uno.Samples
 {
     public sealed partial class Shell : UserControl, INavigate
     {
-
-        public Frame RootFrame => this.rootFrame;
-
         public Shell()
         {
             this.InitializeComponent();
@@ -54,9 +51,9 @@ namespace Elmish.Uno.Samples
 
         private bool OnBackRequested()
         {
-            if (this.rootFrame.CanGoBack)
+            if (this.RootFrame.CanGoBack)
             {
-                this.rootFrame.GoBack();
+                this.RootFrame.GoBack();
                 return true;
             }
             return false;
@@ -78,8 +75,8 @@ namespace Elmish.Uno.Samples
             e.Handled = true;
         }
 
-        public bool Navigate(Type sourcePageType) => this.rootFrame.Navigate(sourcePageType, null);
+        public bool Navigate(Type sourcePageType) => this.RootFrame.Navigate(sourcePageType, null);
 
-        public bool Navigate(Type sourcePageType, object parameter) => this.rootFrame.Navigate(sourcePageType, parameter);
+        public bool Navigate(Type sourcePageType, object parameter) => this.RootFrame.Navigate(sourcePageType, parameter);
     }
 }

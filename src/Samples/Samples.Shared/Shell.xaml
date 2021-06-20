@@ -17,15 +17,16 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
+    <!--utoolkit:VisibleBoundsPadding.PaddingMask="All"-->
     <Button
       x:Name="BackButton"
-      utoolkit:VisibleBoundsPadding.PaddingMask="All"
       Click="OnBackButtonClick"
       Style="{StaticResource NavigationBackButtonNormalStyle}"
       Visibility="{x:Bind RootFrame.CanGoBack, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
     <Frame
-      x:Name="rootFrame"
+      x:Name="RootFrame"
+      x:FieldModifier="public"
       Grid.Row="1"
       NavigationFailed="OnNavigationFailed" />
   </Grid>

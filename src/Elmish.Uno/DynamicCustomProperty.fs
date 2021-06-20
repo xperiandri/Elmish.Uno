@@ -4,6 +4,7 @@ open System
 #if __UWP__
 open Microsoft.UI.Xaml.Data;
 
+// TODO: investigate why nulls come to the constructor instead of None
 type DynamicCustomProperty<'TValue> (
   //  name : string,
   //  getter : Func<'TValue>,
@@ -31,7 +32,6 @@ type DynamicCustomProperty<'TValue> (
   member _.IndexSetter = indexSetter
 
   interface ICustomProperty with
-
 
     member _.GetValue (target : obj) =
       match getter with Some getter -> getter() |> box | None -> null

@@ -11,15 +11,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.1" />
-    <PackageReference Include="Microsoft.ProjectReunion" Version="0.5.6" />
-    <Manifest Include="$(ApplicationManifest)" />
+    <PackageReference Include="Microsoft.ProjectReunion" Version="0.5.7" />
+    <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.5.7" />
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
     <PackageReference Include="Microsoft.Toolkit" Version="8.0.0-*" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="8.0.0-*" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.*" />
-    <PackageReference Include="Uno.Core" Version="2.3.0" />
+    <PackageReference Include="Uno.Core" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>

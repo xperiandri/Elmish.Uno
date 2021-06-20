@@ -12,7 +12,8 @@
   NavigationCacheMode="Enabled"
   mc:Ignorable="d">
 
-  <Grid utoolkit:VisibleBoundsPadding.PaddingMask="All">
+  <!--utoolkit:VisibleBoundsPadding.PaddingMask="All"-->
+  <Grid>
     <ListView
       x:Name="SamplesListView"
       IsItemClickEnabled="True"

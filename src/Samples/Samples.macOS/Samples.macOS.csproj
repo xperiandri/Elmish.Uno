@@ -29,17 +29,22 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <Profiling>true</Profiling>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
-    <NoWarn></NoWarn>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -49,9 +54,12 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
-    <NoWarn></NoWarn>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,8 +77,8 @@
     <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
-    <PackageReference Include="Uno.WinUI" Version="3.7.*" />
-    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.7.*" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.WinUI" Version="3.8.6" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.8.6" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
   <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <ItemGroup>
