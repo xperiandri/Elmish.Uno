@@ -8,7 +8,8 @@
     <Copyright>Copyright © Elmish.Uno</Copyright>
     <MicrosoftExtensionsVersion>5.0.*</MicrosoftExtensionsVersion>
     <ToolkitVersion>7.0.*</ToolkitVersion>
-    <UnoVersion>3.7.*</UnoVersion>
+    <UnoUIVersion>3.8.*</UnoUIVersion>
+    <UnoCoreVersion>2.4.0</UnoCoreVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

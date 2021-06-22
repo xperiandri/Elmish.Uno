@@ -18,8 +18,8 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.5.0" />
-    <PackageReference Include="Uno.Core" Version="2.3.0" />
-    <PackageReference Include="Uno.UI" Version="$(UnoVersion)" />
+    <PackageReference Include="Uno.Core" Version="$(UnoCoreVersion)" />
+    <PackageReference Include="Uno.UI" Version="$(UnoUIVersion)" />
   </ItemGroup>
   <PropertyGroup>
     <LangVersion>9.0</LangVersion>
