@@ -95,8 +95,8 @@
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="7.0.0" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.0.0" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.7.6" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI" Version="3.7.6" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="$(UnoUIVersion)" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI" Version="$(UnoUIVersion)" />
     <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.33" />
   </ItemGroup>
   <ItemGroup>

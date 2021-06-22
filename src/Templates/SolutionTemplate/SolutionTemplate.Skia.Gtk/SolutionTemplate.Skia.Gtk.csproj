@@ -31,8 +31,8 @@
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="$(ToolkitVersion)" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="$(UnoVersion)" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI.Skia.Gtk" Version="$(UnoVersion)" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="$(UnoUIVersion)" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Skia.Gtk" Version="$(UnoUIVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
