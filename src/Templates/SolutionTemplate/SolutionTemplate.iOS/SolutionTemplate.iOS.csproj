@@ -9,10 +9,10 @@
     <ProjectGuid>{C306819D-C046-4130-B9EF-68546B2CFBA4}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
     <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <ResourcesDirectory>..\SolutionTemplate.Shared\Strings</ResourcesDirectory>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <UnoSourceGeneratorCaptureGenerationHostOutput>true</UnoSourceGeneratorCaptureGenerationHostOutput>
     <UnoUIUseRoslynSourceGenerators>true</UnoUIUseRoslynSourceGenerators>
@@ -23,7 +23,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,7 +35,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -50,7 +48,6 @@
     <DebugType>full</DebugType>
     <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
     <Optimize>false</Optimize>
-    <OutputPath>bin\iPhone\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,7 +62,6 @@
     <DebugType>none</DebugType>
     <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
     <Optimize>true</Optimize>
-    <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -85,7 +81,6 @@
     <DebugType>none</DebugType>
     <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
     <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -99,7 +94,6 @@
     <DebugType>none</DebugType>
     <IOSDebugOverWiFi>true</IOSDebugOverWiFi>
     <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\AppStore</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>

@@ -29,8 +29,7 @@
     <OutputType>AppContainerExe</OutputType>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SolutionTemplate</RootNamespace>
-    <AssemblyName>$(AssemblyBaseName).UWP</AssemblyName>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>

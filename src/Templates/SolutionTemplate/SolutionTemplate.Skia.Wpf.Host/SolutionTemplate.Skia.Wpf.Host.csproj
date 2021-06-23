@@ -9,7 +9,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>$(AssemblyBaseName).WPF.Host</RootNamespace>
+    <RootNamespace>$(RootNamespace).WPF.Host</RootNamespace>
     <AssemblyName>$(AssemblyBaseName).App</AssemblyName>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
