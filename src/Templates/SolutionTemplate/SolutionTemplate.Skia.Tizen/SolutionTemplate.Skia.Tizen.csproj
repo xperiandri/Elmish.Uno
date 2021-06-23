@@ -8,7 +8,6 @@
     <TargetFramework>tizen50</TargetFramework>
     <OutputType>Exe</OutputType>
     <DefineConstants>$(DefineConstants);__TIZEN__;</DefineConstants>
-    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
     <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>

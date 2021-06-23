@@ -7,7 +7,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <!-- .editorcofig bases suppressions do not work in WASM for some unknown reasons -->
     <NoWarn>NU1701;DF0033</NoWarn>
-    <RootNamespace>$(AssemblyBaseName)</RootNamespace>
     <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
