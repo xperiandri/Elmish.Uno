@@ -5,7 +5,7 @@ open System
 open Microsoft.UI.Xaml.Data;
 
 // TODO: investigate why nulls come to the constructor instead of None
-type DynamicCustomProperty<'TValue> (
+type DynamicCustomProperty<'TTarget, 'TValue> (
   //  name : string,
   //  getter : Func<'TValue>,
   //  [<Optional; DefaultParameterValue(null)>]
@@ -17,10 +17,10 @@ type DynamicCustomProperty<'TValue> (
 
   //new (
       name : string,
-      ?getter : unit -> 'TValue,
-      ?setter : 'TValue -> unit,
-      ?indexGetter : obj -> 'TValue,
-      ?indexSetter : obj -> 'TValue -> unit) =
+      ?getter : 'TTarget -> 'TValue,
+      ?setter : 'TTarget -> 'TValue -> unit,
+      ?indexGetter : 'TTarget -> obj -> 'TValue,
+      ?indexSetter : 'TTarget -> obj -> 'TValue -> unit) =
     //let setter' = defaultArg setter null
     //let indexGetter' = defaultArg indexGetter null
     //let indexSetter' = defaultArg indexSetter null
@@ -34,13 +34,13 @@ type DynamicCustomProperty<'TValue> (
   interface ICustomProperty with
 
     member _.GetValue (target : obj) =
-      match getter with Some getter -> getter() |> box | None -> null
+      match getter with Some getter -> getter (target :?> 'TTarget) |> box | None -> null
     member _.SetValue (target : obj, value : obj) =
-      match setter with Some setter -> setter(value :?> 'TValue) | None -> ()
+      match setter with Some setter -> setter (target :?> 'TTarget) (value :?> 'TValue) | None -> ()
     member _.GetIndexedValue(target : obj, index : obj) =
-      match indexGetter with Some indexGetter -> indexGetter index |> box | None -> null
+      match indexGetter with Some indexGetter -> indexGetter (target :?> 'TTarget) index |> box | None -> null
     member _.SetIndexedValue(target : obj, value : obj, index : obj) =
-      match indexSetter with Some indexSetter -> indexSetter index (value :?> 'TValue) | None -> ()
+      match indexSetter with Some indexSetter -> indexSetter (target :?> 'TTarget) index (value :?> 'TValue) | None -> ()
 
     member _.CanRead = getter.IsSome || indexGetter.IsSome
     member _.CanWrite = setter.IsSome || indexSetter.IsSome
