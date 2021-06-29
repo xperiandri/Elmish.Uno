@@ -73,8 +73,8 @@
     <!--<PackageReference Include="Uno.Microsoft.Toolkit" Version="7.0.0-build.*" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" Version="7.0.0-build.*" />-->
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.3-uno.*" />
-    <PackageReference Include="Uno.WinUI" Version="3.8.6" />
-    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.8.6" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.WinUI" Version="3.8.*" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="3.8.*" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.33" />
   </ItemGroup>
   <ItemGroup>

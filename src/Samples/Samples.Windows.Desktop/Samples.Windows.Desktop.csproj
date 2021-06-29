@@ -8,6 +8,7 @@
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <AssemblyName>Elmish.Uno.Samples.Windows.Desktop</AssemblyName>
+    <UseWinUI>true</UseWinUI>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,19 +18,14 @@
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Core" Version="5.0.1" />
-    <PackageReference Include="Microsoft.ProjectReunion" Version="0.5.7" />
-    <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.5.7" />
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.7" />
+    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0" />
+    <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0" />
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
     <PackageReference Include="Microsoft.Toolkit" Version="8.0.0-*" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI" Version="8.0.0-*" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.*" />
     <PackageReference Include="Uno.Core" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.18362.16" />
-    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.18362.16" />
   </ItemGroup>
 
   <ItemGroup>

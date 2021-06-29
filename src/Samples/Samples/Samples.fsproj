@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net5.0-windows10'))">
-    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,19 +30,13 @@
   <ItemGroup>
     <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="FSharp.Control.FusionTasks" Version="2.2.0" />
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.6" Condition="$(TargetFramework.StartsWith('net5.0-windows10'))" />
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.5.7" />
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" Condition="$(TargetFramework.StartsWith('net5.0-windows10'))" />
     <PackageReference Include="Uno.Core" Version="2.4.0" />
-    <PackageReference Include="Uno.WinUI" Version="3.8.6" Condition="!$(TargetFramework.StartsWith('net5.0-windows10'))" />
+    <PackageReference Include="Uno.WinUI" Version="3.8.*" Condition="!$(TargetFramework.StartsWith('net5.0-windows10'))" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="5.0.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net5.0-windows10'))">
-    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.18362.16" />
-    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.18362.16" />
   </ItemGroup>
 
   <Target Name="XamlPreCompile" Condition="$(TargetFramework.StartsWith('net5.0-windows10'))" />
