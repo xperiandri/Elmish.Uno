@@ -15,24 +15,24 @@ using Windows.UI.Xaml.Data;
 
 namespace Elmish.Windows
 {
-    public class DynamicCustomProperty<TValue> : ICustomProperty
+    public class DynamicCustomProperty<TTarget, TValue> : ICustomProperty
     {
-        public Func<TValue> Getter { get; }
-        public Action<TValue> Setter { get; }
-        public Func<object, TValue> IndexGetter { get; }
-        public Action<object, TValue> IndexSetter { get; }
+        public Func<TTarget, TValue> Getter { get; }
+        public Action<TTarget, TValue> Setter { get; }
+        public Func<TTarget, object, TValue> IndexGetter { get; }
+        public Action<TTarget, object, TValue> IndexSetter { get; }
 
-        public object GetValue(object target) => Getter.Invoke();
-        public void SetValue(object target, object value) => Setter.Invoke((TValue)value);
-        public object GetIndexedValue(object target, object index) => IndexGetter.Invoke(index);
-        public void SetIndexedValue(object target, object value, object index) => IndexSetter.Invoke(index, (TValue)value);
+        public object GetValue(object target) => Getter.Invoke((TTarget) target);
+        public void SetValue(object target, object value) => Setter.Invoke((TTarget)target, (TValue)value);
+        public object GetIndexedValue(object target, object index) => IndexGetter.Invoke((TTarget)target, index);
+        public void SetIndexedValue(object target, object value, object index) => IndexSetter.Invoke((TTarget)target, index, (TValue)value);
 
         public bool CanRead => Getter != null || IndexGetter != null;
         public bool CanWrite => Setter != null || IndexSetter != null;
         public string Name { get; }
         public Type Type => typeof(TValue);
 
-        public DynamicCustomProperty(string name, Func<TValue> getter, Action<TValue> setter = null, Func<object, TValue> indexGetter = null, Action<object, TValue> indexSetter = null)
+        public DynamicCustomProperty(string name, Func<TTarget, TValue> getter, Action<TTarget, TValue> setter = null, Func<TTarget, object, TValue> indexGetter = null, Action<TTarget, object, TValue> indexSetter = null)
         {
             Name = name;
             Getter = getter;
@@ -51,38 +51,38 @@ namespace Elmish.Windows
 
         private ICustomProperty GetProperty(string name)
         {
-            if (name == "CurrentModel") return new DynamicCustomProperty<object>(name, () => this.CurrentModel);
-            if (name == "HasErrors") return new DynamicCustomProperty<bool>(name, () => ((INotifyDataErrorInfo)this).HasErrors);
+            if (name == "CurrentModel") return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.CurrentModel);
+            if (name == "HasErrors") return new DynamicCustomProperty<ViewModel<TModel, TMsg>, bool>(name, vm => ((INotifyDataErrorInfo)vm).HasErrors);
             if (!this.Bindings.TryGetValue(name, out var binding)) Debugger.Break();
             switch (binding)
             {
                 case VmBinding<TModel, TMsg>.OneWay oneWay:
-                    return new DynamicCustomProperty<object>(name, () => TryGetMember(oneWay));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.TryGetMember(oneWay));
                 case VmBinding<TModel, TMsg>.OneWayLazy oneWayLazy:
-                    return new DynamicCustomProperty<object>(name, () => TryGetMember(oneWayLazy));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.TryGetMember(oneWayLazy));
                 case VmBinding<TModel, TMsg>.OneWaySeq oneWaySeq:
-                    return new DynamicCustomProperty<ObservableCollection<object>>(name,
-                        () => (ObservableCollection<object>) TryGetMember(oneWaySeq));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, ObservableCollection<object>>(name,
+                        vm => (ObservableCollection<object>)vm.TryGetMember(oneWaySeq));
                 case VmBinding<TModel, TMsg>.TwoWay twoWay:
-                    return new DynamicCustomProperty<object>(name, () => TryGetMember(twoWay), value => TrySetMember(value, twoWay));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.TryGetMember(twoWay), (vm, value) => vm.TrySetMember(value, twoWay));
                 case VmBinding<TModel, TMsg>.TwoWayValidate twoWayValidate:
-                    return new DynamicCustomProperty<object>(name, () => TryGetMember(twoWayValidate), value => TrySetMember(value, twoWayValidate));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.TryGetMember(twoWayValidate), (vm, value) => vm.TrySetMember(value, twoWayValidate));
                 case VmBinding<TModel, TMsg>.Cmd cmd:
-                    return new DynamicCustomProperty<ICommand>(name, () => TryGetMember(cmd) as ICommand);
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, ICommand>(name, vm => vm.TryGetMember(cmd) as ICommand);
                 case VmBinding<TModel, TMsg>.CmdParam cmdParam:
-                    return new DynamicCustomProperty<object>(name, () => TryGetMember(cmdParam));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name, vm => vm.TryGetMember(cmdParam));
                 case VmBinding<TModel, TMsg>.SubModel subModel:
-                    return new DynamicCustomProperty<ViewModel<object, object>>(name,
-                        () => TryGetMember(subModel) as ViewModel<object, object>);
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, ViewModel<object, object>>(name,
+                        vm => vm.TryGetMember(subModel) as ViewModel<object, object>);
                 case VmBinding<TModel, TMsg>.SubModelSeq subModelSeq:
-                    return new DynamicCustomProperty<ObservableCollection<Uno.ViewModel<object, object>>>(name,
-                        () => (ObservableCollection<Uno.ViewModel<object, object>>) TryGetMember(subModelSeq));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, ObservableCollection<Uno.ViewModel<object, object>>>(name,
+                        vm => (ObservableCollection<Uno.ViewModel<object, object>>)vm.TryGetMember(subModelSeq));
                 case VmBinding<TModel, TMsg>.SubModelSelectedItem subModelSelectedItem:
-                    return new DynamicCustomProperty<ViewModel<object, object>>(name,
-                        () => (ViewModel<object, object>) TryGetMember(subModelSelectedItem));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, ViewModel<object, object>>(name,
+                        vm => (ViewModel<object, object>) vm.TryGetMember(subModelSelectedItem));
                 case VmBinding<TModel, TMsg>.Cached cached:
-                    return new DynamicCustomProperty<object>(name,
-                        () => TryGetMember(cached), value => TrySetMember(value, cached));
+                    return new DynamicCustomProperty<ViewModel<TModel, TMsg>, object>(name,
+                        vm => vm.TryGetMember(cached), (vm, value) => vm.TrySetMember(value, cached));
                 default:
                     return null;
                     //throw new NotSupportedException();
