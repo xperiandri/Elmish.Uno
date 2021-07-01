@@ -4,9 +4,11 @@ open System
 open Elmish
 open Elmish.Uno
 
+open SolutionTemplate.Configuration
 open SolutionTemplate.Models
 open SolutionTemplate.Programs.Messages
 open SolutionTemplate.Programs
+open Microsoft.Extensions.Options
 
 type Model = {
     Text: string
@@ -18,11 +20,11 @@ type Msg =
     | SetSearchText of string
     | NotificationMsg of Notification.Msg
 
-type Program(notificationProgram: Notification.Program) =
+type Program(notificationProgram: Notification.Program, graphQLOptions: IOptions<GraphQLSettings>) =
 
     let init () =
         let notificationModel = notificationProgram.Initial
-        { Text = "Привет от Elmish.Uno"
+        { Text = $"Привет от Elmish.Uno. Endpoint '{graphQLOptions.Value.EndPoint}'"
           Notifications = notificationModel },
         Cmd.none
 

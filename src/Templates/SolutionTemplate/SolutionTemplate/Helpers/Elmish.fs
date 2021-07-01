@@ -1,4 +1,4 @@
-namespace SolutionTemplate.Elmish1
+﻿namespace SolutionTemplate.ElmishProgram
 
 [<AutoOpen>]
 module State =

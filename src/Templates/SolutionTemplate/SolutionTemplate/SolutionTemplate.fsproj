@@ -8,9 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Elmish.fs" />
+    <Compile Include="Helpers\Elmish.fs" />
+    <Compile Include="Helpers\ObjAndStructConversions.fs" />
     <Compile Include="Pages.fs" />
     <Compile Include="Models\Models.fs" />
+    <Compile Include="Configuration.fs" />
     <Compile Include="Programs\Messages.fs" />
     <Compile Include="Programs\Notification.Program.fs" />
     <Compile Include="Programs\App.Program.fs" />
@@ -30,7 +32,6 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
     <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
     <PackageReference Include="Uno.Core" Version="$(UnoCoreVersion)" />
-    <PackageReference Include="Uno.UI" Version="$(UnoUIVersion)" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.*" />
   </ItemGroup>
 
