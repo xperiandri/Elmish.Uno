@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
+    <PackageReference Include="Elmish" Version="3.1.0" />
     <PackageReference Include="FSharp.Control.FusionTasks" Version="2.2.0" />
     <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" Condition="$(TargetFramework.StartsWith('net5.0-windows10'))" />
     <PackageReference Include="Uno.Core" Version="2.4.0" />
