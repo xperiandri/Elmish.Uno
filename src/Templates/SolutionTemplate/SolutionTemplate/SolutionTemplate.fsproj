@@ -13,7 +13,7 @@
     <Compile Include="Constants.fs" />
     <Compile Include="Configuration.fs" />
     <Compile Include="Pages.fs" />
-    <Compile Include="Models\Models.fs" />
+    <Compile Include="Models\Notification.fs" />
     <Compile Include="Programs\Messages.fs" />
     <Compile Include="Programs\Notifications.Program.fs" />
     <Compile Include="Programs\App.Program.fs" />
