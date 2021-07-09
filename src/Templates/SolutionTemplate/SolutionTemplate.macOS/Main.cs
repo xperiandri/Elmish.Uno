@@ -1,15 +1,15 @@
-using AppKit;
+﻿using AppKit;
 
-namespace SolutionTemplate.macOS
+namespace SolutionTemplate
 {
-	static class MainClass
-	{
-		static void Main(string[] args)
-		{
-			NSApplication.Init();
-			NSApplication.SharedApplication.Delegate = new App();
-			NSApplication.Main(args);  
-		}
-	}
+    public partial class App
+    {
+        private static void Main(string[] args)
+        {
+            NSApplication.Init();
+            NSApplication.SharedApplication.Delegate = new App();
+            NSApplication.Main(args);
+        }
+    }
 }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using SolutionTemplate;
-
 //-:cnd:noEmit
 #if(__ANDROID__ || __IOS__ || __MACOS__ || WINDOWS_UWP)
 

@@ -1,37 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.FSharp.Core;
 
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Toolkit.Uwp.Helpers;
 
-using SolutionTemplate.Models;
-using SolutionTemplate.Controls;
-
-using SolutionTemplate.Pages;
-using Elmish.Uno;
-using Elmish.Uno.Navigation;
-
-using FSharpx;
 using AppProgram = SolutionTemplate.Programs.App.Program;
 
+//-:cnd:noEmit
 namespace SolutionTemplate
 {
     /// <summary>
@@ -39,22 +26,21 @@ namespace SolutionTemplate
     /// </summary>
     public sealed partial class App : Application
     {
-
         private readonly IServiceProvider serviceProvider;
 #pragma warning disable IDE0044 // Add readonly modifier
         private IServiceScope scope;
 #pragma warning restore IDE0044 // Add readonly modifier
         private readonly Lazy<Shell> shell = new Lazy<Shell>();
 
-//-:cnd:noEmit
 #if NET5_0 && WINDOWS
         private Window window;
+
 #else
-        private global::Windows.UI.Xaml.Window window;
+        private Windows.UI.Xaml.Window window;
 #endif
-//+:cnd:noEmit
 
         internal IServiceProvider ServiceProvider => scope.ServiceProvider;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -62,44 +48,47 @@ namespace SolutionTemplate
         public App()
         {
             InitializeLogging();
-            var hostBuilder =
-                Host.CreateDefaultBuilder()
-                    .ConfigureServices(ConfigureServices)
-                    ;
+            this.InitializeComponent();
 
-#pragma warning disable DF0021 // Marks indisposed objects assigned to a field, originated from method invocation.
-#pragma warning disable DF0025 // Marks indisposed objects assigned to a field, originated from method invocation.
+            var hostBuilder = Host.CreateDefaultBuilder().ConfigureServices(ConfigureServices);
             serviceProvider = hostBuilder.Build().Services;
             scope = serviceProvider.CreateScope();
-#pragma warning restore DF0021 // Marks indisposed objects assigned to a field, originated from method invocation.
-#pragma warning restore DF0025 // Marks indisposed objects assigned to a field, originated from method invocation.
-            this.InitializeComponent();
-//-:cnd:noEmit
+
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;
 #endif
-//+:cnd:noEmit
         }
 
         private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services) =>
-    services
-        .AddSingleton<Elmish.Uno.Navigation.INavigationService>(provider =>
-            new Elmish.Uno.Navigation.NavigationService(
-                shell.Value.RootFrame,
-                new Dictionary<string, Type>()
-                {
-                    [Pages.Pages.Main] = typeof(MainPage)
-                }))
-    ;
+            services
+            .AddSingleton<Elmish.Uno.Navigation.INavigationService>(provider =>
+                new Elmish.Uno.Navigation.NavigationService(
+                    shell.Value.RootFrame,
+                    new Dictionary<string, Type>()
+                    {
+                        [Pages.Pages.Main] = typeof(MainPage)
+                    }))
+            ;
+
+#pragma warning disable IDE0051 // Remove unused private members
+        private void ResetScope()
+        {
+            scope.Dispose();
+            scope = serviceProvider.CreateScope();
+            var viewModel = ServiceProvider.GetRequiredService<AppProgram>();
+            Elmish.Uno.ViewModel.StartLoop(Host.ElmConfig, shell.Value, Elmish.ProgramModule.run, viewModel.Program);
+        }
+#pragma warning restore IDE0051 // Remove unused private members
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
+#pragma warning disable CA1062 // Validate arguments of public methods
+#pragma warning disable CA1725 // Parameter names should match base declaration
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-//-:cnd:noEmit
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -111,25 +100,22 @@ namespace SolutionTemplate
             window = new Window();
             window.Activate();
 #else
-            window = global::Windows.UI.Xaml.Window.Current;
+            window = Windows.UI.Xaml.Window.Current;
 #endif
-//+:cnd:noEmit
-
             var shell = this.shell.Value;
+            // Get a Frame to act as the navigation context and navigate to the first page
             var rootFrame = shell.RootFrame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame.Content == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                shell = new Shell();
                 var viewModel = ServiceProvider.GetRequiredService<AppProgram>();
                 Elmish.Uno.ViewModel.StartLoop(Host.ElmConfig, shell, Elmish.ProgramModule.run, viewModel.Program);
-                // Place the frame in the current Window
-                Windows.UI.Xaml.Window.Current.Content = shell;
 
+#pragma warning disable CA1062 // Validate arguments of public methods
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+#pragma warning restore CA1062 // Validate arguments of public methods
                 {
                     //TODO: Load state from previously suspended application
                 }
@@ -138,23 +124,23 @@ namespace SolutionTemplate
                 window.Content = shell;
             }
 
-//-:cnd:noEmit
 #if !(NET5_0 && WINDOWS)
-            if (e.PrelaunchActivated == false)
+            if (!e.PrelaunchActivated)
 #endif
-//+:cnd:noEmit
             {
-                if (shell.RootFrame.Content == null)
+                if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    shell.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 window.Activate();
             }
         }
+#pragma warning restore CA1062 // Validate arguments of public methods
+#pragma warning restore CA1725 // Parameter names should match base declaration
 
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
@@ -171,13 +157,12 @@ namespace SolutionTemplate
         }
 
         /// <summary>
-        /// Configures global logging
+        /// Configures global Uno Platform logging
         /// </summary>
         private static void InitializeLogging()
         {
             var factory = LoggerFactory.Create(builder =>
             {
-//-:cnd:noEmit
 #if __WASM__
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__
@@ -187,7 +172,6 @@ namespace SolutionTemplate
 #else
                 builder.AddConsole();
 #endif
-//+:cnd:noEmit
 
                 // Exclude logs below this level
                 builder.SetMinimumLevel(LogLevel.Information);
@@ -229,3 +213,4 @@ namespace SolutionTemplate
         }
     }
 }
+//+:cnd:noEmit

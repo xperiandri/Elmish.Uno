@@ -1,16 +1,12 @@
-using System;
-using Windows.UI.Xaml;
-
-namespace SolutionTemplate.Wasm
+﻿namespace SolutionTemplate
 {
-    public class Program
+    public partial class App
     {
         private static App app;
 
         private static int Main(string[] args)
         {
-            var callback = new ApplicationInitializationCallback(_ => app = new App());
-            Application.Start(callback);
+            Windows.UI.Xaml.Application.Start(_ => app = new App());
 
             return 0;
         }

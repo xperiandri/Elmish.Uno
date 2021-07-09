@@ -1,4 +1,4 @@
-name: publish to MyGet
+name: Publish to MyGet
 
 on:
   push:
@@ -12,38 +12,39 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Setup .NET Core
+
+    - name: Install .NET SDK 5.0.x
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.200
-        
-    - name: Setup MSBuild.exe
+        dotnet-version: 5.0.x
+
+    - name: Install MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-    
-    - uses: nuget/setup-nuget@v1
+
+    - name: Install NuGet 5.x
+      uses: nuget/setup-nuget@v1
       with:
-        nuget-version: '5.10.0-preview.2'
-    
+        nuget-version: '5.x'
+
     - name: Restore NuGet Packages
       run: |
         nuget restore 'src\\Elmish.Uno.sln' -ConfigFile 'NuGet.Config'
-        
+
     - name: Build with dotnet
       run: |
-        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU"
-        $nuspec = get-content 'Elmish.Uno.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"} 
+        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform='Any CPU'
+        $nuspec = get-content 'Elmish.Uno.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"}
         set-content 'Elmish.Uno.nuspec' -value $nuspec
         nuget pack 'Elmish.Uno.nuspec' -Properties Configuration=Release
-        
+
     - name: Pack Templates
       run: |
-        $nuspec = get-content 'src\\Templates\\Templates.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"} 
+        $nuspec = get-content 'src\\Templates\\Templates.nuspec' | %{ $_ -replace '\$versionSuffix\$',"-ci-${Env:GITHUB_RUN_ID}"}
         set-content 'src\\Templates\\Templates.nuspec' -value $nuspec
         nuget pack 'src\\Templates\\Templates.nuspec' -Properties Configuration=Release
-        
-    - name: MyGet push
+
+    - name: Publish to MyGet
       run: |
         dotnet nuget push -s 'https://www.myget.org/F/elmish_uno/api/v3/index.json' -k ${{secrets.MyGet_Key}} *.nupkg

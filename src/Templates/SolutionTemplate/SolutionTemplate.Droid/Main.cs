@@ -1,43 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using System;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Com.Nostra13.Universalimageloader.Core;
 using Windows.UI.Xaml.Media;
 
 namespace SolutionTemplate.Droid
 {
-	[global::Android.App.ApplicationAttribute(
-		Label = "@string/ApplicationName",
-		LargeHeap = true,
-		HardwareAccelerated = true,
-		Theme = "@style/AppTheme"
-	)]
-	public class Application : Windows.UI.Xaml.NativeApplication
-	{
-		public Application(IntPtr javaReference, JniHandleOwnership transfer)
-			: base(() => new App(), javaReference, transfer)
-		{
-			ConfigureUniversalImageLoader();
-		}
+    [global::Android.App.ApplicationAttribute(
+        Label = "@string/ApplicationName",
+        LargeHeap = true,
+        HardwareAccelerated = true,
+        Theme = "@style/AppTheme"
+    )]
+    public class Application : Windows.UI.Xaml.NativeApplication
+    {
+        public Application(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(() => new App(), javaReference, transfer)
+        {
+            ConfigureUniversalImageLoader();
+        }
 
-		private void ConfigureUniversalImageLoader()
-		{
-			// Create global configuration and initialize ImageLoader with this config
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration
-				.Builder(Context)
-				.Build();
+        private static void ConfigureUniversalImageLoader()
+        {
+            // Create global configuration and initialize ImageLoader with this config
+            using var builder = new ImageLoaderConfiguration.Builder(Context);
+            ImageLoaderConfiguration config = builder.Build();
 
-			ImageLoader.Instance.Init(config);
+            ImageLoader.Instance.Init(config);
 
-			ImageSource.DefaultImageLoader = ImageLoader.Instance.LoadImageAsync;
-		}
-	}
+            ImageSource.DefaultImageLoader = ImageLoader.Instance.LoadImageAsync;
+        }
+    }
 }

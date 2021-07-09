@@ -1,11 +1,10 @@
-using Tizen.Applications;
-using Uno.UI.Runtime.Skia;
+﻿using Uno.UI.Runtime.Skia;
 
-namespace SolutionTemplate.Skia.Tizen
+namespace SolutionTemplate
 {
-    class Program
+    public partial class App
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var host = new TizenHost(() => new SolutionTemplate.App(), args);
             host.Run();

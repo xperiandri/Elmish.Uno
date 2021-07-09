@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
+﻿using System;
 using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 
-
-namespace SolutionTemplate.Converter
+namespace SolutionTemplate.Converters
 {
-    public class StringToSeverityConvector : IValueConverter
+    public class StringToSeverityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -28,8 +22,6 @@ namespace SolutionTemplate.Converter
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotSupportedException();
-        }
+         => throw new NotSupportedException();
     }
 }

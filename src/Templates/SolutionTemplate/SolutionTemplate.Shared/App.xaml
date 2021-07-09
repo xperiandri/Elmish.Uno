@@ -2,8 +2,7 @@
   x:Class="SolutionTemplate.App"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:solutiontemplate="using:Elmish.Uno.SolutionTemplate"
-  xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters">
+  xmlns:local="using:SolutionTemplate">
 
   <Application.Resources>
     <ResourceDictionary>

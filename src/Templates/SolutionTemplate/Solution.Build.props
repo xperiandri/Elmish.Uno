@@ -1,11 +1,18 @@
-<Project>
+﻿<Project>
   <PropertyGroup>
     <AssemblyBaseName>SolutionTemplate</AssemblyBaseName>
     <RootNamespace>SolutionTemplate</RootNamespace>
-    <Company>The Template</Company>
+    <Company>Elmish.Uno</Company>
     <Product>SolutionTemplate</Product>
-    <Authors>The Template</Authors>
-    <Copyright>Copyright © The Template</Copyright>
-    <MicrosoftExtensionsVersion>5.0.0</MicrosoftExtensionsVersion>
+    <Authors>Elmish.Unp</Authors>
+    <Copyright>Copyright © Elmish.Uno</Copyright>
+    <MicrosoftExtensionsVersion>5.0.*</MicrosoftExtensionsVersion>
+    <ToolkitVersion>7.0.*</ToolkitVersion>
+    <UnoUIVersion>3.8.*</UnoUIVersion>
+    <UnoCoreVersion>2.4.0</UnoCoreVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 </Project>
