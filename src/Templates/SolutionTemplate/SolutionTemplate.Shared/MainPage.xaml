@@ -5,11 +5,16 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="using:SolutionTemplate"
   xmlns:unotookit="using:Uno.UI.Toolkit"
+  xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
   <Grid unotookit:VisibleBoundsPadding.PaddingMask="All">
-    <TextBlock Text="{Binding Text}" />
+    <StackPanel Orientation="Vertical">
+      <TextBlock Text="{Binding Text}"/>
+      <Button Content="Display notification for 10 seconds" Command="{Binding Notify}" />
+      <muxc:InfoBar IsOpen="True" IsClosable="False" Message="As long as text is the same, no new notification is created when button is pressed multiple times, only timer starts again" />
+    </StackPanel>
   </Grid>
 </Page>

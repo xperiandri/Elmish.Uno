@@ -10,44 +10,41 @@ open Xamarin.Essentials
 module Environments =
     let LocalAPI = "LocalAPI"
 
+[<CompiledName "Configure">]
 let configure (ctx : HostBuilderContext) (builder : IConfigurationBuilder) =
-
-    let environmentName = ctx.HostingEnvironment.EnvironmentName
 
     let inMemoryCollection = seq {
 
-        yield!
-            match environmentName with
-            | name when name.Equals(Environments.LocalAPI, StringComparison.CurrentCultureIgnoreCase) ->
-                let endpoint =
-                    if DeviceInfo.Platform = DevicePlatform.Android
-                    then "http://10.0.2.2:7071/GraphQL"
-                    else "http://localhost:7071/GraphQL"
-                seq {
-                    yield struct("GraphQL:EndPoint", endpoint)
-                }
-            | name when name.Equals(Environments.Development, StringComparison.CurrentCultureIgnoreCase) ->
-                seq {
-                    yield struct("GraphQL:EndPoint", "https://host.net/GraphQL")
-                }
-            | name when name.Equals(Environments.Production, StringComparison.CurrentCultureIgnoreCase) ->
-                seq {
-                    yield struct("GraphQL:EndPoint", "https://host.net/GraphQL")
-                }
-            | _ -> raise <| NotSupportedException ()
+        //yield!
+        //    match ctx.HostingEnvironment.EnvironmentName with
+        //    | name when name.Equals(Environments.LocalAPI, StringComparison.CurrentCultureIgnoreCase) ->
+        //        seq {
+        //            yield struct("GraphQL:EndPoint", "https://host.net/GraphQL")
+        //        }
+        //    | name when name.Equals(Environments.Development, StringComparison.CurrentCultureIgnoreCase) ->
+        //        seq {
+        //            yield struct("GraphQL:EndPoint", "https://host.net/GraphQL")
+        //        }
+        //    | name when name.Equals(Environments.Production, StringComparison.CurrentCultureIgnoreCase) ->
+        //        seq {
+        //            yield struct("GraphQL:EndPoint", "https://host.net/GraphQL")
+        //        }
+        //    | _ -> raise <| NotSupportedException ()
 
-        //yield struct("AzureMaps:Key", BingAutocomplete.key)
+        yield struct("GraphQL:EndPoint", Constants.GraphQLEndPoint)
     }
 
     builder.AddInMemoryCollection (inMemoryCollection.ToDictionary(fstv, sndv)) |> ignore
     ()
 
 [<CLIMutable>]
-type GraphQLSettings =
+type GraphQLOptions =
     { EndPoint : string }
 
 open Microsoft.Extensions.DependencyInjection
 
 type IServiceCollection with
     member services.ConfigureSolutionTemplateOptions (configuration : IConfiguration) =
-        services.Configure<GraphQLSettings>(configuration.GetSection("GraphQL"))
+        services
+            .Configure<GraphQLOptions>(configuration.GetSection("GraphQL"))
+

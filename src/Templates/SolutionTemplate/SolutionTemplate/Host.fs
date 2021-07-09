@@ -26,7 +26,7 @@ let configureHost (builder : IConfigurationBuilder) =
 let configureServices (ctx : HostBuilderContext) (services : IServiceCollection) =
     services
         .ConfigureSolutionTemplateOptions(ctx.Configuration)
-        .AddScoped<Notification.Program>()
+        .AddScoped<Notifications.Program>()
         .AddScoped<App.Program>()
     |> ignore
 
