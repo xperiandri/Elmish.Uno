@@ -9,7 +9,7 @@
       This is not an issue when libraries are referenced through nuget packages. See https://github.com/unoplatform/uno/issues/446 for more details.
       -->
     </PackageReference>
-    <PackageReference Include="Elmish" Version="3.1.0" />
+    <PackageReference Include="Elmish" Version="[3.0.3, 4)" />
     <PackageReference Include="Uno.Core" Version="2.3.0" />
     <PackageReference Include="FSharp.Core" Version="5.0.*" />
   </ItemGroup>

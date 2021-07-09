@@ -41,6 +41,7 @@ namespace SolutionTemplate
 
         #endregion
     }
+
     public partial class Shell : ShellBase, INavigate
     {
         public Shell()
@@ -55,7 +56,6 @@ namespace SolutionTemplate
         /// <param name="e">Details about the navigation failure</param>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-
             var error = new NavigationError(() => e.Handled, h => e.Handled = h, e.Exception, e.SourcePageType);
             NavigationFailedCommand?.Execute(error);
         }

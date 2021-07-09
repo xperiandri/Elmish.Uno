@@ -14,7 +14,7 @@ trim_trailing_whitespace = true
 indent_size          = 4
 charset              = utf-8-bom
 # Project files
-[*.{csproj,fsproj,vbproj,shproj,projitems,props,config,xaml,xml}]
+[*.{csproj,fsproj,vbproj,shproj,projitems,props,config,xaml,xml,plist}]
 indent_size          = 2
 charset              = utf-8-bom
 ###############################
@@ -832,3 +832,43 @@ dotnet_diagnostic.CA5403.severity = warning
 
 # CA9999: Analyzer version mismatch
 dotnet_diagnostic.CA9999.severity = warning
+
+###############################
+# Code Analysis Exceptions    #
+###############################
+[**/{Main.cs,Program.cs,*Activity.cs,Shell.xaml.cs,*Page.cs,*Page.xaml.cs,Controls/**.cs}]
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
+# CA1012: Abstract type 'ShellBase' should not have public constructors
+dotnet_diagnostic.CA1012.severity = none
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
+# CA1501: Avoid excessive inheritance
+dotnet_diagnostic.CA1501.severity = none
+# IDE0001: Simplify Names
+dotnet_diagnostic.IDE0001.severity = suggestion
+# IDE0021: Use expression body for constructors
+dotnet_diagnostic.IDE0021.severity = suggestion
+
+[{Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
+csharp_style_expression_bodied_constructors = false
+# RCS1043: Remove 'partial' modifier from type with a single part.
+dotnet_diagnostic.RCS1043.severity = none
+
+[{App.xaml.cs,Main.cs,Shell.xaml.cs}]
+# CA1724: Type names should not match namespaces
+dotnet_diagnostic.CA1724.severity = none
+# DF0000: Marks indisposed anonymous objects from object creations.
+dotnet_diagnostic.DF0000.severity = silent
+# DF0010: Marks indisposed local variables.
+dotnet_diagnostic.DF0010.severity = silent
+# DF0021: Field is not disposed.
+dotnet_diagnostic.DF0021.severity = silent
+
+[{App.xaml.cs,Program.cs}]
+# CA1724: The type name App conflicts in whole or in part with the namespace name. Change either name to eliminate the conflict.
+dotnet_diagnostic.CA1724.severity = none
+# CA1801: Parameter args of method Main is never used. Remove the parameter or use it in the method body.
+dotnet_diagnostic.CA1801.severity = none

@@ -1,12 +1,15 @@
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 using SolutionTemplate;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle(AssemblyInfo.Product + " UWP app")]
-[assembly: AssemblyDescription("UWP приложение"+ AssemblyInfo.Description)]
+/// TODO: Modify description per platform
+[assembly: AssemblyDescription(AssemblyInfo.Description)]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 

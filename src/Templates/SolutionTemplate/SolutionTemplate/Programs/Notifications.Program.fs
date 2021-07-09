@@ -1,4 +1,4 @@
-﻿namespace SolutionTemplate.Programs.Notification
+﻿namespace SolutionTemplate.Programs.Notifications
 
 
 open Elmish
@@ -6,6 +6,7 @@ open Elmish.Uno
 open SolutionTemplate.Pages
 open SolutionTemplate.Models
 open SolutionTemplate.Programs.Messages
+open System
 
 type Model =
     { Notifications: Notification list }
@@ -17,9 +18,13 @@ type Msg =
     | NavigationFailed of NavigationError
     | ScheduleCloseNotification of Notification
 
+module Cmd =
+    let add appMsg notification : Cmd<ProgramMessage<RootMsg, 'appMsg>> =
+        notification |> Cmd.ofLocal Msg.AddNotification appMsg
+
 type public Program () =
 
-    let closeNotification notification (time : int) (dispatch : Dispatch<ProgramMessage<RootMsg, Msg>>) =
+    let closeNotification notification (time : TimeSpan) (dispatch : Dispatch<ProgramMessage<RootMsg, Msg>>) =
         async {
             do! Async.Sleep time
             do dispatch (Local <| RemoveNotification notification)
@@ -27,7 +32,7 @@ type public Program () =
 
     member p.Initial = Model.Initial
 
-    member p.Update msg (m: Model) : Model * Cmd<ProgramMessage<RootMsg, Msg>> =
+    member p.Update msg (m : Model) : Model * Cmd<ProgramMessage<RootMsg, Msg>> =
         match msg with
         | AddNotification notification ->
             match m.Notifications
@@ -35,39 +40,33 @@ type public Program () =
             | Some _ ->
                 let n =
                     m.Notifications
-                    |> Seq.map
+                    |> List.map
                         (fun n ->
                             if n.Text = notification.Text then
                                 { Text = notification.Text
                                   Type = notification.Type
                                   Title = notification.Title
-                                  LifeTime = notification.LifeTime
+                                  Timeout = notification.Timeout
                                   IsOpen = true
                                   IsClosable = notification.IsClosable }
                             else
                                 n)
-
-                { m with
-                      Notifications = n |> Seq.toList },
+                { m with Notifications = n },
                 Cmd.none
             | None ->
                 let n = notification :: m.Notifications
-
-                { m with
-                      Notifications = n |> Seq.toList },
+                { m with Notifications = n },
                 ScheduleCloseNotification notification |> Local |> Cmd.ofMsg
         | ScheduleCloseNotification notification ->
-            match notification.LifeTime with
+            match notification.Timeout with
             | ValueSome timeout ->
                 m,
-                (closeNotification notification timeout)
-                |> Cmd.ofSub
+                (closeNotification notification timeout) |> Cmd.ofSub
             | ValueNone -> m, Cmd.none
         | RemoveNotification notification ->
             let n =
                 m.Notifications
                 |> List.filter (fun n -> n.Text <> notification.Text)
-
             { m with Notifications = n }, Cmd.none
         | NavigationFailed error ->
             let n = Notification.Error $"Failed to load {error.SourcePageType.FullName}" (error.Exception.ToString ())

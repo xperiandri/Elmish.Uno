@@ -1,9 +1,20 @@
 ﻿<linker>
-  <assembly fullname="CarWashScanner.Wasm" />
+  <assembly fullname="SolutionTemplate.Programs" />
+  <assembly fullname="SolutionTemplate" />
   <assembly fullname="Uno.UI" />
-
-  <assembly fullname="System.Core">
-	<!-- This is required by JSon.NET and any expression.Compile caller -->
-	<type fullname="System.Linq.Expressions*" />
+  <assembly fullname="Microsoft.Extensions.Hosting">
+    <type fullname="Microsoft.Extensions.Hosting.Internal.Host" />
+    <type fullname="Microsoft.Extensions.Hosting.Internal.ApplicationLifetime" />
+    <type fullname="Microsoft.Extensions.Hosting.Internal.ConsoleLifetime" />
+    <type fullname="Microsoft.Extensions.Hosting.ConsoleLifetimeOptions" />
+    <type fullname="Microsoft.Extensions.Hosting.HostOptions" />
   </assembly>
+  <assembly fullname="Microsoft.Extensions.Options" />
+
+  <assembly fullname="FSharp.Core" />
+  <assembly fullname="System.Core">
+    <!-- This is required by JSon.NET and any expression.Compile caller -->
+    <type fullname="System.Linq.Expressions*" />
+  </assembly>
+  <assembly fullname="System.Text.Json" />
 </linker>

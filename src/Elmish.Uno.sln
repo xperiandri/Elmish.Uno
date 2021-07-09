@@ -21,6 +21,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmish.Uno.Uwp", "Elmish.Un
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{C6184090-416E-43D5-A110-F76B45317E0F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\publish_myget.yml = ..\.github\workflows\publish_myget.yml
+		..\.github\workflows\publish_nuget.yml = ..\.github\workflows\publish_nuget.yml
+		..\.github\workflows\pull_request.yml = ..\.github\workflows\pull_request.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{49DD7592-B03D-4EEE-B1BF-522488992C80}"
+	ProjectSection(SolutionItems) = preProject
+		..\Elmish.Uno.nuspec = ..\Elmish.Uno.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

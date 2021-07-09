@@ -1,0 +1,50 @@
+name: Publish to NuGet
+
+on:
+  push:
+    branches:
+      - uno
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install .NET SDK 5.0.x
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Install MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Install NuGet 5.x
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: '5.x'
+
+    - name: Restore NuGet Packages
+      run: |
+        nuget restore 'src\\Elmish.Uno.sln' -ConfigFile 'NuGet.Config'
+
+    - name: Build with dotnet
+      run: |
+        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform='Any CPU'
+        $nuspec = get-content 'Elmish.Uno.nuspec' | %{ $_ -replace '\$versionSuffix\$',""}
+        set-content 'Elmish.Uno.nuspec' -value $nuspec
+        nuget pack 'Elmish.Uno.nuspec' -Properties Configuration=Release
+
+    - name: Pack Templates
+      run: |
+        $nuspec = get-content 'src\\Templates\\Templates.nuspec' | %{ $_ -replace '\$versionSuffix\$',""}
+        set-content 'src\\Templates\\Templates.nuspec' -value $nuspec
+        nuget pack 'src\\Templates\\Templates.nuspec' -Properties Configuration=Release
+
+    - name: Publish to MyGet
+      run: |
+        dotnet nuget push -k ${{secrets.NuGet_Key}} *.nupkg

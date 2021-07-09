@@ -1,20 +1,10 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Controls;
-
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace SolutionTemplate.Controls
 {
@@ -40,11 +30,13 @@ namespace SolutionTemplate.Controls
             set => SetValue(PropertyNameProperty, value);
         }
 
+#pragma warning disable CA1801 // Review unused parameters
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the PropertyName property.
         /// </summary>
         private void OnPropertyNameChanged(string oldPropertyName, string newPropertyName)
          => ResetErrors(newPropertyName);
+#pragma warning restore CA1801 // Review unused parameters
 
         #endregion
 
@@ -106,11 +98,15 @@ namespace SolutionTemplate.Controls
             set => SetValue(ErrorContentStyleProperty, value);
         }
 
+#pragma warning disable CA1801 // Review unused parameters
+#pragma warning disable RCS1163 // Unused parameter.
         /// <summary>
         /// Provides derived classes an opportunity to handle changes to the ErrorContentStyle property.
         /// </summary>
-        protected void OnErrorContentStyleChanged(Style oldErrorContentStyle, Style newErrorContentStyle)
+        private void OnErrorContentStyleChanged(Style oldErrorContentStyle, Style newErrorContentStyle)
          => TrySetStyle();
+#pragma warning restore RCS1163 // Unused parameter.
+#pragma warning restore CA1801 // Review unused parameters
 
         #endregion
 
