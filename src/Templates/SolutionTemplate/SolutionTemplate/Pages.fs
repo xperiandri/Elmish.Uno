@@ -3,8 +3,7 @@
 [<AutoOpen>]
 module Pages =
 
-    [<Literal>]
-    let Main = "Main"
+    let [<Literal>] Main = "Main"
 
 open System
 

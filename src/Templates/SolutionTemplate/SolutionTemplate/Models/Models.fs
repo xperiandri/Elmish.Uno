@@ -1,5 +1,7 @@
 ﻿namespace SolutionTemplate.Models
 
+open System
+
 type InfoBarSeverity =
     | Informational = 0
     | Success = 1
@@ -7,20 +9,20 @@ type InfoBarSeverity =
     | Error = 3
 
 type Notification =
-    { Type: string
-      Title: string
-      Text: string
-      LifeTime: int voption
-      IsOpen: bool
-      IsClosable: bool }
+    { Type : string
+      Title : string
+      Text : string
+      Timeout : TimeSpan voption
+      IsOpen : bool
+      IsClosable : bool }
 
 module Notification =
 
-    let ErrorWithTimer title text lifeTime =
+    let ErrorWithTimer title text timeout =
         { Type = "Error"
           Title = title
           Text = text
-          LifeTime = ValueSome lifeTime
+          Timeout = ValueSome timeout
           IsOpen = true
           IsClosable = true }
 
@@ -28,15 +30,15 @@ module Notification =
         { Type = "Error"
           Title = title
           Text = text
-          LifeTime = ValueNone
+          Timeout = ValueNone
           IsOpen = true
           IsClosable = true }
 
-    let InfoWithTimer title text lifeTime =
+    let InfoWithTimer title text timeout =
         { Type = "Informational"
           Title = title
           Text = text
-          LifeTime = ValueSome lifeTime
+          Timeout = ValueSome timeout
           IsOpen = true
           IsClosable = true }
 
@@ -44,6 +46,6 @@ module Notification =
         { Type = "Informational"
           Title = title
           Text = text
-          LifeTime = ValueNone
+          Timeout = ValueNone
           IsOpen = true
           IsClosable = true }
