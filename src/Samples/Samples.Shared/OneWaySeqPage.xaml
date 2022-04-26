@@ -9,6 +9,12 @@
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
+  <Page.Resources>
+    <Style TargetType="TextBlock">
+      <Setter Property="Margin" Value="10" />
+    </Style>
+  </Page.Resources>
+
   <Grid d:DataContext="{Binding OneWaySeq}" utoolkit:VisibleBoundsPadding.PaddingMask="All">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -19,20 +25,21 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="1.5*" />
     </Grid.ColumnDefinitions>
 
     <TextBlock
-      Grid.ColumnSpan="2"
+      Grid.ColumnSpan="3"
       Margin="10"
       Text="This sample shows the difference between Binding.oneWay and Binding.oneWaySeq. For oneWay, the whole ListView is re-rendered for every change. For oneWaySeq, only the new item is added."
       TextWrapping="Wrap" />
     <TextBlock
       Grid.Row="1"
-      Margin="0,0,0,10"
       HorizontalAlignment="Center"
       FontSize="16"
       FontWeight="Bold"
-      Text="Binding.oneWay" />
+      Text="Binding. oneWay"
+      TextWrapping="WrapWholeWords" />
     <Button
       Grid.Row="2"
       Width="150"
@@ -44,11 +51,11 @@
     <TextBlock
       Grid.Row="1"
       Grid.Column="1"
-      Margin="0,0,0,10"
       HorizontalAlignment="Center"
       FontSize="16"
       FontWeight="Bold"
-      Text="Binding.oneWaySeq" />
+      Text="Binding. oneWaySeq"
+      TextWrapping="WrapWholeWords" />
     <Button
       Grid.Row="2"
       Grid.Column="1"
@@ -61,5 +68,27 @@
       Grid.Row="3"
       Grid.Column="1"
       ItemsSource="{Binding OneWaySeqNumbers}" />
+    <TextBlock
+      Grid.Row="1"
+      Grid.Column="2"
+      HorizontalAlignment="Center"
+      FontSize="16"
+      TextWrapping="WrapWholeWords">
+      <Bold><Run Text="Binding. oneWaySeq" /></Bold>
+      <Run Text="with incremental loading" />
+    </TextBlock>
+    <TextBlock
+      Grid.Row="2"
+      Grid.Column="2"
+      Margin="10,0,10,0"
+      HorizontalAlignment="Center"
+      FontSize="16"
+      FontWeight="Bold"
+      Text="Never insert loaded items to the top as it will cause constant loading, if HasMoreItems is always true"
+      TextWrapping="WrapWholeWords" />
+    <ListView
+      Grid.Row="3"
+      Grid.Column="2"
+      ItemsSource="{Binding IncrementalLoadingNumbers}" />
   </Grid>
 </Page>
