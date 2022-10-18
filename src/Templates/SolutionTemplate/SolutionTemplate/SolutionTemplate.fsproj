@@ -9,18 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.json" />
     <Compile Include="Helpers\Elmish.fs" />
     <Compile Include="Helpers\ObjAndStructConversions.fs" />
     <Compile Include="Helpers\Windows.fs" />
     <Compile Include="Constants.fs" />
-    <Compile Include="Configuration.fs" />
+    <Compile Include="Options.fs" />
     <Compile Include="Pages.fs" />
     <Compile Include="Models\Notification.fs" />
     <Compile Include="Programs\Messages.fs" />
     <Compile Include="Programs\Notifications.Program.fs" />
     <Compile Include="Programs\App.Program.fs" />
-    <Compile Include="Host.fs" />
+    <Compile Include="Configuration.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="Elmish" />
@@ -35,6 +38,9 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="System.Collections.Immutable" />
     <PackageReference Include="Uno.Core" />
+    <PackageReference Include="Uno.Extensions.Configuration" />
+    <PackageReference Include="Uno.Extensions.Hosting" />
+    <PackageReference Include="Uno.Extensions.Localization" />
     <PackageReference Include="Xamarin.Essentials" />
   </ItemGroup>
 

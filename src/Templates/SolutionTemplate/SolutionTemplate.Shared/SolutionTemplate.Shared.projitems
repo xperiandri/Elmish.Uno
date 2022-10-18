@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.host.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ValidationControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToSeverityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">

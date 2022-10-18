@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI" />
     <PackageReference Include="Microsoft.UI.Xaml" />
     <PackageReference Include="Uno.Core" />
+    <PackageReference Include="Uno.Extensions.Hosting.UWP" VersionOverride="$(UnoExtensionsVersion)" />
     <PackageReference Include="Uno.UI" />
   </ItemGroup>
   <PropertyGroup>

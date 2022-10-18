@@ -2,32 +2,31 @@
 namespace SolutionTemplate;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+
+using SolutionTemplate.Elmish;
 
 using global::Windows.ApplicationModel;
 using global::Windows.ApplicationModel.Activation;
 using global::Windows.Networking.Connectivity;
-using global::Windows.Security.Authentication.Web;
 using global::Windows.UI.Xaml;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using SolutionTemplate.Elmish;
-
-using Uno;
+using Uno.Extensions;
 
 using AppProgram = SolutionTemplate.Programs.App.Program;
+
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
 /// </summary>
 public sealed partial class App : Application
 {
+    private readonly IHost host;
+    private readonly AppProgram appProgram;
     private readonly Lazy<Shell> shell = new Lazy<Shell>();
-    private readonly Lazy<AppProgram> appProgram;
 
 #if NET6_0 && WINDOWS
     private Window window;
@@ -36,7 +35,7 @@ public sealed partial class App : Application
     private global::Windows.UI.Xaml.Window window;
 #endif
 
-    internal IServiceProvider ServiceProvider => appProgram.Value.ServiceProvider;
+    internal IServiceProvider ServiceProvider => host.Services;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -44,10 +43,9 @@ public sealed partial class App : Application
     /// </summary>
     public App()
     {
-        var loggerFactory = CreateLoggerFactory();
-        global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = loggerFactory;
-        appProgram = new Lazy<AppProgram>(new Func<AppProgram>(CreateAppProgram));
-        LogWebAuthenticationBrokerSettings(loggerFactory.CreateLogger<App>());
+        host = CreateHost();
+        appProgram = new AppProgram(ServiceProvider);
+        LogWebAuthenticationBrokerSettings(host.Log());
         this.InitializeComponent();
     }
 
@@ -82,12 +80,12 @@ public sealed partial class App : Application
         if (rootFrame.Content == null)
         {
             var program =
-                appProgram.Value.Program
+                appProgram.Program
                 .WithSubscription(AppProgram.GetLifecycleEventsSubscription(SubscribeToLifecycleEvents))
                 .WithSubscription(AppProgram.GetNetworkStatusSubscription(SubscribeToNetworkStatus));
 
             global::Elmish.Uno.ViewModel.StartLoop(
-                UnoHost.ElmConfig, shell, global::Elmish.ProgramModule.runWith, program,
+                ConfigurationModule.ElmConfig, shell, global::Elmish.ProgramModule.runWith, program,
                 (SolutionTemplate.WinRT.ApplicationExecutionState)e.PreviousExecutionState);
 
 #pragma warning disable CA1062 // Validate arguments of public methods
@@ -117,92 +115,6 @@ public sealed partial class App : Application
         }
     }
 #pragma warning restore CA1725 // Parameter names should match base declaration
-
-    /// <summary>
-    /// Configures global Uno Platform logging
-    /// </summary>
-    private static ILoggerFactory CreateLoggerFactory() => LoggerFactory.Create(builder =>
-    {
-#if __WASM__
-        builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
-#elif __IOS__
-    builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
-#elif NETFX_CORE
-        builder.AddDebug();
-#else
-        builder.AddConsole();
-#endif
-
-        // Exclude logs below this level
-        builder.SetMinimumLevel(LogLevel.Information);
-
-        // Default filters for Uno Platform namespaces
-        builder.AddFilter("Uno", LogLevel.Warning);
-        builder.AddFilter("Windows", LogLevel.Warning);
-        builder.AddFilter("Microsoft", LogLevel.Warning);
-
-        // Generic Xaml events
-        // builder.AddFilter("Windows.UI.Xaml", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.VisualStateGroup", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.StateTriggerBase", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.UIElement", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.FrameworkElement", LogLevel.Trace );
-
-        // Layouter specific messages
-        // builder.AddFilter("Windows.UI.Xaml.Controls", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.Controls.Layouter", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.Controls.Panel", LogLevel.Debug );
-
-        // builder.AddFilter("Windows.Storage", LogLevel.Debug );
-
-        // Binding related messages
-        // builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
-        // builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
-
-        // Binder memory references tracking
-        // builder.AddFilter("Uno.UI.DataBinding.BinderReferenceHolder", LogLevel.Debug );
-
-        // RemoteControl and HotReload related
-        // builder.AddFilter("Uno.UI.RemoteControl", LogLevel.Information);
-
-        // Debug JS interop
-        // builder.AddFilter("Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug );
-    });
-
-    private AppProgram CreateAppProgram()
-    {
-        var hostBuilder =
-            UnoHost.CreateDefaultBuilder()
-                   .ConfigureAppConfiguration(ConfigurationModule.Configure)
-                   .ConfigureServices(ConfigureServices);
-#pragma warning disable DF0001 // Marks indisposed anonymous objects from method invocations.
-        var serviceProvider = hostBuilder.Build().Services;
-        return new AppProgram(serviceProvider);
-#pragma warning restore DF0001 // Marks indisposed anonymous objects from method invocations.
-    }
-
-#pragma warning disable IDE0022 // Use expression body for methods
-    private void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
-    {
-        services.AddSingleton<global::Elmish.Uno.Navigation.INavigationService>(_ =>
-            new global::Elmish.Uno.Navigation.NavigationService(
-                shell.Value.RootFrame,
-                new Dictionary<string, Type>()
-                {
-                    [nameof(Pages.Main)] = typeof(MainPage),
-                }));
-    }
-
-    private static void LogWebAuthenticationBrokerSettings(ILogger logger)
-    {
-#if __WASM__
-        WinRTFeatureConfiguration.WebAuthenticationBroker.DefaultCallbackPath = "/authentication/login-callback.htm";
-#elif !WINDOWS_UWP
-        WinRTFeatureConfiguration.WebAuthenticationBroker.DefaultReturnUri = new Uri($"{Constants.AppScheme}://{Constants.AppHost}");
-#endif
-        logger.LogInformation("WebAuthenticationBroker CallbackUri = '{uri}'", WebAuthenticationBroker.GetCurrentApplicationCallbackUri());
-    }
-#pragma warning restore IDE0022 // Use expression body for methods
 
 #pragma warning disable RCS1163 // Unused parameter.
     private void SubscribeToLifecycleEvents(
@@ -249,7 +161,6 @@ public sealed partial class App : Application
 #endif
     }
 #pragma warning restore RCS1163 // Unused parameter.
-
     private static void SubscribeToNetworkStatus(Action<SolutionTemplate.WinRT.NetworkConnectivityLevel> onNetworkChanged)
      => NetworkInformation.NetworkStatusChanged += (sender) =>
      {

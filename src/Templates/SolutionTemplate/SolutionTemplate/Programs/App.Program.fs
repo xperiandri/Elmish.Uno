@@ -9,11 +9,11 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Options
 
 open SolutionTemplate
-open SolutionTemplate.Configuration
 open SolutionTemplate.Elmish
+open SolutionTemplate.Options
 open SolutionTemplate.Models
-open SolutionTemplate.Programs.Messages
 open SolutionTemplate.Programs
+open SolutionTemplate.Programs.Messages
 open SolutionTemplate.WinRT
 
 type Model = {
