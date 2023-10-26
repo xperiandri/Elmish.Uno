@@ -1,8 +1,8 @@
 ﻿namespace Elmish.Uno
 
 open System
-open Windows.UI.Xaml
 open Windows.UI.Core
+open Microsoft.UI.Xaml
 
 open Elmish
 open Elmish.Uno
@@ -34,7 +34,7 @@ type ViewModel() =
       let doDispatch = fun () ->
         Console.WriteLine "Dispatch"
         innerDispatch msg
-      element.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, fun () -> doDispatch()) |> ignore
+      element.DispatcherQueue.TryEnqueue(fun () -> doDispatch()) |> ignore
 
     program
     |> Program.withSetState setState

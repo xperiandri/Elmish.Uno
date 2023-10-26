@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <Import Project="..\Samples.Build.props" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -13,10 +12,11 @@
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <WasmShellILLinkerEnabled>False</WasmShellILLinkerEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+    IL Linking is disabled in Debug configuration.
+    When building in Release, see https://platform.uno/docs/articles/features/using-il-linker-webassembly.html
+    -->
+    <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.png" />
@@ -47,18 +47,20 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Windows.Compatibility" />
     <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" />
-    <PackageReference Include="Uno.Microsoft.Toolkit" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" />
-    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" />
-    <PackageReference Include="Uno.UI.WebAssembly" />
-    <PackageReference Include="Uno.UI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
+    
+
+
+    <PackageReference Include="Uno.CommunityToolkit.WinUI" />
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI" />
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Behaviors" />
+    
+    <PackageReference Include="Uno.WinUI.WebAssembly" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" />
     <PackageReference Include="Uno.Wasm.Bootstrap" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj" />
     <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
     <ProjectReference Include="..\Samples\Samples.fsproj" />
   </ItemGroup>

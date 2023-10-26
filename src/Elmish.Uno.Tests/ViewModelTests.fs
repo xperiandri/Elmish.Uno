@@ -162,7 +162,7 @@ module Helpers =
       Validate = validate >> ValueOption.toArray
       WrapDispatch = id
       GetErrorId = unbox >> getErrorId >> box
-      ErrorItemEquals = (fun a b -> errorItemEquals (unbox a) (unbox b))
+      ErrorItemEquals = fun one another -> errorItemEquals (unbox one) (unbox another)
     })
 
 

@@ -6,8 +6,6 @@ open System.Threading
 open System.Windows
 open Elmish
 open Elmish.Uno
-open Windows.ApplicationModel.Core
-open Windows.UI.Core
 
 type Model =
   { CurrentTime: DateTimeOffset
@@ -35,14 +33,14 @@ type Msg =
   | LoadFailed of exn
 
 let save text =
-  //CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, fun () ->
-  //  let guiCtx = SynchronizationContext.Current
+  //CoreApplication.GetCurrentView().DispatcherQueue.TryEnqueue(fun () ->
+    let picker = new Windows.Storage.Pickers.FileSavePicker()
+    let fileTypeChoices = picker.FileTypeChoices
+    do fileTypeChoices.Add("Plain Text", [|".txt"|])
+    do fileTypeChoices.Add("Markdown"  , [|".md" |])
+    //let guiCtx = SynchronizationContext.Current
     async {
       //do! Async.SwitchToContext guiCtx
-      let picker = new Windows.Storage.Pickers.FileSavePicker()
-      let fileTypeChoices = picker.FileTypeChoices
-      do fileTypeChoices.Add("Plain Text", [|".txt"|])
-      do fileTypeChoices.Add("Markdown"  , [|".md" |])
       let! file = picker.PickSaveFileAsync().AsTask()
       match file with
       | null -> return SaveCanceled
@@ -63,14 +61,14 @@ let save text =
   //).AsTask().AsAsync()
 
 let load () =
-  //CoreApplication.GetCurrentView().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, fun () ->
+  //CoreApplication.GetCurrentView().DispatcherQueue.TryEnqueue(fun () ->
+    let picker = new Windows.Storage.Pickers.FileOpenPicker()
+    let fileTypeFilter = picker.FileTypeFilter
+    do fileTypeFilter.Add(".txt")
+    do fileTypeFilter.Add(".md")
     //let guiCtx = SynchronizationContext.Current
     async {
       //do! Async.SwitchToContext guiCtx
-      let picker = new Windows.Storage.Pickers.FileOpenPicker()
-      let fileTypeFilter = picker.FileTypeFilter
-      do fileTypeFilter.Add(".txt")
-      do fileTypeFilter.Add(".md")
       let! file = picker.PickSingleFileAsync().AsTask()
       match file with
       | null -> return LoadCanceled

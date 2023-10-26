@@ -2,6 +2,7 @@
 module SolutionTemplate.Configuration
 
 open System
+open System.Linq
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
@@ -14,7 +15,7 @@ let elmConfig = { Elmish.Uno.ElmConfig.Default
 
 [<CompiledName "ConfigureCommonServices">]
 let configureCommonServices (ctx : HostBuilderContext) (services : IServiceCollection) =
-    services
+        services
         .ConfigureCommonOptions(ctx.Configuration)
         .AddScoped<Notifications.Program>()
         .AddScoped<App.Program>()

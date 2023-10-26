@@ -6,16 +6,16 @@ using Android.Runtime;
 
 using Com.Nostra13.Universalimageloader.Core;
 
-using global::Windows.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media;
 
 [global::Android.App.Application(
-    Label = "@string/ApplicationName",
-    Icon = "@mipmap/icon",
-    LargeHeap = true,
-    HardwareAccelerated = true,
-    Theme = "@style/AppTheme"
-)]
-public class Application : Windows.UI.Xaml.NativeApplication
+        Label = "@string/ApplicationName",
+        Icon = "@mipmap/icon",
+        LargeHeap = true,
+        HardwareAccelerated = true,
+        Theme = "@style/AppTheme"
+    )]
+public class Application : Microsoft.UI.Xaml.NativeApplication
 {
     public Application(IntPtr javaReference, JniHandleOwnership transfer)
         : base(() => new App(), javaReference, transfer)

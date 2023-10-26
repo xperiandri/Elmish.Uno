@@ -10,8 +10,11 @@ open System.Reflection
 open Microsoft.FSharp.Reflection
 open FSharp.Collections.Immutable
 
-open Elmish
 open Elmish.Uno
+
+#if __UWP__
+open Microsoft.UI.Xaml.Data
+#endif
 
 
 [<AutoOpen>]
@@ -259,7 +262,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       initialVisibility =
     let win = getWindow currentModel dispatch
     winRef.SetTarget win
-    win.Dispatcher.Invoke(fun () ->
+    win.DispatcherQueue.TryEnqueue(fun () ->
       let guiCtx = System.Threading.SynchronizationContext.Current
       async {
         win.DataContext <- dataContext
@@ -655,3 +658,62 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       match errors.TryGetValue propName with
       | true, err -> upcast err
       | false, _ -> null
+
+#if __UWP__
+
+  member private this.GetProperty(name : string) : ICustomProperty =
+    if name = "CurrentModel" then DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name, fun vm -> vm.CurrentModel |> box) :> _
+    else
+    match this.Bindings.TryGetValue name with
+    | false, _ ->
+      System.Diagnostics.Debugger.Break()
+      null
+    | true, binding ->
+    match binding with
+    | OneWay oneWay ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name, fun vm -> vm.TryGetMember(OneWay oneWay)) :> _
+    | OneWayLazy oneWayLazy ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name, fun vm -> vm.TryGetMember(OneWayLazy oneWayLazy)) :> _
+    | OneWaySeq oneWaySeq ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, ObservableCollection<obj>>(name,
+          fun vm -> vm.TryGetMember(OneWaySeq oneWaySeq) :?> _) :> _
+    | TwoWay twoWay ->
+        let twoWay = TwoWay twoWay
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
+          (fun vm -> vm.TryGetMember(twoWay)),
+          (fun value vm -> vm.TrySetMember(value, twoWay) |> ignore)) :> _
+    | TwoWayValidate twoWayValidate ->
+        let twoWayValidate = TwoWayValidate twoWayValidate
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
+          (fun vm -> vm.TryGetMember(twoWayValidate)),
+          (fun value vm -> vm.TrySetMember(value, twoWayValidate) |> ignore)) :> _
+    | Cmd cmd -> DynamicCustomProperty<ViewModel<'model,'msg>, System.Windows.Input.ICommand>(name,
+                   fun vm -> vm.TryGetMember(Cmd cmd) :?> _) :> _
+    | CmdParam cmdParam ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
+          fun vm -> vm.TryGetMember(CmdParam cmdParam)) :> _
+    | SubModel subModel ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, ViewModel<obj, obj>>(name,
+          fun vm -> vm.TryGetMember(SubModel subModel) :?> _) :> _
+    | SubModelSeq subModelSeq ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, ObservableCollection<ViewModel<obj, obj>>>(name,
+          fun vm -> vm.TryGetMember(SubModelSeq subModelSeq) :?> _) :> _
+    | SubModelSelectedItem subModelSelectedItem ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, ViewModel<obj, obj>>(name,
+          fun vm -> vm.TryGetMember(SubModelSelectedItem subModelSelectedItem) :?> _) :> _
+    | Cached cached ->
+        let cached = Cached cached
+        DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
+          (fun vm -> vm.TryGetMember(cached)),
+          (fun value vm -> vm.TrySetMember(value, cached) |> ignore)) :> _
+
+  interface ICustomPropertyProvider with
+
+    member this.GetCustomProperty(name) = this.GetProperty(name)
+
+    member this.GetIndexedProperty(name, _ : Type) = this.GetProperty(name)
+
+    member this.GetStringRepresentation() = this.CurrentModel.ToString()
+
+    member this.Type = this.CurrentModel.GetType()
+#endif

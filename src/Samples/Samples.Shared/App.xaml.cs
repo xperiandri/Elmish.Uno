@@ -1,97 +1,94 @@
-﻿using System.Diagnostics.Contracts;
+﻿namespace Elmish.Uno.Samples;
+
+using System.Diagnostics.Contracts;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
 
-namespace Elmish.Uno.Samples
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
+public sealed partial class App : Application
 {
+    private Window window;
+
     /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
-    public sealed partial class App : Application
+    public App()
     {
-#if NET5_0 && WINDOWS
-        private Window window;
+        InitializeLogging();
 
-#else
-        private global::Windows.UI.Xaml.Window window;
-#endif
-
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            InitializeLogging();
-
-            this.InitializeComponent();
+        this.InitializeComponent();
 
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;
 #endif
-        }
+    }
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            Contract.Assume(args != null);
+    /// <summary>
+    /// Invoked when the application is launched normally by the end user.  Other entry points
+    /// will be used such as when the application is launched to open a specific file.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    {
+        Contract.Assume(args != null);
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                // this.DebugSettings.EnableFrameRateCounter = true;
-            }
+        if (System.Diagnostics.Debugger.IsAttached)
+        {
+            // this.DebugSettings.EnableFrameRateCounter = true;
+        }
 #endif
 
-#if NET5_0 && WINDOWS
-            window = new Window();
-            window.Activate();
+#if NET6_0_OR_GREATER && WINDOWS
+        window = new Window();
+        window.Activate();
 #else
-            window = global::Windows.UI.Xaml.Window.Current;
+            window = Microsoft.UI.Xaml.Window.Current;
 #endif
 
-            Shell shell = window.Content as Shell;
+        Shell shell = window.Content as Shell;
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (shell == null)
-            {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                shell = new Shell();
+        // Do not repeat app initialization when the Window already has content,
+        // just ensure that the window is active
+        if (shell == null)
+        {
+#pragma warning disable DF0010 // Marks indisposed local variables.
+            // Create a Frame to act as the navigation context and navigate to the first page
+            shell = new Shell();
+#pragma warning restore DF0010 // Marks indisposed local variables.
 
 #pragma warning disable Uno0001 // Uno type or member is not implemented
-                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
-                window.Content = shell;
-            }
-
-#if !(NET5_0 && WINDOWS)
-            if (args.PrelaunchActivated == false)
-#endif
+            if (args.UWPLaunchActivatedEventArgs.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
-                if (shell.RootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    shell.Navigate(typeof(MainPage), args.Arguments);
-                }
-                // Ensure the current window is active
-                window.Activate();
+                // TODO: Load state from previously suspended application
             }
-#pragma warning restore Uno0001 // Uno type or member is not implemented
+
+            // Place the frame in the current Window
+            window.Content = shell;
         }
+
+#if !(NET6_0_OR_GREATER && WINDOWS)
+            if (args.UWPLaunchActivatedEventArgs.PrelaunchActivated == false)
+#endif
+        {
+            if (shell.RootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                shell.Navigate(typeof(MainPage), args.Arguments);
+            }
+            // Ensure the current window is active
+            window.Activate();
+        }
+#pragma warning restore Uno0001 // Uno type or member is not implemented
+    }
 
 
         /// <summary>
@@ -110,14 +107,13 @@ namespace Elmish.Uno.Samples
 #pragma warning restore Uno0001 // Uno type or member is not implemented
         }
 
-
-        /// <summary>
-        /// Configures global logging
-        /// </summary>
-        private static void InitializeLogging()
+    /// <summary>
+    /// Configures global Uno Platform logging
+    /// </summary>
+    private static void InitializeLogging()
+    {
+        var factory = LoggerFactory.Create(builder =>
         {
-            var factory = LoggerFactory.Create(builder =>
-            {
 #if __WASM__
                 builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__
@@ -125,46 +121,45 @@ namespace Elmish.Uno.Samples
 #elif NETFX_CORE
                 builder.AddDebug();
 #else
-                builder.AddConsole();
+            builder.AddConsole();
 #endif
 
-                // Exclude logs below this level
-                builder.SetMinimumLevel(LogLevel.Information);
+            // Exclude logs below this level
+            builder.SetMinimumLevel(LogLevel.Information);
 
-                // Default filters for Uno Platform namespaces
-                builder.AddFilter("Uno", LogLevel.Warning);
-                builder.AddFilter("Windows", LogLevel.Warning);
-                builder.AddFilter("Microsoft", LogLevel.Warning);
+            // Default filters for Uno Platform namespaces
+            builder.AddFilter("Uno", LogLevel.Warning);
+            builder.AddFilter("Windows", LogLevel.Warning);
+            builder.AddFilter("Microsoft", LogLevel.Warning);
 
-                // Generic Xaml events
-                // builder.AddFilter("Windows.UI.Xaml", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.VisualStateGroup", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.StateTriggerBase", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.UIElement", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.FrameworkElement", LogLevel.Trace );
+            // Generic Xaml events
+            // builder.AddFilter("Microsoft.UI.Xaml", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.VisualStateGroup", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.StateTriggerBase", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.UIElement", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.FrameworkElement", LogLevel.Trace );
 
-                // Layouter specific messages
-                // builder.AddFilter("Windows.UI.Xaml.Controls", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.Controls.Layouter", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.Controls.Panel", LogLevel.Debug );
+            // Layouter specific messages
+            // builder.AddFilter("Microsoft.UI.Xaml.Controls", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.Controls.Layouter", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.Controls.Panel", LogLevel.Debug );
 
-                // builder.AddFilter("Windows.Storage", LogLevel.Debug );
+            // builder.AddFilter("Windows.Storage", LogLevel.Debug );
 
-                // Binding related messages
-                // builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
-                // builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
+            // Binding related messages
+            // builder.AddFilter("Microsoft.UI.Xaml.Data", LogLevel.Debug );
+            // builder.AddFilter("Microsoft.UI.Xaml.Data", LogLevel.Debug );
 
-                // Binder memory references tracking
-                // builder.AddFilter("Uno.UI.DataBinding.BinderReferenceHolder", LogLevel.Debug );
+            // Binder memory references tracking
+            // builder.AddFilter("Uno.UI.DataBinding.BinderReferenceHolder", LogLevel.Debug );
 
-                // RemoteControl and HotReload related
-                // builder.AddFilter("Uno.UI.RemoteControl", LogLevel.Information);
+            // RemoteControl and HotReload related
+            // builder.AddFilter("Uno.UI.RemoteControl", LogLevel.Information);
 
-                // Debug JS interop
-                // builder.AddFilter("Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug );
-            });
+            // Debug JS interop
+            // builder.AddFilter("Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug );
+        });
 
-            global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
-        }
+        global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
     }
 }

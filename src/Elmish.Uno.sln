@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51DF5F61-CE23-4BB5-A1D6-8421974B760B}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
+		..\Elmish.Uno.nuspec = ..\Elmish.Uno.nuspec
 		..\global.json = ..\global.json
 		..\nuget.config = ..\nuget.config
 		Packages.props = Packages.props
@@ -16,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{C6184090-416E-43D5-A110-F76B45317E0F}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{E036A399-66BF-4656-98E0-45A30EABDBC7}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\publish_myget.yml = ..\.github\workflows\publish_myget.yml
 		..\.github\workflows\publish_nuget.yml = ..\.github\workflows\publish_nuget.yml
@@ -28,13 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{49DD7592
 		Templates\Templates.nuspec = Templates\Templates.nuspec
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
-EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
-EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Mobile", "Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj", "{910A4D58-ADB0-46E5-9587-9DBD132771CB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmish.Uno.Uwp", "Elmish.Uno.Uwp\Elmish.Uno.Uwp.csproj", "{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,22 +41,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{910A4D58-ADB0-46E5-9587-9DBD132771CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{910A4D58-ADB0-46E5-9587-9DBD132771CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{910A4D58-ADB0-46E5-9587-9DBD132771CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{910A4D58-ADB0-46E5-9587-9DBD132771CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8FAB67C-C113-4E2C-B28C-7BA8EB3559C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

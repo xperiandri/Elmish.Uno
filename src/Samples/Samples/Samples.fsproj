@@ -2,8 +2,12 @@
   <Import Project="..\Samples.Build.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0-windows10.0.22000.0;net6.0</TargetFrameworks>
     <AssemblyName>$(AssemblyBaseName).Programs</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows10'))">
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,8 +32,12 @@
   <ItemGroup>
     <PackageReference Include="Elmish" />
     <PackageReference Include="FSharp.Control.FusionTasks" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
     <PackageReference Include="Uno.Core" />
-    <PackageReference Include="Uno.UI" />
+    <PackageReference Include="Uno.WinUI" Condition="$(TargetFramework.Equals('net6.0'))" />
   </ItemGroup>
+
+  <Target Name="XamlPreCompile" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
 
 </Project>

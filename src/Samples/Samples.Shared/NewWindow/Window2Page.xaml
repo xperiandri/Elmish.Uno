@@ -7,8 +7,7 @@
   xmlns:samples="using:Elmish.Uno.Samples"
   mc:Ignorable="d">
 
-  <StackPanel d:DataContext="{Binding NewWindow2}"
-    Width="400"
+  <StackPanel d:DataContext="{Binding NewWindow2}" DataContext="{Binding Win2}"
     VerticalAlignment="Center">
     <TextBlock TextWrapping="Wrap">
       This window is shown modally and blocks the main window until it's closed.

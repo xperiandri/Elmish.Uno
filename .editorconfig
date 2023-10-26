@@ -13,10 +13,14 @@ trim_trailing_whitespace = true
 [*.{cs,csx,vb,vbx}]
 indent_size          = 4
 charset              = utf-8-bom
+[*.{fs,fsx}]
+indent_size          = 2
+charset              = utf-8-bom
 # Project files
 [*.{csproj,fsproj,vbproj,shproj,projitems,props,nuspec,config,xaml,xml,plist}]
 indent_size          = 2
 charset              = utf-8-bom
+
 ###############################
 # .NET Coding Conventions     #
 ###############################
@@ -54,6 +58,7 @@ dotnet_prefer_inferred_anonymous_type_member_names               = true : sugges
 dotnet_style_prefer_auto_properties                              = true : silent
 dotnet_style_prefer_conditional_expression_over_assignment       = true : silent
 dotnet_style_prefer_conditional_expression_over_return           = true : silent
+
 ###############################
 # Naming Conventions          #
 ###############################
@@ -141,6 +146,7 @@ dotnet_naming_rule.non_interface_types_must_be_pascal_case.style             = p
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity          = warning
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols           = interface_types
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style             = prefix_interface_interface_with_i
+
 ###############################
 # C# Coding Conventions       #
 ###############################
@@ -170,6 +176,7 @@ csharp_style_deconstructed_variable_declaration                          = true 
 csharp_prefer_simple_default_expression                                  = true : suggestion
 csharp_style_pattern_local_over_anonymous_function                       = true : suggestion
 csharp_style_inlined_variable_declaration                                = true : warning
+
 ###############################
 # C# Formatting Rules         #
 ###############################
@@ -200,12 +207,11 @@ csharp_space_between_method_call_empty_parameter_list_parentheses        = false
 # Wrapping preferences
 csharp_preserve_single_line_statements                                   = true
 csharp_preserve_single_line_blocks                                       = true
+
 ###############################
 # F# Coding Conventions       #
 ###############################
 [*.{fs,fsx}]
-indent_size = 2
-charset     = utf-8-bom
 max_line_length=120
 fsharp_semicolon_at_end_of_line=false
 fsharp_space_before_parameter=true
@@ -242,12 +248,15 @@ fsharp_alternative_long_member_definitions=false
 fsharp_disable_elmish_syntax=false
 fsharp_multi_line_lambda_closing_newline=false
 fsharp_strict_mode=false
+
 ###############################
 # VB Coding Conventions       #
 ###############################
+
 [*.vb]
 # Modifier preferences
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async : suggestion
+
 ###############################
 # Code Analysis               #
 ###############################
@@ -818,7 +827,7 @@ dotnet_diagnostic.CA5383.severity = warning
 # CA5384: Do Not Use Digital Signature Algorithm (DSA)
 dotnet_diagnostic.CA5384.severity = warning
 
-# CA5385: Use Rivest-Shamir-Adleman (RSA) Algorithm With Sufficient Key Size
+# CA5385: Use Rivest Shamir Adleman (RSA) Algorithm With Sufficient Key Size
 dotnet_diagnostic.CA5385.severity = warning
 
 # CA5386: Avoid hardcoding SecurityProtocolType value
@@ -878,14 +887,23 @@ dotnet_diagnostic.CA5403.severity = warning
 # CA9999: Analyzer version mismatch
 dotnet_diagnostic.CA9999.severity = warning
 
+# RCS1163: Unused parameter
+dotnet_diagnostic.RCS1163.severity = none
+
 ###############################
 # Code Analysis Exceptions    #
 ###############################
-[**/{Main.cs,Program.cs,*Activity.cs,*Page.cs,*.xaml.cs,Controls/**.cs}]
+[**/{Main.*.cs,Program.cs,*Activity.*.cs,Shell.xaml.cs,*Page.cs,Samples/**.xaml.cs,*Behavior.cs,Controls/**.cs,Components/**.cs}]
+# CA1001: Type owns disposable field(s) but is not disposable
+dotnet_diagnostic.CA1001.severity = none
 # CA1010: Collections should implement generic interface
 dotnet_diagnostic.CA1010.severity = none
 # CA1012: Abstract type 'ShellBase' should not have public constructors
 dotnet_diagnostic.CA1012.severity = none
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
+# CA1010: Collections should implement generic interface
+dotnet_diagnostic.CA1010.severity = none
 # CA1501: Avoid excessive inheritance
 dotnet_diagnostic.CA1501.severity = none
 # IDE0001: Simplify Names
@@ -893,7 +911,22 @@ dotnet_diagnostic.IDE0001.severity = suggestion
 # IDE0021: Use expression body for constructors
 dotnet_diagnostic.IDE0021.severity = suggestion
 
-[{App.xaml.cs,Shell.xaml.cs,Program.cs}]
+[{Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
+csharp_style_expression_bodied_constructors = false
+# RCS1043: Remove 'partial' modifier from type with a single part.
+dotnet_diagnostic.RCS1043.severity = none
+
+[{App.xaml.cs,Main.*.cs,Shell.xaml.cs}]
+# CA1724: Type names should not match namespaces
+dotnet_diagnostic.CA1724.severity = none
+# DF0000: Marks indisposed anonymous objects from object creations.
+dotnet_diagnostic.DF0000.severity = silent
+# DF0010: Marks indisposed local variables.
+dotnet_diagnostic.DF0010.severity = silent
+# DF0021: Field is not disposed.
+dotnet_diagnostic.DF0021.severity = silent
+
+[{App.xaml.cs,Program.cs}]
 # CA1724: The type name App conflicts in whole or in part with the namespace name. Change either name to eliminate the conflict.
 dotnet_diagnostic.CA1724.severity = none
 # CA1801: Parameter args of method Main is never used. Remove the parameter or use it in the method body.

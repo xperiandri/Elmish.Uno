@@ -3,13 +3,16 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="..\Samples.Build.props" />
   <ItemGroup>
+	  <PackageReference Include="Microsoft.WinUI">
+		  <Version>3.0.0-preview3.201113.0</Version>
+	  </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" />
     <PackageReference Include="Elmish" />
     <PackageReference Include="Microsoft.UI.Xaml" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed" />
     <PackageReference Include="Microsoft.Toolkit" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI" />
+    <PackageReference Include="Microsoft.Toolkit.WinUI" />
+    <PackageReference Include="Microsoft.Toolkit.WinUI.UI" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Uno.Core" />
@@ -19,18 +22,20 @@
     <LangVersion>$(CSharpLangVersion)</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{E025D4A5-F4D9-44CF-80DF-B81A9EE5DB0E}</ProjectGuid>
+    <ProjectGuid>{4477AD7B-7B4A-48CC-B800-3E4B05664F46}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>$(AssemblyBaseName)</AssemblyName>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <IsWinUIAlpha>true</IsWinUIAlpha>
     <PackageCertificateKeyFile>Samples.Uwp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <!--Temporary fix for XBF files-->
     <SynthesizeLinkMetadata>true</SynthesizeLinkMetadata>
@@ -130,18 +135,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\Elmish.Uno.Uwp\Elmish.Uno.Uwp.csproj">
-      <Project>{e8fab67c-c113-4e2c-b28c-7ba8eb3559c3}</Project>
-      <Name>Elmish.Uno.Uwp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj">
-      <Project>{8c6e8d34-7205-4c57-9722-87e30e4fc5ce}</Project>
-      <Name>Elmish.Uno</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Samples\Samples.fsproj">
-      <Project>{25668814-618e-4ebf-bc4d-716f38589f0a}</Project>
-      <Name>Samples</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,7 +143,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Samples.UWP_TemporaryKey.pfx" />
+    <None Include="Samples_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -161,7 +154,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

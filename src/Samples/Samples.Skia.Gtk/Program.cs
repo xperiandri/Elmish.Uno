@@ -1,24 +1,21 @@
-﻿using System;
+﻿namespace Elmish.Uno.Samples;
 
+using System;
 using GLib;
+using global::Uno.UI.Runtime.Skia;
 
-using Uno.UI.Runtime.Skia;
-
-namespace Elmish.Uno.Samples.Skia.Gtk
+public partial class App
 {
-    internal static class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
+        ExceptionManager.UnhandledException += delegate (UnhandledExceptionArgs expArgs)
         {
-            ExceptionManager.UnhandledException += delegate (UnhandledExceptionArgs expArgs)
-            {
-                Console.WriteLine("GLIB UNHANDLED EXCEPTION" + expArgs.ExceptionObject.ToString());
-                expArgs.ExitApplication = true;
-            };
+            Console.WriteLine("GLIB UNHANDLED EXCEPTION" + expArgs.ExceptionObject.ToString());
+            expArgs.ExitApplication = true;
+        };
 
-            var host = new GtkHost(() => new App(), args);
+        var host = new GtkHost(() => new App(), args);
 
-            host.Run();
-        }
+        host.Run();
     }
 }

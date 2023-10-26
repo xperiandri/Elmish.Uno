@@ -1,12 +1,11 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.Components;
 
-namespace Elmish.Uno.Samples.Components
+using Microsoft.UI.Xaml.Controls;
+
+public partial class Counter : UserControl
 {
-    public partial class Counter : UserControl
+    public Counter()
     {
-        public Counter()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

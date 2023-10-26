@@ -2,7 +2,7 @@
   <Import Project="..\Solution.Build.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>$(RootNamespace).Tests</RootNamespace>
     <AssemblyName>$(AssemblyBaseName).Tests</AssemblyName>
     <IsPackable>false</IsPackable>

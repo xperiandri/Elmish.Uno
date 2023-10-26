@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Solution.Build.props" />
+
+  <PropertyGroup>
+    <!--netstandard2.0;-->
+    <TargetFrameworks>net6.0;net6.0-windows10.0.22000.0</TargetFrameworks>
+    <TargetPlatformMinVersion Condition="$(TargetFramework.StartsWith('net6.0-windows10'))">10.0.17763.0</TargetPlatformMinVersion>
+    <LangVersion>$(FSharpLangVersion)</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>$(AssemblyBaseName).Programs</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Helpers\Elmish.fs" />
+    <Compile Include="Helpers\ObjAndStructConversions.fs" />
+    <Compile Include="Helpers\Windows.fs" />
+    <Compile Include="Constants.fs" />
+    <Compile Include="Configuration.fs" />
+    <Compile Include="Pages.fs" />
+    <Compile Include="Models\Notification.fs" />
+    <Compile Include="Programs\Messages.fs" />
+    <Compile Include="Programs\Notifications.Program.fs" />
+    <Compile Include="Programs\App.Program.fs" />
+    <Compile Include="Host.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elmish" />
+    <PackageReference Include="Elmish.Uno.WinUI" />
+    <PackageReference Include="FSharp.Collections.Immutable" />
+    <PackageReference Include="FSharp.Control.FusionTasks" />
+    <PackageReference Include="FSharp.Control.Reactive" />
+    <PackageReference Include="FSharpPlus" />
+    <PackageReference Include="FSharpx.Extras" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <PackageReference Include="System.Collections.Immutable" />
+    <PackageReference Include="Xamarin.Essentials" />
+  </ItemGroup>
+
+</Project>

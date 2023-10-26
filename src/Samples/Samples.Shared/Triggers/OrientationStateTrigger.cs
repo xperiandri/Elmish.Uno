@@ -7,14 +7,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.Toolkit.Uwp.Helpers;
+using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI.Xaml;
 
+using Windows.ApplicationModel;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
-using Windows.UI.Xaml;
 
 namespace Microsoft.Toolkit.Uwp.UI.Triggers
 {
+    internal static class DesignModeHelpers
+    {
+        private static bool inDesignModeCached;
+        private static bool inDesignMode;
+        private static bool GetIsInDesignMode()
+        {
+            if (DesignMode.DesignModeEnabled) return true;
+
+            if (ApiInformation.IsPropertyPresent("Windows.ApplicationModel.DesignMode", "DesignMode2Enabled"))
+            {
+                return DesignMode.DesignMode2Enabled;
+            }
+
+            return false;
+        }
+
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                if (!inDesignModeCached)
+                {
+                    inDesignMode = GetIsInDesignMode();
+                    inDesignModeCached = true;
+                }
+
+                return inDesignMode;
+            }
+        }
+    }
+
     /// <summary>
     /// Trigger for switching when the screen orientation changes
     /// </summary>
@@ -25,7 +57,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public OrientationStateTrigger()
         {
-            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            if (!DesignModeHelpers.IsInDesignMode)
             {
                 var weakEvent =
                     new WeakEventListener<OrientationStateTrigger, DisplayInformation, object>(this)
@@ -33,7 +65,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
                         OnEventAction = (instance, source, eventArgs) => OrientationStateTrigger_OrientationChanged(source, eventArgs),
                         OnDetachAction = weakEventListener => DisplayInformation.GetForCurrentView().OrientationChanged -= weakEventListener.OnEvent
                     };
-                DisplayInformation.GetForCurrentView().OrientationChanged += weakEvent.OnEvent;
+                //DisplayInformation.GetForCurrentView().OrientationChanged += weakEvent.OnEvent;
             }
         }
 
@@ -62,7 +94,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         private static void OnOrientationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var obj = (OrientationStateTrigger)d;
-            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            if (!DesignModeHelpers.IsInDesignMode)
             {
                 var orientation = DisplayInformation.GetForCurrentView().CurrentOrientation;
                 obj.UpdateTrigger(orientation);

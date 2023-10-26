@@ -1,5 +1,5 @@
 ﻿using Microsoft.FSharp.Core;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.NewWindow.Program;
 

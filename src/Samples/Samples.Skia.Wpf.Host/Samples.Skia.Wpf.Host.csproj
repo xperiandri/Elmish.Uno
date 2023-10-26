@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Samples.Build.props" />
   <PropertyGroup>
     <OutputType Condition="'$(Configuration)'=='Release'">WinExe</OutputType>
@@ -9,25 +8,19 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>$(AssemblyBaseName).Host</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Elmish" />
     <PackageReference Include="Uno.Microsoft.Toolkit" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.WinUI" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.WinUI.UI" />
     <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" />
-    <PackageReference Include="Uno.UI.Skia.Wpf" />
-    <PackageReference Include="Uno.UI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.WinUI.Skia.Wpf" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno.Mobile\Elmish.Uno.Mobile.fsproj" />
-    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
     <ProjectReference Include="..\Samples.Skia.WPF\Samples.Skia.WPF.csproj" />
-    <ProjectReference Include="..\Samples\Samples.fsproj" />
   </ItemGroup>
 </Project>
