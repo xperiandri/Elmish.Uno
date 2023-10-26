@@ -41,7 +41,7 @@
         Margin="5,0"
         VerticalAlignment="Top"
         Command="{Binding Decrement}"
-        Content="-" />
+        Content="–" />
       <Button
         Grid.Column="2"
         Width="34"
