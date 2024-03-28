@@ -1,7 +1,6 @@
 ﻿[<RequireQualifiedAccess>]
 module Elmish.Uno.Program
 
-open System.Windows
 open Elmish
 
 
@@ -42,7 +41,7 @@ let mkProgramUnoWithCmdMsg
 
 /// Traces all updates using System.Diagnostics.Debug.WriteLine.
 let withDebugTrace program =
-  program |> Program.withTrace (fun msg model ->
+  program |> Program.withTrace (fun msg model _ ->
     System.Diagnostics.Debug.WriteLine(sprintf "New message: %A" msg)
     System.Diagnostics.Debug.WriteLine(sprintf "Updated state: %A" model)
   )

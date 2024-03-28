@@ -5,35 +5,34 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51DF5F61-CE23-4BB5-A1D6-8421974B760B}"
 	ProjectSection(SolutionItems) = preProject
-		..\.editorconfig = ..\.editorconfig
-		..\Elmish.Uno.nuspec = ..\Elmish.Uno.nuspec
-		..\global.json = ..\global.json
-		..\nuget.config = ..\nuget.config
-		Packages.props = Packages.props
-		..\README.md = ..\README.md
-		..\RELEASE_NOTES.md = ..\RELEASE_NOTES.md
-		Solution.Build.props = Solution.Build.props
-		..\TUTORIAL.md = ..\TUTORIAL.md
+		.editorconfig = .editorconfig
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+		src\Directory.Packages.props = src\Directory.Packages.props
+		global.json = global.json
+		nuget.config = nuget.config
+		README.md = README.md
+		RELEASE_NOTES.md = RELEASE_NOTES.md
+		TUTORIAL.md = TUTORIAL.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{C6184090-416E-43D5-A110-F76B45317E0F}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "src\Elmish.Uno.Tests\Elmish.Uno.Tests.fsproj", "{70BE17FF-A5E8-4D4A-B5C4-8B60C81D125B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{E036A399-66BF-4656-98E0-45A30EABDBC7}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\publish_myget.yml = ..\.github\workflows\publish_myget.yml
-		..\.github\workflows\publish_nuget.yml = ..\.github\workflows\publish_nuget.yml
-		..\.github\workflows\pull_request.yml = ..\.github\workflows\pull_request.yml
+		.github\workflows\pull_request.yml = .github\workflows\pull_request.yml
+		.github\workflows\publish_ci.yml = .github\workflows\publish_ci.yml
+		.github\workflows\publish_release.yml = .github\workflows\publish_release.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{49DD7592-B03D-4EEE-B1BF-522488992C80}"
 	ProjectSection(SolutionItems) = preProject
-		..\Elmish.Uno.nuspec = ..\Elmish.Uno.nuspec
 		Templates\Templates.nuspec = Templates\Templates.nuspec
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "src\Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

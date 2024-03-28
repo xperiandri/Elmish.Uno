@@ -1,31 +1,29 @@
 ﻿namespace Elmish.Uno
 
 open System
-#if __UWP__
+open System.Runtime.InteropServices
 open Microsoft.UI.Xaml.Data;
 
 // TODO: investigate why nulls come to the constructor instead of None
 /// <summary>
 /// Implementation of dynamic property required by WinRT to do bindings.
 /// </summary>
-/// <typeparam name="TTarget">Target object type from which to get and to which to set a property value.</typeparam>
-/// <typeparam name="TValue">Value type.</typeparam>
+/// <typeparam name="target">Target object type from which to get and to which to set a property value.</typeparam>
+/// <typeparam name="value">Value type.</typeparam>
 type DynamicCustomProperty<'target, 'value> (
-  //  name : string,
-  //  getter : Func<'TValue>,
-  //  [<Optional; DefaultParameterValue(null)>]
-  //  setter : Action<'TValue>,
-  //  [<Optional; DefaultParameterValue(null)>]
-  //  indexGetter : Func<obj, 'TValue>,
-  //  [<Optional; DefaultParameterValue(null)>]
-  //  indexSetter : Action<obj, 'TValue>) =
+    name : string,
+    getter : Func<'target, 'value>,
+    [<Optional>] setter : Action<'target, 'value>,
+    [<Optional>] indexGetter : Func<'target, obj, 'value>,
+    [<Optional>] indexSetter : Action<'target, 'value, obj>
+) =
 
   //new (
-      name : string,
-      ?getter : 'target -> 'value,
-      ?setter : 'value -> 'target -> unit,
-      ?indexGetter : obj -> 'target -> 'value,
-      ?indexSetter : 'value -> obj -> 'target -> unit) =
+      //name : string,
+      //?getter : 'target -> 'value,
+      //?setter : 'value -> 'target -> unit,
+      //?indexGetter : obj -> 'target -> 'value,
+      //?indexSetter : 'value -> obj -> 'target -> unit) =
     //let setter' = defaultArg setter null
     //let indexGetter' = defaultArg indexGetter null
     //let indexSetter' = defaultArg indexSetter null
@@ -52,20 +50,20 @@ type DynamicCustomProperty<'target, 'value> (
 
     member _.GetValue (target : obj) =
       let target = target :?> 'target
-      match getter with Some getter -> getter target |> box | None -> null
+      match getter with null -> null | _ -> getter.Invoke target |> box
     member _.SetValue (target : obj, value : obj) =
       let target = target :?> 'target
-      match setter with Some setter -> setter (value :?> 'value) target | None -> ()
+      let value = value :?> 'value
+      match setter with null -> () | _ -> setter.Invoke (target, value)
     member _.GetIndexedValue(target : obj, index : obj) =
       let target = target :?> 'target
-      match indexGetter with Some indexGetter -> indexGetter index target |> box | None -> null
+      match indexGetter with null -> null | _ -> indexGetter.Invoke(target, index) |> box
     member _.SetIndexedValue(target : obj, value : obj, index : obj) =
       let target = target :?> 'target
-      match indexSetter with Some indexSetter -> indexSetter (value :?> 'value) index target | None -> ()
+      let value = value :?> 'value
+      match indexSetter with null -> () | _ -> indexSetter.Invoke(target, value, index)
 
-    member _.CanRead = getter.IsSome || indexGetter.IsSome
-    member _.CanWrite = setter.IsSome || indexSetter.IsSome
+    member _.CanRead = getter <> null || indexGetter <> null
+    member _.CanWrite = setter <> null || indexSetter <> null
     member _.Name = name
     member _.Type = typeof<'value>
-
-#endif

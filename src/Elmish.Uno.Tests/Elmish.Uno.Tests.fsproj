@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Solution.Build.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>$(RootNamespace).Tests</RootNamespace>
-    <AssemblyName>$(AssemblyBaseName).Tests</AssemblyName>
+    <TargetFramework>$(DotNetVersion)</TargetFramework>
     <IsPackable>false</IsPackable>
-    <OutputType>Library</OutputType>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Library</OutputType>
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
     <NoWarn>FS0988</NoWarn>

@@ -1,0 +1,18 @@
+﻿<Project>
+  <PropertyGroup>
+    <Company>XperiAndri</Company>
+    <Product>Elmish.Uno</Product>
+    <Authors>XperiAndri, Dim-37</Authors>
+    <Copyright>Copyright © XperiAndri</Copyright>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DotNetVersion>net8.0</DotNetVersion>
+    <LangVersion Condition="'$(MSBuildProjectExtension)'=='.csproj'">latest</LangVersion>
+    <LangVersion Condition="'$(MSBuildProjectExtension)'=='.fsproj'">latest</LangVersion>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Condition="'$(DefaultLanguageSourceExtension)'!='.fs'"/>
+  </ItemGroup>
+</Project>

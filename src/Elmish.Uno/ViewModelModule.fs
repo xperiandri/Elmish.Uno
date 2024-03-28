@@ -14,8 +14,9 @@ type ViewModel() =
   static let startLoop
     (config: ElmConfig)
     (element: FrameworkElement)
-    (programRun: Program<'t, 'model, 'msg, Binding<'model, 'msg> list> -> unit)
-    (program: Program<'t, 'model, 'msg, Binding<'model, 'msg> list>) =
+    (program: Program<'t, 'model, 'msg, Binding<'model, 'msg> list>)
+    arg
+    =
 
     let mutable lastModel = None
 
@@ -38,14 +39,13 @@ type ViewModel() =
 
     program
     |> Program.withSetState setState
-    |> Program.withSyncDispatch uiDispatch
-    |> programRun
+    |> Program.runWithDispatch uiDispatch arg
 
-  static member StartLoop (config, element, programRun : Action<Program<Unit, 'model, 'msg, Binding<'model, 'msg> list>>, program) =
-    startLoop config element (FuncConvert.FromAction programRun) program
+  static member StartLoop (config, element, program) =
+    startLoop config element program ()
 
-  static member StartLoop (config, element, programRun : Action<'arg, Program<'arg, 'model, 'msg, Binding<'model, 'msg> list>>, program, arg) =
-    startLoop config element (FuncConvert.FromAction programRun arg) program
+  static member StartLoop (config, element, program, arg) =
+    startLoop config element program arg
 
   static member DesignInstance (model: 'model, bindings: Binding<'model, 'msg> list) =
     ViewModel<_,_> (model, ignore, bindings, ElmConfig.Default, "main") |> box

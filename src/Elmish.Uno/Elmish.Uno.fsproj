@@ -1,37 +1,52 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Solution.Build.props" />
-
+﻿<Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0;net6.0-windows10.0.22000.0</TargetFrameworks>
-    <TargetPlatformMinVersion Condition="$(TargetFramework.StartsWith('net6.0-windows10'))">10.0.17763.0</TargetPlatformMinVersion>
-    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(TargetFrameworks);$(DotNetVersion)-windows10.0.22621</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(DotNetVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OverrideTargetFramework)'!=''">$(OverrideTargetFramework)</TargetFrameworks>
+
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <DebugType>Embedded</DebugType>
-    <EmbedAllSources>True</EmbedAllSources>
-    <Description>F# bindings for using Elmish in Uno</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/XperiAndri/Elmish.Uno</PackageProjectUrl>
-    <PackageTags>Uno F# fsharp Elmish Elm</PackageTags>
-    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
+    <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <!--
+      If you encounter this error message:
+
+        error NETSDK1148: A referenced assembly was compiled using a newer version of Microsoft.Windows.SDK.NET.dll.
+        Please update to a newer .NET SDK in order to reference this assembly.
+
+      This means that the two packages below must be aligned with the "build" version number of
+      the "Microsoft.Windows.SDK.BuildTools" package above, and the "revision" version number
+      must be the highest found in https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref.
+    -->
+    <!-- <WindowsSdkPackageVersion>10.0.22621.31</WindowsSdkPackageVersion> -->
+
+    <Description>Elmish implementation for WInUI and Uno Platform</Description>
+
+    <RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))</RepoRoot>
+    <RepositoryUrl>https://github.com/fsprojects/FSharp.Data.GraphQL</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <Version>1.0.0</Version>
-    <PackageReleaseNotes></PackageReleaseNotes>-->
+    <PackageTags>FSharp Elmish Uno WinUI</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/xperiandri/Elmish.Uno/</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows10'))">
-    <DefineConstants>$(DefineConstants);__UWP__</DefineConstants>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(RepoRoot)\logo\elmish-uno-logo-128x128.png" Pack="true" PackagePath="\" />
+    <None Include="$(RepoRoot)\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
-    <None Include="elmish-uno-logo-128x128.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Elmish.Uno.Tests</_Parameter1>
     </AssemblyAttribute>
@@ -44,25 +59,16 @@
     <Compile Include="ViewModel.fs" />
     <Compile Include="ViewModelModule.fs" />
     <Compile Include="Program.fs" />
-    <Compile Include="Navigation.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmish" VersionOverride="[3.0.3, 4)" />
+    <PackageReference Include="Elmish" />
     <PackageReference Include="FSharp.Collections.Immutable" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
-    <!--<PackageReference Include="Microsoft.WindowsAppSDK" GeneratePathProperty="true" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />-->
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
-    <PackageReference Include="Uno.Core" />
-    <PackageReference Include="Uno.WinUI" Condition=" '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net6.0' " />
+    <PackageReference Include="Uno.WinUI" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.Contains('windows10'))" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.Contains('windows10'))" />
   </ItemGroup>
 
-  <Target Name="XamlPreCompile" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))" />
-
-  <!--<Target Name="FixReferenceCopyLocalPaths" BeforeTargets="ResolvePackageAssets" Condition="$(TargetFramework.StartsWith('net6.0-windows10'))">
-    <ItemGroup>
-      <ReferenceCopyLocalPaths Remove="$(PkgMicrosoft_WindowsAppSDK)\build\..\runtimes\lib\native\AnyCPU\Microsoft.WindowsAppRuntime.Bootstrap.dll"/>
-    </ItemGroup>
-  </Target>-->
+  <Target Name="XamlPreCompile" Condition="$(TargetFramework.Contains('windows10'))" />
 
 </Project>

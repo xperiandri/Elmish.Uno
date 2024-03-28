@@ -3,19 +3,14 @@
 open System
 open System.Collections.Generic
 open System.Collections.ObjectModel
-open System.ComponentModel
 open System.Diagnostics
 open System.Dynamic
 open System.Reflection
 open Microsoft.FSharp.Reflection
+open Microsoft.UI.Xaml.Data
 open FSharp.Collections.Immutable
 
 open Elmish.Uno
-
-#if __UWP__
-open Microsoft.UI.Xaml.Data
-#endif
-
 
 [<AutoOpen>]
 module internal ViewModelHelpers =
@@ -124,7 +119,7 @@ and internal SubModelSelectedItemBinding<'model, 'msg, 'bindingModel, 'bindingMs
 
 and internal CachedBinding<'model, 'msg, 'value> = {
   Binding: VmBinding<'model, 'msg>
-  Cache: 'value option ref
+  Cache: 'value voption ref
 }
 
 
@@ -143,7 +138,7 @@ and internal VmBinding<'model, 'msg> =
   | Cached of CachedBinding<'model, 'msg, obj>
 
 
-and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
+and [<AllowNullLiteral>] public ViewModel<'model, 'msg>
       ( initialModel: 'model,
         dispatch: 'msg -> unit,
         bindings: Binding<'model, 'msg> list,
@@ -154,8 +149,8 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
 
   let mutable currentModel = initialModel
 
-  let propertyChanged = Event<PropertyChangedEventHandler, PropertyChangedEventArgs>()
-  let errorsChanged = DelegateEvent<EventHandler<DataErrorsChangedEventArgs>>()
+  let propertyChanged = Event<System.ComponentModel.PropertyChangedEventHandler, System.ComponentModel.PropertyChangedEventArgs>()
+  let errorsChanged = DelegateEvent<EventHandler<System.ComponentModel.DataErrorsChangedEventArgs>>()
   let modelTypeChanged = Event<EventHandler, EventArgs>()
 
   static let multicastFiled = typeof<Event<EventHandler, EventArgs>>.GetField("multicast", BindingFlags.NonPublic ||| BindingFlags.Instance)
@@ -168,7 +163,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   /// Error messages keyed by property name.
   let errors = Dictionary<string, obj ICollection>()
 
-  let withCaching b = Cached { Binding = b; Cache = ref None }
+  let withCaching b = Cached { Binding = b; Cache = ref ValueNone }
 
   let log fmt =
     let innerLog (str: string) =
@@ -188,14 +183,14 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   let notifyPropertyChanged propName =
     log "[%s] PropertyChanged \"%s\"" propNameChain propName
     try
-      propertyChanged.Trigger(this, PropertyChangedEventArgs propName)
+      propertyChanged.Trigger(this, System.ComponentModel.PropertyChangedEventArgs propName)
     with _ ->
       Debugger.Break()
 
   let notifyErrorsChanged propName =
     log "[%s] ErrorsChanged \"%s\"" propNameChain propName
     try
-      errorsChanged.Trigger([| box this; box <| DataErrorsChangedEventArgs propName |])
+      errorsChanged.Trigger([| box this; box <| System.ComponentModel.DataErrorsChangedEventArgs propName |])
     with _ ->
       Debugger.Break()
 
@@ -444,7 +439,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     | Cmd { Cmd = cmd }
     | CmdParam cmd ->
         box cmd
-    | SubModel { Vm = vm } -> !vm |> ValueOption.toObj |> box
+    | SubModel { Vm = vm } -> vm.Value |> ValueOption.toObj |> box
     | SubModelSeq { Vms = vms } -> box vms
     | SubModelSelectedItem b ->
         let selectedId = b.Get model
@@ -457,11 +452,11 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
           (selected |> Option.map (fun vm -> b.SubModelSeqBinding.GetId vm.CurrentModel))
         selected |> Option.toObj |> box
     | Cached b ->
-        match !b.Cache with
-        | Some v -> v
-        | None ->
+        match b.Cache.Value with
+        | ValueSome v -> v
+        | ValueNone ->
             let v = tryGetMember model b.Binding
-            b.Cache := Some v
+            b.Cache.Value <- ValueSome v
             v
 
   let rec canSetMember = function
@@ -496,7 +491,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     | Cached b ->
         let successful = trySetMember model value b.Binding
         if successful then
-          b.Cache := None  // TODO #185: write test
+          b.Cache.Value <- ValueNone  // TODO #185: write test
         successful
     | OneWay _
     | OneWayLazy _
@@ -509,7 +504,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
 
   /// Updates the binding value (for relevant bindings) and returns a value
   /// indicating whether to trigger PropertyChanged for this binding
-  member this.UpdateValue =
+  member internal this.UpdateValue =
     let rec updateValue bindingName newModel = function
       | OneWay { Get = get }
       | TwoWay { Get = get }
@@ -533,15 +528,15 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       | CmdParam _ ->
           false
       | SubModel b ->
-        match !b.Vm, b.GetModel newModel with
+        match b.Vm.Value, b.GetModel newModel with
         | ValueNone, ValueNone -> false
         | ValueSome _, ValueNone ->
             if b.Sticky then false
             else
-              b.Vm := ValueNone
+              b.Vm.Value <- ValueNone
               true
         | ValueNone, ValueSome m ->
-            b.Vm := ValueSome <| this.Create(m, b.ToMsg >> dispatch, b.GetBindings (), config, getPropChainFor bindingName)
+            b.Vm.Value <- ValueSome <| this.Create(m, b.ToMsg >> dispatch, b.GetBindings (), config, getPropChainFor bindingName)
             true
         | ValueSome vm, ValueSome m ->
             vm.UpdateModel m
@@ -560,7 +555,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
       | Cached b ->
           let valueChanged = updateValue bindingName newModel b.Binding
           if valueChanged then
-            b.Cache := None
+            b.Cache.Value <- ValueNone
           valueChanged
     updateValue
 
@@ -644,22 +639,21 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
   member internal __.TrySetMember(value, binding) = trySetMember currentModel value binding
 
 
-  interface INotifyPropertyChanged with
+  interface System.ComponentModel.INotifyPropertyChanged with
     [<CLIEvent>]
     member __.PropertyChanged = propertyChanged.Publish
 
-  interface INotifyDataErrorInfo with
+  interface System.ComponentModel.INotifyDataErrorInfo with
     [<CLIEvent>]
     member __.ErrorsChanged = errorsChanged.Publish
     member __.HasErrors =
       errors.Count > 0
     member __.GetErrors propName =
-      log "[%s] GetErrors %s" propNameChain (propName |> Option.ofObj |> Option.defaultValue "<null>")
+      log "[%s] GetErrors %s" propNameChain (propName |> ValueOption.ofObj |> ValueOption.defaultValue "<null>")
       match errors.TryGetValue propName with
       | true, err -> upcast err
       | false, _ -> null
 
-#if __UWP__
 
   member private this.GetProperty(name : string) : ICustomProperty =
     if name = "CurrentModel" then DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name, fun vm -> vm.CurrentModel |> box) :> _
@@ -681,14 +675,15 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
         let twoWay = TwoWay twoWay
         DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
           (fun vm -> vm.TryGetMember(twoWay)),
-          (fun value vm -> vm.TrySetMember(value, twoWay) |> ignore)) :> _
+          (fun vm value -> vm.TrySetMember(value, twoWay) |> ignore)) :> _
     | TwoWayValidate twoWayValidate ->
         let twoWayValidate = TwoWayValidate twoWayValidate
         DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
           (fun vm -> vm.TryGetMember(twoWayValidate)),
-          (fun value vm -> vm.TrySetMember(value, twoWayValidate) |> ignore)) :> _
-    | Cmd cmd -> DynamicCustomProperty<ViewModel<'model,'msg>, System.Windows.Input.ICommand>(name,
-                   fun vm -> vm.TryGetMember(Cmd cmd) :?> _) :> _
+          (fun vm value -> vm.TrySetMember(value, twoWayValidate) |> ignore)) :> _
+    | Cmd cmd ->
+        DynamicCustomProperty<ViewModel<'model,'msg>, System.Windows.Input.ICommand>(name,
+          fun vm -> vm.TryGetMember(Cmd cmd) :?> _) :> _
     | CmdParam cmdParam ->
         DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
           fun vm -> vm.TryGetMember(CmdParam cmdParam)) :> _
@@ -705,7 +700,7 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
         let cached = Cached cached
         DynamicCustomProperty<ViewModel<'model,'msg>, obj>(name,
           (fun vm -> vm.TryGetMember(cached)),
-          (fun value vm -> vm.TrySetMember(value, cached) |> ignore)) :> _
+          (fun vm value -> vm.TrySetMember(value, cached) |> ignore)) :> _
 
   interface ICustomPropertyProvider with
 
@@ -716,4 +711,3 @@ and [<AllowNullLiteral>] internal ViewModel<'model, 'msg>
     member this.GetStringRepresentation() = this.CurrentModel.ToString()
 
     member this.Type = this.CurrentModel.GetType()
-#endif

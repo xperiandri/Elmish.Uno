@@ -6,34 +6,37 @@ on:
       - opened
       - synchronize
 
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
 jobs:
   build:
 
-    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        dotnet: [8.0.202]
+    runs-on: ${{ matrix.os }}
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-    - name: Install .NET SDK 6.0.x
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ matrix.dotnet }}
 
-    - name: Install MSBuild
-      uses: microsoft/setup-msbuild@v1.1
-      with:
-        #vs-version: '[17.0,)'
-        vs-prerelease: true
-        msbuild-architecture: x64
+    - name: Install local tools
+      run: dotnet tool restore
 
     - name: Restore NuGet packages
-      run: nuget restore 'src\\Elmish.Uno.sln' -ConfigFile 'NuGet.Config'
+      run: dotnet restore Elmish.Uno.sln
 
-    - name: Build with MSBuild
-      run: |
-        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform='Any CPU' -p:TargetFramework=net6.0-windows10.0.22000.0 -maxcpucount
-        msbuild 'src\\Elmish.Uno.sln' /t:Rebuild /p:Configuration=Release /p:Platform='Any CPU' -p:TargetFramework=net6.0 -maxcpucount
+    - name: Build
+      run: dotnet build --no-restore Elmish.Uno.sln --configuration Release -maxcpucount
 
     - name: Test
       run: dotnet test --no-build --configuration Release src/Elmish.Uno.Tests/Elmish.Uno.Tests.fsproj
