@@ -1,11 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <Import Project="..\Samples.Build.props" />
+<Project Sdk="Uno.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>$(CSharpLangVersion)</LangVersion>
-    <NoWarn>NU1701</NoWarn>
-    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+    <TargetFramework>$(DotNetVersion)</TargetFramework>
+    <NoWarn>$(NoWarn);NU1504;NU1505;NU1701</NoWarn>
+    <!-- Disabled due to issue with Central Package Management with implicit using -->
+    <ImplicitUsings>disable</ImplicitUsings>
+    <WasmPWAManifestFile>manifest.webmanifest</WasmPWAManifestFile>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <!--
+      Supports Deep Linking Routes
+      https://aka.platform.uno/wasm-deeplink
+    -->
+    <WasmShellWebAppBasePath>/</WasmShellWebAppBasePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
@@ -13,16 +20,21 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <!--
-    IL Linking is disabled in Debug configuration.
-    When building in Release, see https://platform.uno/docs/articles/features/using-il-linker-webassembly.html
+      IL Linking is disabled in Debug configuration.
+      When building in Release, see https://platform.uno/docs/articles/features/using-il-linker-WebAssembly.html
     -->
     <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <!-- XAML Resource trimming https://aka.platform.uno/xaml-trimming -->
+    <!--<UnoXamlResourcesTrimming>true</UnoXamlResourcesTrimming>-->
+    <!-- Improve performance with AOT builds https://aka.platform.uno/wasm-aot -->
+    <!-- <WasmShellMonoRuntimeExecutionMode>InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode> -->
+    <!-- Temporarily uncomment to generate an AOT profile https://aka.platform.uno/wasm-aot-profile -->
+    <!-- <WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile> -->
+  </PropertyGroup>
   <ItemGroup>
-    <Content Include="Assets\SplashScreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Include="..\Samples.Shared\**\*.xaml" />
+    <Content Include="manifest.webmanifest" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
@@ -32,37 +44,24 @@
     <LinkerDescriptor Include="LinkerConfig.xml" />
   </ItemGroup>
   <ItemGroup>
-    <!--
-    This item group is required by the project template because of the
-    new SDK-Style project, otherwise some files are not added automatically.
-
-    You can safely remove this ItemGroup completely.
-    -->
-    <None Include="Program.cs" />
-    <None Include="LinkerConfig.xml" />
-    <None Include="wwwroot\web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Elmish" />
-    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" />
+    <PackageReference Include="CommunityToolkit.WinUI.Converters" />
+    <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
     <PackageReference Include="Microsoft.Windows.Compatibility" />
-    <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" />
-    
-
-
-    <PackageReference Include="Uno.CommunityToolkit.WinUI" />
-    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI" />
-    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Behaviors" />
-    
-    <PackageReference Include="Uno.WinUI.WebAssembly" />
-    <PackageReference Include="Uno.WinUI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" />
     <PackageReference Include="Uno.Wasm.Bootstrap" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" />
+    <PackageReference Include="Uno.WinUI.WebAssembly" />
+    <PackageReference Include="Uno.WinUI.DevServer" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" />
+    <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
-    <ProjectReference Include="..\Samples\Samples.fsproj" />
+    <ProjectReference Include="..\Samples\Samples.csproj" />
   </ItemGroup>
-  <Import Project="..\Samples.Shared\Samples.Shared.projitems" Label="Shared" Condition="Exists('..\Samples.Shared\Samples.Shared.projitems')" />
+  <Import Project="..\Samples.Shared\base.props" />
+
+  <Target Name="ValidateOverrides" BeforeTargets="Restore;_CheckForUnsupportedTargetFramework" Condition="'$(OverrideTargetFramework)' != ''">
+    <Error Text="OverrideTargetFramework set to '$(OverrideTargetFramework)' is invalid. Set OverrideTargetFramework to $([MSBuild]::Escape('$'))(DotNetVersion) or skip building this project (eg unload the project in Visual Studio)" Condition="'$(OverrideTargetFramework)'!='$(DotNetVersion)'" />
+  </Target>
 </Project>

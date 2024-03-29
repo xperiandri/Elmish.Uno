@@ -1,12 +1,12 @@
-﻿namespace Elmish.Uno.Samples;
+﻿namespace Elmish.Uno.Samples.Skia.Gtk;
 
 using System;
 using GLib;
-using global::Uno.UI.Runtime.Skia;
+using global::Uno.UI.Runtime.Skia.Gtk;
 
-public partial class App
+public static class Program
 {
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
         ExceptionManager.UnhandledException += delegate (UnhandledExceptionArgs expArgs)
         {
@@ -14,7 +14,7 @@ public partial class App
             expArgs.ExitApplication = true;
         };
 
-        var host = new GtkHost(() => new App(), args);
+        var host = new GtkHost(() => new AppHead());
 
         host.Run();
     }

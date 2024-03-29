@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Samples",
+  "display": "standalone",
+  "name": "Samples",
+  "short_name": "Samples",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

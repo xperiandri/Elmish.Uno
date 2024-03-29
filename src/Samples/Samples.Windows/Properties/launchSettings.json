@@ -1,7 +1,10 @@
 {
-  "profiles": {
-    "Samples.Windows": {
-      "commandName": "MsixPackage"
-    }
-  }
+	"profiles": {
+		"Samples.Windows (Unpackaged)": {
+			"commandName": "Project"
+		},
+		"Samples.Windows (Package)": {
+			"commandName": "MsixPackage"
+		}
+	}
 }

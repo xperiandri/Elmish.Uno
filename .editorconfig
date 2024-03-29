@@ -1,4 +1,4 @@
-# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+﻿# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
 root = true
 ###############################
 # Core EditorConfig Options   #
@@ -17,14 +17,29 @@ charset              = utf-8-bom
 indent_size          = 2
 charset              = utf-8-bom
 # Project files
-[*.{csproj,fsproj,vbproj,shproj,projitems,props,nuspec,config,xaml,xml,plist}]
+[*.{csproj,fsproj,vbproj,shproj,projitems,props,targets,config,xaml,xml,manifest,appxmanifest}]
 indent_size          = 2
 charset              = utf-8-bom
-
+[*.{yml,yaml}]
+indent_size = 2
+[*.sln]
+indent_style = tab
+indent_size = 2
+[*.{json,slnf,css,webmanifest},.vsconfig]
+indent_size = 2
+[*.plist]
+indent_size = 2
+indent_style = tab
+end_of_line = lf
+[*.sh]
+indent_size = 2
+end_of_line = lf
 ###############################
 # .NET Coding Conventions     #
 ###############################
 [*.{cs,vb}]
+tab_width = 4
+indent_size = 4
 # Organize usings
 dotnet_sort_system_directives_first                              = true
 # this. preferences
@@ -50,15 +65,14 @@ roslynator_object_creation_type_style                            = implicit
 dotnet_style_object_initializer                                  = true : warning
 dotnet_style_collection_initializer                              = true : warning
 dotnet_style_explicit_tuple_names                                = true : suggestion
-dotnet_style_null_propagation                                    = true : suggestion
-dotnet_style_coalesce_expression                                 = true : suggestion
-dotnet_style_prefer_is_null_check_over_reference_equality_method = true : silent
+dotnet_style_null_propagation                                    = true:suggestion
+dotnet_style_coalesce_expression                                 = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:silent
 dotnet_prefer_inferred_tuple_names                               = true : suggestion
 dotnet_prefer_inferred_anonymous_type_member_names               = true : suggestion
 dotnet_style_prefer_auto_properties                              = true : silent
 dotnet_style_prefer_conditional_expression_over_assignment       = true : silent
 dotnet_style_prefer_conditional_expression_over_return           = true : silent
-
 ###############################
 # Naming Conventions          #
 ###############################
@@ -68,7 +82,7 @@ dotnet_style_prefer_conditional_expression_over_return           = true : silent
 dotnet_naming_symbols.constant_fields.applicable_kinds                       = field
 dotnet_naming_symbols.constant_fields.required_modifiers                     = const
 # non_private_readonly_fields - Define public, internal and protected readonly fields
-dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities = public, internal, protected
+dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities = public, internal
 dotnet_naming_symbols.non_private_readonly_fields.applicable_kinds           = field
 dotnet_naming_symbols.non_private_readonly_fields.required_modifiers         = readonly
 # static_readonly_fields - Define static and readonly fields
@@ -97,8 +111,10 @@ dotnet_naming_symbols.interface_types.applicable_kinds                       = i
 # Naming Styles
 # camel_case - Define the camelCase style
 dotnet_naming_style.camel_case.capitalization                                = camel_case
+dotnet_naming_style.camel_case.required_prefix                               =
 # pascal_case - Define the Pascal_case style
 dotnet_naming_style.pascal_case.capitalization                               = pascal_case
+dotnet_naming_style.pascal_case.required_prefix                              =
 # first_upper - The first character must start with an upper-case character
 dotnet_naming_style.first_upper.capitalization                               = first_word_upper
 # prefix_interface_interface_with_i - Interfaces must be PascalCase and the first character of an interface must be an 'I'
@@ -107,46 +123,45 @@ dotnet_naming_style.prefix_interface_interface_with_i.required_prefix        = I
 
 # Naming Rules
 # Constant fields must be PascalCase
-dotnet_naming_rule.constant_fields_must_be_pascal_case.severity              = warning
+dotnet_naming_rule.constant_fields_must_be_pascal_case.severity = warning
 dotnet_naming_rule.constant_fields_must_be_pascal_case.symbols               = constant_fields
-dotnet_naming_rule.constant_fields_must_be_pascal_case.style                 = pascal_case
+dotnet_naming_rule.constant_fields_must_be_pascal_case.style = pascal_case
 # Public, internal and protected readonly fields must be PascalCase
-dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.severity  = warning
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.severity = warning
 dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.symbols   = non_private_readonly_fields
-dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.style     = pascal_case
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.style = pascal_case
 # Static readonly fields must be PascalCase
-dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.severity       = warning
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.severity = warning
 dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.symbols        = static_readonly_fields
-dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.style          = pascal_case
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.style = pascal_case
 # Private readonly fields must be camelCase
-dotnet_naming_rule.private_readonly_fields_must_be_camel_case.severity       = warning
+dotnet_naming_rule.private_readonly_fields_must_be_camel_case.severity = warning
 dotnet_naming_rule.private_readonly_fields_must_be_camel_case.symbols        = private_readonly_fields
-dotnet_naming_rule.private_readonly_fields_must_be_camel_case.style          = camel_case
+dotnet_naming_rule.private_readonly_fields_must_be_camel_case.style = camel_case
 # Public and internal fields must be PascalCase
-dotnet_naming_rule.public_internal_fields_must_be_pascal_case.severity       = warning
+dotnet_naming_rule.public_internal_fields_must_be_pascal_case.severity = warning
 dotnet_naming_rule.public_internal_fields_must_be_pascal_case.symbols        = public_internal_fields
-dotnet_naming_rule.public_internal_fields_must_be_pascal_case.style          = pascal_case
+dotnet_naming_rule.public_internal_fields_must_be_pascal_case.style = pascal_case
 # Private and protected fields must be camelCase
-dotnet_naming_rule.private_protected_fields_must_be_camel_case.severity      = warning
+dotnet_naming_rule.private_protected_fields_must_be_camel_case.severity = warning
 dotnet_naming_rule.private_protected_fields_must_be_camel_case.symbols       = private_protected_fields
-dotnet_naming_rule.private_protected_fields_must_be_camel_case.style         = camel_case
+dotnet_naming_rule.private_protected_fields_must_be_camel_case.style = camel_case
 # Public members must be capitalized
-dotnet_naming_rule.public_members_must_be_capitalized.severity               = warning
+dotnet_naming_rule.public_members_must_be_capitalized.severity = warning
 dotnet_naming_rule.public_members_must_be_capitalized.symbols                = public_symbols
-dotnet_naming_rule.public_members_must_be_capitalized.style                  = first_upper
+dotnet_naming_rule.public_members_must_be_capitalized.style = first_upper
 # Parameters must be camelCase
-dotnet_naming_rule.parameters_must_be_camel_case.severity                    = warning
+dotnet_naming_rule.parameters_must_be_camel_case.severity = warning
 dotnet_naming_rule.parameters_must_be_camel_case.symbols                     = parameters
-dotnet_naming_rule.parameters_must_be_camel_case.style                       = camel_case
+dotnet_naming_rule.parameters_must_be_camel_case.style = camel_case
 # Class, struct, enum and delegates must be PascalCase
-dotnet_naming_rule.non_interface_types_must_be_pascal_case.severity          = warning
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.severity = warning
 dotnet_naming_rule.non_interface_types_must_be_pascal_case.symbols           = non_interface_types
-dotnet_naming_rule.non_interface_types_must_be_pascal_case.style             = pascal_case
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.style = pascal_case
 # Interfaces must be PascalCase and start with an 'I'
-dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity          = warning
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity = warning
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols           = interface_types
-dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style             = prefix_interface_interface_with_i
-
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interface_interface_with_i
 ###############################
 # C# Coding Conventions       #
 ###############################
@@ -156,12 +171,14 @@ csharp_style_var_for_built_in_types                                      = true 
 csharp_style_var_when_type_is_apparent                                   = true : suggestion
 csharp_style_var_elsewhere                                               = true : silent
 # Expression-bodied members
-csharp_style_expression_bodied_methods                                   = true : warning
-csharp_style_expression_bodied_constructors                              = true : warning
-csharp_style_expression_bodied_operators                                 = true : warning
-csharp_style_expression_bodied_properties                                = true : warning
-csharp_style_expression_bodied_indexers                                  = true : warning
-csharp_style_expression_bodied_accessors                                 = true : warning
+csharp_style_expression_bodied_methods                                   = true:warning
+csharp_style_expression_bodied_constructors                              = true:warning
+csharp_style_expression_bodied_operators                                 = true:warning
+csharp_style_expression_bodied_properties                                = true:warning
+csharp_style_expression_bodied_indexers                                  = true:warning
+csharp_style_expression_bodied_accessors                                 = true:warning
+csharp_style_expression_bodied_lambdas                                   = true:suggestion
+csharp_style_expression_bodied_local_functions                           = true:warning
 # Pattern matching preferences
 csharp_style_pattern_matching_over_is_with_cast_check                    = true : suggestion
 csharp_style_pattern_matching_over_as_with_null_check                    = true : suggestion
@@ -171,12 +188,11 @@ csharp_style_conditional_delegate_call                                   = true 
 # Modifier preferences
 csharp_preferred_modifier_order                                          = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async : suggestion
 # Expression-level preferences
-csharp_prefer_braces                                                     = true : silent
+csharp_prefer_braces                                                     = true:silent
 csharp_style_deconstructed_variable_declaration                          = true : suggestion
 csharp_prefer_simple_default_expression                                  = true : suggestion
 csharp_style_pattern_local_over_anonymous_function                       = true : suggestion
 csharp_style_inlined_variable_declaration                                = true : warning
-
 ###############################
 # C# Formatting Rules         #
 ###############################
@@ -207,47 +223,202 @@ csharp_space_between_method_call_empty_parameter_list_parentheses        = false
 # Wrapping preferences
 csharp_preserve_single_line_statements                                   = true
 csharp_preserve_single_line_blocks                                       = true
-
+csharp_using_directive_placement = outside_namespace:silent
+csharp_prefer_simple_using_statement                                     = true:suggestion
+csharp_style_namespace_declarations                                      = file_scoped:warning
+csharp_style_prefer_method_group_conversion                              = true:silent
 ###############################
 # F# Coding Conventions       #
 ###############################
+# filetypes that need to be formatted by Fantomas:
 [*.{fs,fsx}]
-max_line_length=120
-fsharp_semicolon_at_end_of_line=false
+
+# files to be ignored for Fantomas may go into this file, if present:
+# .fantomasignore
+
+# indentation size, default=4
+indent_size=4
+
+# line length before it gets broken down into multiple lines
+# default 120
+max_line_length=130
+
+# Either crlf | lf, default is system-dependent (when not specified at all)
+# end_of_line=crlf
+
+# Whether end-of-file has a newline, default=true
+insert_final_newline=true
+
+# false: f(1,2)
+# true: f(1, 2)
+# default true
 fsharp_space_before_parameter=true
+
+# false: Option.map(fun x -> x)
+# true: Option.map (fun x -> x)
+# default true
 fsharp_space_before_lowercase_invocation=true
+
+# false: x.ToString()
+# true: x.ToString ()
+# default false
 fsharp_space_before_uppercase_invocation=true
+
+# false: new Ship(withBeans)
+# true: new Ship (withBeans)
+# default false
 fsharp_space_before_class_constructor=true
+
+# false: __.member Foo(x) = x
+# true: __.member Foo (x) = x
+# default false
 fsharp_space_before_member=true
+
+# false: type Point = { x: int; y: int }
+# true: type Point = { x : int; y : int }
+# default false
 fsharp_space_before_colon=true
+
+# false: (a,b,c)
+# true: (a, b, c)
+# default true
 fsharp_space_after_comma=true
+
+# false: [a; b; 42]
+# true:  [a ; b ; 42]
+# default false
 fsharp_space_before_semicolon=false
+
+# false: [a;b;42]
+# true:  [a; b; 42]
+# default true
 fsharp_space_after_semicolon=true
-fsharp_indent_on_try_with=false
+
+# false: let a = [1;2;3]
+# true: let a = [ 1;2;3 ]
+# default true
 fsharp_space_around_delimiter=true
-fsharp_max_if_then_else_short_width=40
-fsharp_max_infix_operator_expression=50
-fsharp_max_newline_infix_operator_expression_number_of_items=1
-fsharp_multiline_infix_multiline_formatter=character_width
-fsharp_max_record_width=40
+
+# breaks an if-then-else in smaller parts if it is on one line
+# default 40
+fsharp_max_if_then_else_short_width=60
+
+# breaks an infix operator expression if it is on one line
+# infix: a + b + c
+# default 50
+fsharp_max_infix_operator_expression=60
+
+# breaks a single-line record declaration
+# i.e. if this gets too wide: { X = 10; Y = 12 }
+# default 40
+fsharp_max_record_width=80
+
+# breaks a record into one item per line if items exceed this number
+# i.e. if set to 1, this will be on three lines: { X = 10; Y = 12 }
+# requires fsharp_record_multiline_formatter=number_of_items to take effect
+# default 1
 fsharp_max_record_number_of_items=1
+
+# whether to use line-length (by counting chars) or items (by counting fields)
+# for the record settings above
+# either number_of_items or character_width
+# default character_width
 fsharp_record_multiline_formatter=character_width
-fsharp_max_array_or_list_width=40
-fsharp_max_array_or_list_number_of_items=10
+
+# breaks a single line array or list if it exceeds this size
+# default 40
+fsharp_max_array_or_list_width=100
+
+# breaks an array or list into one item per line if items exceeds this number
+# i.e. if set to 1, this will be shown on three lines [1; 2; 3]
+# requires fsharp_array_or_list_multiline_formatter=number_of_items to take effect
+# default 1
+fsharp_max_array_or_list_number_of_items=1
+
+# whether to use line-length (by counting chars) or items (by counting fields)
+# for the list and array settings above
+# either number_of_items or character_width
+# default character_width
 fsharp_array_or_list_multiline_formatter=character_width
-fsharp_max_value_binding_width=40
-fsharp_max_function_binding_width=40
-fsharp_max_dot_get_expression_width=50
-fsharp_multiline_block_brackets_on_same_column=false
-fsharp_newline_between_type_definition_and_members=false
-fsharp_keep_if_then_in_same_line=true
-fsharp_max_elmish_width=40
-fsharp_single_argument_web_mode=false
+
+# maximum with of a value binding, does not include keyword "let"
+# default 80
+fsharp_max_value_binding_width=100
+
+# maximum width for function and member binding (rh-side)
+# default 40
+fsharp_max_function_binding_width=80
+
+# maximum width for expressions like X.DoY().GetZ(10).Help()
+# default 50
+fsharp_max_dot_get_expression_width=80
+
+# whether open/close brackets go on the same column
+# cramped:    type Range =
+#               { From: float
+#                 To: float }
+# aligned:    type Range =
+#                 {
+#                     From: float
+#                     To: float
+#                 }
+# stroustrup: type Range = {
+#                 From: float
+#                 To: float
+#             }
+# default cramped
+fsharp_multiline_bracket_style=stroustrup
+
+# whether to move the beginning of compuitation expression to the new line
+# true:  let x =
+#			 computation {
+#			 }
+# false: let x = computation {
+#			 }
+fsharp_newline_before_multiline_computation_expression=false
+
+# whether a newline should be placed before members
+# false: type Range =
+#            { From: float }
+#            member this.Length = this.To - this.From
+# true: type Range =
+#            { From: float }
+#
+#            member this.Length = this.To - this.From
+# default false
+fsharp_newline_between_type_definition_and_members=true
+
+# if a function sign exceeds max_line_length, then:
+# false: do not place the equal-sign on a single line
+# true: place the equal-sign on a single line
+# default false
 fsharp_align_function_signature_to_indentation=false
-fsharp_alternative_long_member_definitions=false
-fsharp_disable_elmish_syntax=false
-fsharp_multi_line_lambda_closing_newline=false
-fsharp_strict_mode=false
+
+# see docs: https://github.com/fsprojects/fantomas/blob/master/docs/Documentation.md#fsharp_alternative_long_member_definitions
+# default false
+fsharp_alternative_long_member_definitions=true
+
+# places closing paren in lambda on a newline in multiline lambdas
+# default false
+fsharp_multi_line_lambda_closing_newline=true
+
+# allows the 'else'-branch to be aligned at same level as 'else' if the ret type allows it
+# default false
+fsharp_keep_indent_in_branch=true
+
+# whether a bar is placed before DU
+# false: type MyDU = Short of int
+# true: type MyDU = | Short of int
+# default false
+fsharp_bar_before_discriminated_union_declaration=false
+
+# multiline, nested expressions must be surrounded by blank lines
+# default true
+fsharp_blank_lines_around_nested_multiline_expressions=false
+
+# set maximal number of consecutive blank lines to keep from original source
+# it doesn't change number of new blank lines generated by Fantomas
+fsharp_keep_max_number_of_blank_lines=2
 
 ###############################
 # VB Coding Conventions       #
@@ -256,7 +427,6 @@ fsharp_strict_mode=false
 [*.vb]
 # Modifier preferences
 visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public,Friend,NotOverridable,Overridable,MustOverride,Overloads,Overrides,MustInherit,NotInheritable,Static,Shared,Shadows,ReadOnly,WriteOnly,Dim,Const,WithEvents,Widening,Narrowing,Custom,Async : suggestion
-
 ###############################
 # Code Analysis               #
 ###############################
@@ -848,7 +1018,7 @@ dotnet_diagnostic.CA5390.severity = warning
 # CA5391: Use antiforgery tokens in ASP.NET Core MVC controllers
 dotnet_diagnostic.CA5391.severity = warning
 
-# CA5392: Use DefaultDllImportSearchPaths attribute for P/Invokes
+# CA5392: Use DefaulSkillGrolImportSearchPaths attribute for P/Invokes
 dotnet_diagnostic.CA5392.severity = warning
 
 # CA5393: Do not use unsafe DllImportSearchPath value
@@ -886,16 +1056,12 @@ dotnet_diagnostic.CA5403.severity = warning
 
 # CA9999: Analyzer version mismatch
 dotnet_diagnostic.CA9999.severity = warning
-
-# RCS1163: Unused parameter
-dotnet_diagnostic.RCS1163.severity = none
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
 
 ###############################
 # Code Analysis Exceptions    #
 ###############################
-[**/{Main.*.cs,Program.cs,*Activity.*.cs,Shell.xaml.cs,*Page.cs,Samples/**.xaml.cs,*Behavior.cs,Controls/**.cs,Components/**.cs}]
-# CA1001: Type owns disposable field(s) but is not disposable
-dotnet_diagnostic.CA1001.severity = none
+[**/{Main.*.cs,Program.cs,*Activity.*.cs,*Shell.xaml.cs,*Page.cs,*Page.xaml.cs,Controls/**.cs}]
 # CA1010: Collections should implement generic interface
 dotnet_diagnostic.CA1010.severity = none
 # CA1012: Abstract type 'ShellBase' should not have public constructors
@@ -911,12 +1077,12 @@ dotnet_diagnostic.IDE0001.severity = suggestion
 # IDE0021: Use expression body for constructors
 dotnet_diagnostic.IDE0021.severity = suggestion
 
-[{Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
+[{**Shell.xaml.cs,**Page.cs,**Page.xaml.cs,**/Controls/**.cs}]
 csharp_style_expression_bodied_constructors = false
 # RCS1043: Remove 'partial' modifier from type with a single part.
 dotnet_diagnostic.RCS1043.severity = none
 
-[{App.xaml.cs,Main.*.cs,Shell.xaml.cs}]
+[{App.cs,Main.*.cs,**Shell.xaml.cs,Entity.cs}]
 # CA1724: Type names should not match namespaces
 dotnet_diagnostic.CA1724.severity = none
 # DF0000: Marks indisposed anonymous objects from object creations.
@@ -926,8 +1092,21 @@ dotnet_diagnostic.DF0010.severity = silent
 # DF0021: Field is not disposed.
 dotnet_diagnostic.DF0021.severity = silent
 
+[**/Uno.UI.SourceGenerators/**.cs]
+# DF0001: Undisposed anonymous object.
+dotnet_diagnostic.DF0001.severity = silent
+# DF0033: Previous value of property 'Child' might no be disposed.
+dotnet_diagnostic.DF0033.severity = silent
+
 [{App.xaml.cs,Program.cs}]
 # CA1724: The type name App conflicts in whole or in part with the namespace name. Change either name to eliminate the conflict.
 dotnet_diagnostic.CA1724.severity = none
 # CA1801: Parameter args of method Main is never used. Remove the parameter or use it in the method body.
 dotnet_diagnostic.CA1801.severity = none
+
+[*.g.cs]
+dotnet_diagnostic.XAOBS001.severity = none
+
+[**/*Test*/**.cs]
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none

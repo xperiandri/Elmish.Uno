@@ -1,16 +1,16 @@
-﻿namespace Elmish.Uno.Samples;
-
-#pragma warning disable CA1501 // 'MainActivity' has an object hierarchy too many levels deep within the defining module.
+﻿namespace Elmish.Uno.Samples.Droid;
 
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
+using Android.OS;
 using Android.Views;
+using Android.Widget;
 
 [Activity(
-        MainLauncher = true,
-        ConfigurationChanges = global::Uno.UI.ActivityHelper.AllConfigChanges,
-        WindowSoftInputMode = SoftInput.AdjustPan | SoftInput.StateHidden
-    )]
+    MainLauncher = true,
+    ConfigurationChanges = global::Uno.UI.ActivityHelper.AllConfigChanges,
+    WindowSoftInputMode = SoftInput.AdjustNothing | SoftInput.StateHidden
+)]
 public class MainActivity : Microsoft.UI.Xaml.ApplicationActivity
 {
 }

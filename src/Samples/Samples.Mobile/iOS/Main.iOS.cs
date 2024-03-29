@@ -1,11 +1,14 @@
-﻿namespace Elmish.Uno.Samples;
-
-#pragma warning disable CA1506 // 'App' is coupled with too many different types from too many different namespaces. Rewrite or refactor the code to decrease its class coupling below '96'.
+﻿namespace Elmish.Uno.Samples.iOS;
 
 using UIKit;
 
-public partial class App
+public static class EntryPoint
 {
-    private static void Main(string[] args) =>
-        UIApplication.Main(args, null, typeof(App));
+    // This is the main entry point of the application.
+    public static void Main(string[] args)
+    {
+        // if you want to use a different Application Delegate class from "AppDelegate"
+        // you can specify it here.
+        UIApplication.Main(args, null, typeof(AppHead));
+    }
 }

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(TargetFrameworks);$(DotNetVersion)-windows10.0.22621</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);$(DotNetVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OverrideTargetFramework)'!=''">$(OverrideTargetFramework)</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="SingleCounter.fs" />
+    <Compile Include="OneWaySeq.fs" />
+    <Compile Include="SubModel.fs" />
+    <Compile Include="SubModelOpt.fs" />
+    <Compile Include="SubModelSelectedItem.fs" />
+    <Compile Include="SubModelSeq.fs" />
+    <Compile Include="UiBoundCmdParam.fs" />
+    <Compile Include="Validation.fs" />
+    <Compile Include="FileDialogs.fs" />
+    <Compile Include="FileDialogs.CmdMsg.fs" />
+    <Compile Include="EventBindingsAndBehaviors.fs" />
+    <Compile Include="NewWindow.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Elmish.Uno\Elmish.Uno.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elmish" />
+    <PackageReference Include="FSharp.Control.FusionTasks" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.Contains('windows10'))" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.Contains('windows10'))" />
+    <PackageReference Include="Uno.WinUI" />
+  </ItemGroup>
+
+  <Target Name="XamlPreCompile" Condition="$(TargetFramework.Contains('windows10'))" />
+</Project>

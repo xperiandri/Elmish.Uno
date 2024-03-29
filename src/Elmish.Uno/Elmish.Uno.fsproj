@@ -70,5 +70,4 @@
   </ItemGroup>
 
   <Target Name="XamlPreCompile" Condition="$(TargetFramework.Contains('windows10'))" />
-
 </Project>
