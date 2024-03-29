@@ -1,4 +1,4 @@
-WPF done the Elmish Way
+Uno Platform done the Elmish Way
 =======================
 
 <img src="https://raw.githubusercontent.com/elmish/Elmish.Uno/master/logo/elmish-wpf-logo-ghreadme.png" width="300" align="right" />
@@ -9,7 +9,7 @@ WPF done the Elmish Way
 
 ### Elevator pitch
 
-Elmish.Uno is a **production-ready** library that allows you to write WPF apps with the robust, simple, well-known, and battle-tested MVU architecture, while still allowing you to use all your XAML knowledge and tooling to create UIs.
+Elmish.Uno is a **production-ready** library that allows you to write Uno apps with the robust, simple, well-known, and battle-tested MVU architecture, while still allowing you to use all your XAML knowledge and tooling to create UIs.
 
 Some benefits of MVU you’ll get with Elmish.Uno is:
 
@@ -104,7 +104,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 
 6. Define the “view” function using the `Bindings` module. This is the central public API of Elmish.Uno.
 
-   Normally in Elm/Elmish this function is called `view` and would take a model and a dispatch function (to dispatch new messages to the update loop) and return the UI (e.g. a HTML DOM to be rendered), but in Elmish.WPF this function is in general only run once and simply sets up bindings that XAML-defined views can use. Therefore, let’s call it `bindings` instead of `view`.
+   Normally in Elm/Elmish this function is called `view` and would take a model and a dispatch function (to dispatch new messages to the update loop) and return the UI (e.g. a HTML DOM to be rendered), but in Elmish.Uno this function is in general only run once and simply sets up bindings that XAML-defined views can use. Therefore, let’s call it `bindings` instead of `view`.
 
    ```F#
    open Elmish.Uno
@@ -125,7 +125,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 7. Create a function that accepts the app’s main window (to be created) and configures and starts the Elmish loop for the window with your `init`, `update` and `bindings`:
 
    ```F#
-   open Elmish.WPF
+   open Elmish.Uno
    
    let main window =
      Program.mkSimpleWpf init update bindings
@@ -134,7 +134,7 @@ See the [SingleCounter](https://github.com/elmish/Elmish.Uno/tree/master/src/Sam
 
    In the code above, `Program.runElmishLoop` will set the window’s `DataContext` to the specified bindings and start the Elmish dispatch loop for the window.
 
-8. Create a WPF app project (using the Visual Studio template called `WPF App (.NET)`). This will be your entry point and contain the XAML views. Add a reference to the F# project, and make the following changes in the `csproj` file:
+8. Create an Uno Platform app project (using the Visual Studio template called `Uno Platform App`). This will be your entry point and contain the XAML views. Add a reference to the F# project, and make the following changes in the `csproj` file:
 
    * Currently, the core Elmish logs are only output to the console. If you want a console window for displaying Elmish logs, change `<OutputType>WinExe</OutputType>` to `<OutputType>Exe</OutputType>` and add `<DisableWinExeOutputInference>true</DisableWinExeOutputInference>`.
    * If the project file starts with the now legacy `<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">`, change it to `<Project Sdk="Microsoft.NET.Sdk">`
@@ -227,7 +227,7 @@ Since the commands (`Cmd<Msg>`) returned by `init` and `update` are lists of fun
 * Create a trivial/too-boring-to-test `cmdMsgToCmd` function that transforms a `CmdMsg` to the corresponding `Cmd`.
 * Finally, create “normal” versions of `init` and `update` that you can use when creating `Program`. Elmish.WPF provides `Program.mkProgramWpfWithCmdMsg` that does this for you (but there’s no magic going on – it’s really easy to do yourself).
 
-The [FileDialogsCmdMsg sample](https://github.com/elmish/Elmish.WPF/tree/master/src/Samples) demonstrates this approach. For more information, see the [Fabulous documentation](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability). For reference, here is [the discussion that led to this pattern](https://github.com/fsprojects/Fabulous/pull/320#issuecomment-491522737).
+The [FileDialogsCmdMsg sample](https://github.com/XperiAndri/Elmish.Uno/tree/master/src/Samples) demonstrates this approach. For more information, see the [Fabulous documentation](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability). For reference, here is [the discussion that led to this pattern](https://github.com/fsprojects/Fabulous/pull/320#issuecomment-491522737).
 
 #### Can I use design-time view models?
 
