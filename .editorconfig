@@ -237,7 +237,7 @@ csharp_style_prefer_method_group_conversion                              = true:
 # .fantomasignore
 
 # indentation size, default=4
-indent_size=4
+indent_size=2
 
 # line length before it gets broken down into multiple lines
 # default 120

@@ -22,9 +22,9 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Tests", "src\Elm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{E036A399-66BF-4656-98E0-45A30EABDBC7}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\pull_request.yml = .github\workflows\pull_request.yml
 		.github\workflows\publish_ci.yml = .github\workflows\publish_ci.yml
 		.github\workflows\publish_release.yml = .github\workflows\publish_release.yml
+		.github\workflows\pull_request.yml = .github\workflows\pull_request.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{49DD7592-B03D-4EEE-B1BF-522488992C80}"
@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{49DD7592
 	EndProjectSection
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno", "src\Elmish.Uno\Elmish.Uno.fsproj", "{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.Uno.Benchmarks", "src\Elmish.Uno.Benchmarks\Elmish.Uno.Benchmarks.fsproj", "{C93125F9-42BF-468F-9F31-B493C7916FD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C6E8D34-7205-4C57-9722-87E30E4FC5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C93125F9-42BF-468F-9F31-B493C7916FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93125F9-42BF-468F-9F31-B493C7916FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93125F9-42BF-468F-9F31-B493C7916FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93125F9-42BF-468F-9F31-B493C7916FD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

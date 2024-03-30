@@ -1,4 +1,4 @@
-﻿module Elmish.Uno.Tests.ViewModelTests
+module DynamicViewModelTests.M
 
 open System
 open System.Collections.Concurrent
@@ -6,17 +6,20 @@ open System.Collections.ObjectModel
 open System.Collections.Specialized
 open System.ComponentModel
 open System.Windows.Input
+
 open FSharp.Interop.Dynamic
+
 open Xunit
 open Hedgehog
 open Swensen.Unquote
+
 open Elmish.Uno
 
 
 [<AutoOpen>]
 module Extensions =
 
-  type ViewModel<'model, 'msg> with
+  type DynamicViewModel<'model, 'msg> with
 
     member internal this.Get propName =
       (?) this propName
@@ -26,17 +29,14 @@ module Extensions =
 
 
 type internal TestVm<'model, 'msg>(model, bindings) as this =
-  inherit ViewModel<'model, 'msg>(model, (fun x -> this.Dispatch x), bindings, ElmConfig.Default, "")
+  inherit DynamicViewModel<'model, 'msg>({ initialModel = model; dispatch = (fun x -> this.Dispatch x); loggingArgs = LoggingViewModelArgs.none }, bindings)
 
-  /// Property Changed Triggers
   let pcTriggers = ConcurrentDictionary<string, int>()
-  /// Errors Changed Triggers
   let ecTriggers = ConcurrentDictionary<string, int>()
-  // Collection Changed  Triggers
   let ccTriggers = ConcurrentDictionary<string, NotifyCollectionChangedEventArgs list>()
-  /// Can Execute Changed Triggers
   let cecTriggers = ConcurrentDictionary<string, int>()
   let dispatchMsgs = ResizeArray<'msg> ()
+
 
   do
     (this :> INotifyPropertyChanged).PropertyChanged.Add (fun e ->
@@ -48,6 +48,8 @@ type internal TestVm<'model, 'msg>(model, bindings) as this =
     )
 
   new(model, binding) = TestVm(model, [binding])
+
+  member _.UpdateModel(m) = IViewModel.updateModel(this, m)
 
   member private __.Dispatch x =
     dispatchMsgs.Add x
@@ -74,14 +76,14 @@ type internal TestVm<'model, 'msg>(model, bindings) as this =
   /// Will cause the property to be retrieved.
   member this.TrackCcTriggersFor propName =
     try
-      (this.Get propName : ObservableCollection<obj>).CollectionChanged.Add (fun e ->
+      (this.Get propName : INotifyCollectionChanged).CollectionChanged.Add (fun e ->
         ccTriggers.AddOrUpdate(
           propName,
           [e],
           (fun _ me -> e :: me)) |> ignore
       )
     with _ ->
-      (this.Get propName |> unbox<ObservableCollection<ViewModel<obj, obj>>>).CollectionChanged.Add (fun e ->
+      (this.Get propName |> unbox<INotifyCollectionChanged>).CollectionChanged.Add (fun e ->
         ccTriggers.AddOrUpdate(
           propName,
           [e],
@@ -101,91 +103,33 @@ type internal TestVm<'model, 'msg>(model, bindings) as this =
 module Helpers =
 
 
-  let internal oneWay
-      name
-      (get: 'model -> 'a) =
-    name |> createBinding (OneWayData {
-      Get = get >> box
-    })
-
-
-  let internal oneWayLazy
-      name
-      (get: 'model -> 'a)
-      (equals: 'a -> 'a -> bool)
-      (map: 'a -> 'b) =
-    name |> createBinding (OneWayLazyData {
-      Get = get >> box
-      Map = unbox<'a> >> map >> box
-      Equals = fun a b -> equals (unbox<'a> a) (unbox<'a> b)
-    })
-
-
-  let internal oneWaySeqLazy
-      name
-      (get: 'model -> 'a)
-      (equals: 'a -> 'a -> bool)
-      (map: 'a -> #seq<'b>)
-      (itemEquals: 'b -> 'b -> bool)
-      (getId: 'b -> 'id) =
-    name |> createBinding (OneWaySeqLazyData {
-      Get = get >> box
-      Map = unbox<'a> >> map >> Seq.map box
-      Equals = fun x y -> equals (unbox<'a> x) (unbox<'a> y)
-      GetId = unbox<'b> >> getId >> box
-      ItemEquals = fun x y -> itemEquals (unbox<'b> x) (unbox<'b> y)
-    })
-
-
-  let internal twoWay
-      name
-      (get: 'model -> 'a)
-      (set: 'a -> 'model -> 'msg) =
-    name |> createBinding (TwoWayData {
-      Get = get >> box
-      Set = unbox<'a> >> set
-      WrapDispatch = id
-    })
-
-
+  let internal oneWay x = x |> Binding.oneWay
+  let internal oneWayLazy x = x |> Func3.curry Binding.oneWayLazy
+  let internal oneWaySeqLazy x = x |> Func5.curry Binding.oneWaySeqLazy
+  let internal twoWay x = x |> Func2.curry Binding.twoWay
   let internal twoWayValidate
       name
       (get: 'model -> 'a)
       (set: 'a -> 'model -> 'msg)
-      (validate: 'model -> obj voption)
-      (getErrorId: 'b -> 'id)
-      (errorItemEquals: 'b -> 'b -> bool)
-      =
-    name |> createBinding (TwoWayValidateData {
-      Get = get >> box
-      Set = unbox<'a> >> set
-      Validate = validate >> ValueOption.toArray
-      WrapDispatch = id
-      GetErrorId = unbox >> getErrorId >> box
-      ErrorItemEquals = fun one another -> errorItemEquals (unbox one) (unbox another)
-    })
+      (validate: 'model -> string voption) =
+    Binding.twoWayValidate (get, set, validate) name
 
 
-  let internal cmd
-      name
-      (exec: 'model -> 'msg voption)
-      (canExec: 'model -> bool) =
-    name |> createBinding (CmdData {
-      Exec = exec
-      CanExec = canExec
-      WrapDispatch = id
-    })
+  let internal cmd x = x |> Binding.Cmd.create
+
 
 
   let internal cmdParam
       name
       (exec: 'a -> 'model -> 'msg voption)
-      (canExec: 'a -> 'model -> bool) =
-    name |> createBinding (CmdParamData {
-      Exec = unbox >> exec
-      CanExec = unbox >> canExec
-      WrapDispatch = id
-    })
+      (canExec: 'a -> 'model -> bool)
+      (autoRequery: bool) =
+    ({ Exec = unbox >> exec
+       CanExec = unbox >> canExec
+       AutoRequery = autoRequery }
+     |> CmdData
+     |> BaseBindingData
+     |> createBinding) name
 
 
   let internal subModel
@@ -194,12 +138,7 @@ module Helpers =
       (toMsg: 'subMsg -> 'msg)
       (bindings: Binding<'subModel, 'subMsg> list)
       (sticky: bool) =
-    name |> createBinding (SubModelData {
-      GetModel = getModel >> ValueOption.map box
-      GetBindings = fun () -> bindings |> List.map boxBinding
-      ToMsg = unbox<'subMsg> >> toMsg
-      Sticky = sticky
-    })
+    Binding.subModelOpt(getModel, snd, toMsg, (fun () -> bindings), sticky) name
 
 
   let internal subModelSeq
@@ -208,12 +147,11 @@ module Helpers =
       (getId: 'subModel -> 'id)
       (toMsg: 'id * 'subMsg -> 'msg)
       (bindings: Binding<'subModel, 'subMsg> list) =
-    name |> createBinding (SubModelSeqData {
-      GetModels = getModels >> Seq.map box
-      GetId = unbox<'subModel> >> getId >> box
-      GetBindings = fun () -> bindings |> List.map boxBinding
-      ToMsg = fun (id, msg) -> toMsg (unbox<'id> id, unbox<'subMsg> msg)
-    })
+    name
+    |> Binding.subModelSeq (getBindings = (fun () -> bindings), getId = getId)
+    |> Binding.mapModel (fun m -> upcast getModels m)
+    |> Binding.mapMsg toMsg
+
 
 
   let internal subModelSelectedItem
@@ -221,12 +159,7 @@ module Helpers =
       subModelSeqBindingName
       (get: 'model -> 'id voption)
       (set: 'id voption -> 'model -> 'msg) =
-    name |> createBinding (SubModelSelectedItemData {
-      Get = get >> ValueOption.map box
-      Set = ValueOption.map unbox<'id> >> set
-      SubModelSeqBindingName = subModelSeqBindingName
-      WrapDispatch = id
-    })
+    Binding.subModelSelectedItem (subModelSeqBindingName, get, set) name
 
 
 
@@ -242,7 +175,7 @@ module OneWay =
 
       let get = string<int>
 
-      let binding = oneWay name get
+      let binding = oneWay get name
       let vm = TestVm(m1, binding)
 
       test <@ vm.Get name = get m1 @>
@@ -262,11 +195,55 @@ module OneWay =
 
       let get = string<int>
 
-      let binding = oneWay name get
+      let binding = oneWay get name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
       test <@ vm.NumPcTriggersFor name = if get m1 = get m2 then 0 else 1 @>
+  }
+
+  [<Fact>]
+  let ``on model increment, sticky-to-even binding returns even number`` () =
+    let isEven x = x % 2 = 0
+
+    let returnEven a =
+      function
+      | b when isEven b -> b
+      | _ -> a
+
+    Property.check <| property {
+      let! name = GenX.auto<string>
+      let! m = GenX.auto<int>
+
+      let binding = oneWay id name |> Binding.addSticky isEven
+      let vm = TestVm(m, binding)
+
+      vm.UpdateModel (m + 1)
+      test <@ vm.Get name = returnEven m (m + 1) @>
+    }
+
+  [<Fact>]
+  let ``when model updated, event is not called before view model property is updated`` () =
+    Property.check <| property {
+      let! name = GenX.auto<string>
+      let! m1 = GenX.auto<int>
+      let! m2 = GenX.auto<int> |> GenX.notEqualTo m1
+
+      let get = string<int>
+
+      let binding = oneWay get name
+      let vm = TestVm(m1, binding)
+      let mutable eventFired = false
+
+      (vm :> INotifyPropertyChanged).PropertyChanged.Add (fun e ->
+        test <@ e.PropertyName = name @>
+        test <@ vm.Get name = get m2 @>
+        eventFired <- true
+      )
+
+      vm.UpdateModel m2
+
+      test <@ eventFired @>
   }
 
 
@@ -284,7 +261,7 @@ module OneWayLazy =
       let equals = (=)
       let map = String.length
 
-      let binding = oneWayLazy name get equals map
+      let binding = oneWayLazy get equals map name
       let vm = TestVm(m, binding)
 
       test <@ vm.Get name = (m |> get |> map) @>
@@ -302,7 +279,7 @@ module OneWayLazy =
       let equals _ _ = false
       let map = String.length
 
-      let binding = oneWayLazy name get equals map
+      let binding = oneWayLazy get equals map name
       let vm = TestVm(m1, binding)
       vm.UpdateModel m2
 
@@ -321,7 +298,7 @@ module OneWayLazy =
       let equals _ _ = true
       let map = String.length
 
-      let binding = oneWayLazy name get equals map
+      let binding = oneWayLazy get equals map name
       let vm = TestVm(m1, binding)
       vm.Get name |> ignore  // populate cache
       vm.UpdateModel m2
@@ -342,7 +319,7 @@ module OneWayLazy =
       let equals _ _ = eq
       let map = InvokeTester String.length
 
-      let binding = oneWayLazy name get equals map.Fn
+      let binding = oneWayLazy get equals map.Fn name
       let vm = TestVm(m1, binding)
 
       vm.Get name |> ignore
@@ -365,7 +342,7 @@ module OneWayLazy =
       let equals = (=)
       let map = InvokeTester String.length
 
-      let binding = oneWayLazy name get equals map.Fn
+      let binding = oneWayLazy get equals map.Fn name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -385,7 +362,7 @@ module OneWayLazy =
       let equals = (=)
       let map = InvokeTester String.length
 
-      let binding = oneWayLazy name get equals map.Fn
+      let binding = oneWayLazy get equals map.Fn name
       let vm = TestVm(m1, binding)
 
       vm.Get name |> ignore
@@ -412,7 +389,7 @@ module OneWayLazy =
       let equals _ _ = eq
       let map = String.length
 
-      let binding = oneWayLazy name get equals map
+      let binding = oneWayLazy get equals map name
       let vm = TestVm(m1, binding)
       vm.UpdateModel m2
 
@@ -420,11 +397,12 @@ module OneWayLazy =
   }
 
 
+
 module OneWaySeqLazy =
 
 
-  let private testObservableCollectionContainsExpectedItems (vm: ViewModel<_, _>) name expected =
-    let actual = (vm.Get name : ObservableCollection<_>) |> Seq.toList |> List.map unbox
+  let private testObservableCollectionContainsExpectedItems (vm: DynamicViewModel<_, _>) name expected =
+    let actual = (vm.Get name : ObservableCollection<_>) |> Seq.toList
     test <@ expected = actual @>
 
 
@@ -440,7 +418,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map itemEquals getId
+      let binding = oneWaySeqLazy get equals map itemEquals getId name
       let vm = TestVm(m, binding)
 
       testObservableCollectionContainsExpectedItems vm name (m |> get |> map)
@@ -460,7 +438,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map itemEquals getId
+      let binding = oneWaySeqLazy get equals map itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -482,7 +460,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map itemEquals getId
+      let binding = oneWaySeqLazy get equals map itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -504,7 +482,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get.Fn equals map itemEquals getId
+      let binding = oneWaySeqLazy get.Fn equals map itemEquals getId name
       TestVm(m1, binding) |> ignore
 
       test <@ get.Count <= 1 @>
@@ -524,7 +502,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       TestVm(m1, binding) |> ignore
 
       test <@ map.Count <= 1 @>
@@ -544,9 +522,9 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
+
       map.Reset ()
       vm.UpdateModel m2
 
@@ -567,9 +545,8 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
 
       map.Reset ()
       vm.UpdateModel m2
@@ -592,9 +569,8 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get.Fn equals map itemEquals getId
+      let binding = oneWaySeqLazy get.Fn equals map itemEquals getId name
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
 
       get.Reset ()
       vm.UpdateModel m2
@@ -615,7 +591,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.Get name |> ignore
@@ -638,16 +614,16 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
+
       map.Reset ()
       vm.UpdateModel m2
 
       vm.Get name |> ignore
       vm.Get name |> ignore
 
-      test <@ map.Count <= 2 @>
+      test <@ map.Count <= 1 @>
     }
 
 
@@ -666,7 +642,7 @@ module OneWaySeqLazy =
       let itemEquals _ _ = itemEq
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map.Fn itemEquals getId
+      let binding = oneWaySeqLazy get equals map.Fn itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -688,7 +664,7 @@ module OneWaySeqLazy =
       let itemEquals = (=)
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map itemEquals getId
+      let binding = oneWaySeqLazy get equals map itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.TrackCcTriggersFor name
@@ -711,7 +687,7 @@ module OneWaySeqLazy =
       let itemEquals _ _ = false
       let getId = id
 
-      let binding = oneWaySeqLazy name get equals map itemEquals getId
+      let binding = oneWaySeqLazy get equals map itemEquals getId name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -734,7 +710,7 @@ module TwoWay =
       let get = string<int>
       let set _ _ = ()
 
-      let binding = twoWay name get set
+      let binding = twoWay get set name
       let vm = TestVm(m1, binding)
 
       test <@ vm.Get name = get m1 @>
@@ -755,7 +731,7 @@ module TwoWay =
       let get = string<int>
       let set _ _ = ()
 
-      let binding = twoWay name get set
+      let binding = twoWay get set name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -773,7 +749,7 @@ module TwoWay =
       let get = string
       let set (p: string) (m: int) = string m + p
 
-      let binding = twoWay name get set
+      let binding = twoWay get set name
       let vm = TestVm(m, binding)
 
       vm.Set name p
@@ -797,7 +773,7 @@ module TwoWayValidate =
       let set _ _ = ()
       let validate _ = ValueNone
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
 
       test <@ vm.Get name = get m1 @>
@@ -819,7 +795,7 @@ module TwoWayValidate =
       let set _ _ = ()
       let validate _ = ValueNone
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -839,7 +815,7 @@ module TwoWayValidate =
       let set (p: string) (m: int) = string m + p
       let validate _ = ValueNone
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m, binding)
 
       vm.Set name p
@@ -852,20 +828,19 @@ module TwoWayValidate =
   let ``when model is updated, should trigger ErrorsChanged iff the value returned by validate changes`` () =
     Property.check <| property {
       let! name = GenX.auto<string>
-      let m1:int = -1
-      let m2:int = 0
+      let! m1 = GenX.auto<int>
+      let! m2 = GenX.auto<int>
 
       let get _ = ()
       let set _ _ = ()
-      let validate m = if m < 0 then ValueSome (string m |> box) else ValueNone
+      let validate m = if m < 0 then ValueSome (string m) else ValueNone
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
 
       vm.UpdateModel m2
 
-      test <@ vm.NumEcTriggersFor name = if validate m1 |> ValueOption.isNone &&  validate m2 |> ValueOption.isNone then 0 else 2 @>
+      test <@ vm.NumEcTriggersFor name = if validate m1 = validate m2 then 0 else 1 @>
     }
 
 
@@ -880,18 +855,17 @@ module TwoWayValidate =
       let set _ _ = ()
       let validate _ = ValueNone
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
-      let vm2 = vm :> INotifyDataErrorInfo
+      let vm' = vm :> INotifyDataErrorInfo
 
-      test <@ vm2.HasErrors = false @>
-      test <@ vm2.GetErrors name = null @>
+      test <@ vm'.HasErrors = false @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.isEmpty @>
 
       vm.UpdateModel m2
 
-      test <@ vm2.HasErrors = false @>
-      test <@ vm2.GetErrors name = null @>
+      test <@ vm'.HasErrors = false @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.isEmpty @>
     }
 
 
@@ -904,23 +878,47 @@ module TwoWayValidate =
 
       let get _ = ()
       let set _ _ = ()
-      let validate m = ValueSome ((string<int> m) |> box)
+      let validate m = ValueSome (string<int> m)
 
-      let binding = twoWayValidate name get set validate id (=)
+      let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
+      let vm' = vm :> INotifyDataErrorInfo
 
-      vm.UpdateModel m1
-
-
-      let vm2 = vm :> INotifyDataErrorInfo
-
-      test <@ vm2.HasErrors = true @>
-      test <@ vm2.GetErrors name |> Seq.cast |> Seq.toList = [(validate m1).Value] @>
+      test <@ vm'.HasErrors = true @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.toList = [(validate m1).Value] @>
 
       vm.UpdateModel m2
 
-      test <@ vm2.HasErrors = true @>
-      test <@ vm2.GetErrors name |> Seq.cast |> Seq.toList = [(validate m2).Value] @>
+      test <@ vm'.HasErrors = true @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.toList = [(validate m2).Value] @>
+    }
+
+
+  [<Fact>]
+  let ``when validate returns no ValueNone after returning ValueSome, HasErrors should return false and GetErrors should return an empty collection`` () =
+    Property.check <| property {
+      let! name = GenX.auto<string>
+      let! m1 = GenX.auto<int>
+      let! m2 = GenX.auto<int> |> GenX.notEqualTo m1
+
+      let get _ = ()
+      let set _ _ = ()
+      let validate m =
+        if m = m1
+        then ValueSome (string<int> m)
+        else ValueNone
+
+      let binding = twoWayValidate name get set validate
+      let vm = TestVm(m1, binding)
+      let vm' = vm :> INotifyDataErrorInfo
+
+      test <@ vm'.HasErrors = true @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.toList = [(validate m1).Value] @>
+
+      vm.UpdateModel m2
+
+      test <@ vm'.HasErrors = false @>
+      test <@ vm'.GetErrors name |> Seq.cast |> Seq.isEmpty @>
     }
 
 
@@ -938,7 +936,7 @@ module Cmd =
       let exec m = if m < 0 then ValueNone else ValueSome (string m)
       let canExec m = m < 0
 
-      let binding = cmd name exec canExec
+      let binding = cmd exec canExec name
       let vm = TestVm(m, binding)
 
       (vm.Get name : ICommand).Execute(p)
@@ -959,7 +957,7 @@ module Cmd =
       let exec m = if m < 0 then ValueNone else ValueSome (string m)
       let canExec m = m < 0
 
-      let binding = cmd name exec canExec
+      let binding = cmd exec canExec name
       let vm = TestVm(m, binding)
 
       test <@ (vm.Get name : ICommand).CanExecute(p) = canExec m @>
@@ -976,7 +974,7 @@ module Cmd =
       let exec m = if m < 0 then ValueNone else ValueSome (string m)
       let canExec m = m < 0
 
-      let binding = cmd name exec canExec
+      let binding = cmd exec canExec name
       let vm = TestVm(m1, binding)
 
       vm.TrackCecTriggersFor name
@@ -996,7 +994,7 @@ module Cmd =
       let exec m = if m < 0 then ValueNone else ValueSome (string m)
       let canExec m = m < 0
 
-      let binding = cmd name exec canExec
+      let binding = cmd exec canExec name
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -1015,11 +1013,12 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
+      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec
+      let binding = cmdParam name exec canExec autoRequery
       let vm = TestVm(m, binding)
 
       (vm.Get name : ICommand).Execute(p)
@@ -1036,11 +1035,12 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
+      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec
+      let binding = cmdParam name exec canExec autoRequery
       let vm = TestVm(m, binding)
 
       test <@ (vm.Get name : ICommand).CanExecute(p) = canExec p m @>
@@ -1053,13 +1053,14 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
+      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec
+      let binding = cmdParam name exec canExec autoRequery
       let vm = TestVm(m1, binding)
-      vm.Bindings |> ignore
+
       vm.TrackCecTriggersFor name
       vm.UpdateModel m2
 
@@ -1073,11 +1074,12 @@ module CmdParam =
       let! name = GenX.auto<string>
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
+      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec
+      let binding = cmdParam name exec canExec autoRequery
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -1104,11 +1106,11 @@ module SubModel =
       let binding = subModel name getModel toMsg [] sticky
       let vm = TestVm(m1, binding)
 
-      test <@ (vm.Get name : ViewModel<obj, obj>).CurrentModel |> unbox = (getModel m1).Value @>
+      test <@ (vm.Get name : IViewModel<int, obj>).CurrentModel = (getModel m1).Value @>
 
       vm.UpdateModel m2
 
-      test <@ (vm.Get name : ViewModel<obj, obj>).CurrentModel |> unbox = (getModel m2).Value @>
+      test <@ (vm.Get name : IViewModel<int, obj>).CurrentModel = (getModel m2).Value @>
     }
 
 
@@ -1148,18 +1150,18 @@ module SubModel =
       let binding = subModel name getModel toMsg [] sticky
       let vm = TestVm(m1, binding)
 
-      test <@ (vm.Get name : ViewModel<obj, obj>).CurrentModel |> unbox = (getModel m1).Value @>
+      test <@ (vm.Get name : IViewModel<int, obj>).CurrentModel = (getModel m1).Value @>
 
       vm.UpdateModel m2
 
       if sticky then
-        test <@ (vm.Get name : ViewModel<obj, obj>).CurrentModel |> unbox = (getModel m1).Value @>
+        test <@ (vm.Get name : IViewModel<int, obj>).CurrentModel = (getModel m1).Value @>
       else
         test <@ vm.Get name |> isNull @>
 
       vm.UpdateModel m3
 
-      test <@ (vm.Get name : ViewModel<obj, obj>).CurrentModel |> unbox = (getModel m3).Value @>
+      test <@ (vm.Get name : IViewModel<int, obj>).CurrentModel = (getModel m3).Value @>
     }
 
 
@@ -1202,11 +1204,11 @@ module SubModel =
       let toMsg _ = ()
       let subGet = string<int>
 
-      let subBinding = oneWay subName subGet
+      let subBinding = oneWay subGet subName
       let binding = subModel name getModel toMsg [subBinding] sticky
       let vm = TestVm(m, binding)
 
-      test <@ (vm.Get name : ViewModel<obj,obj>).Get subName |> unbox = ((getModel m).Value |> subGet) @>
+      test <@ (vm.Get name : DynamicViewModel<int, obj>).Get subName = ((getModel m).Value |> subGet) @>
     }
 
 
@@ -1224,24 +1226,47 @@ module SubModel =
       let subGet : int -> string = string
       let subSet (p: string) (m: int) = p + string m
 
-      let subBinding = twoWay subName subGet subSet
+      let subBinding = twoWay subGet subSet subName
       let binding = subModel name getModel toMsg [subBinding] sticky
       let vm = TestVm(m, binding)
 
-      (vm.Get name : ViewModel<obj,obj>).Set subName p
+      (vm.Get name : DynamicViewModel<int, string>).Set subName p
 
       test <@ vm.Dispatches = [subSet p (getModel m).Value |> toMsg] @>
     }
 
 
+  [<Fact>]
+  let ``setMsgWithModel given current model after new submodel created`` () =
+    Property.check <| property {
+      let! name = GenX.auto<string>
+      let! subName = GenX.auto<string>
+      let! initialModel = GenX.auto<int>
+      let! newModel = GenX.auto<int> |> GenX.notEqualTo initialModel
+
+      let subBinding = cmd ValueSome (fun _ -> true) subName
+      let binding =
+        Binding.SubModel.opt (fun () -> [subBinding]) name
+        |> Binding.mapModel (fun m -> if m <> initialModel then Some m else None)
+        |> Binding.setMsgWithModel id
+      let vm = TestVm(initialModel, binding)
+
+      vm.UpdateModel newModel
+      let subVm = vm.Get name : DynamicViewModel<int, int>
+      let command = subVm.Get subName : ICommand
+      command.Execute(true)
+
+      test <@ vm.Dispatches = [newModel] @>
+    }
+
 
 module SubModelSeq =
 
-  let private testObservableCollectionContainsExpectedItems (vm: ViewModel<_, _>) name expected =
+  let private testObservableCollectionContainsExpectedItems (vm: DynamicViewModel<Guid list, (Guid * obj)>) name expected =
     let actual =
       vm.Get name
-      |> unbox<ObservableCollection<ViewModel<_,_>>>
-      |> Seq.map (fun vm -> vm.CurrentModel |> unbox)
+      |> unbox<ObservableCollection<DynamicViewModel<Guid, obj>>>
+      |> Seq.map IViewModel.currentModel
       |> Seq.toList
     test <@ expected = actual @>
 
@@ -1315,13 +1340,13 @@ module SubModelSeq =
       let toMsg = id
       let subGet = string
 
-      let subBinding = oneWay subName subGet
+      let subBinding = oneWay subGet subName
       let binding = subModelSeq name getModels getId toMsg [subBinding]
       let vm = TestVm(m, binding)
 
       let actual =
         vm.Get name
-        |> unbox<ObservableCollection<ViewModel<_,_>>>
+        |> unbox<ObservableCollection<DynamicViewModel<Guid, obj>>>
         |> Seq.map (fun vm -> vm.Get subName |> unbox<string>)
         |> Seq.toList
 
@@ -1344,12 +1369,12 @@ module SubModelSeq =
       let subGet = string
       let subSet (p: string) (m: Guid) = p + string m
 
-      let subBinding = twoWay subName subGet subSet
+      let subBinding = twoWay subGet subSet subName
       let binding = subModelSeq name getModels getId toMsg [subBinding]
       let vm = TestVm(m, binding)
 
       vm.Get name
-      |> unbox<ObservableCollection<ViewModel<_,_>>>
+      |> unbox<ObservableCollection<DynamicViewModel<Guid, string>>>
       |> Seq.iter (fun vm -> vm.Set subName p)
 
       let expected = m |> getModels |> List.map (fun m -> (getId m, subSet p m) |> toMsg)
@@ -1388,7 +1413,7 @@ module SubModelSelectedItem =
       | ValueNone ->
           test <@ vm.Get selectedItemName = null @>
       | ValueSome sm ->
-          test <@ (vm.Get selectedItemName |> unbox<ViewModel<obj,obj>>) |> Option.ofObj |> Option.map (fun vm -> unbox vm.CurrentModel)
+          test <@ (vm.Get selectedItemName |> unbox<IViewModel<Guid, unit>>) |> Option.ofObj |> Option.map (fun vm -> vm.CurrentModel)
                    = (m |> getModels |> List.tryFind (fun x -> getId x = getId sm))
                @>
     }
@@ -1421,8 +1446,8 @@ module SubModelSelectedItem =
       let selectedVm =
         selectedSubModel |> ValueOption.bind (fun sm ->
           vm.Get subModelSeqName
-          |> unbox<ObservableCollection<ViewModel<obj,obj>>>
-          |> Seq.tryFind (fun vm -> vm.CurrentModel |> unbox |> getId = getId sm)
+          |> unbox<ObservableCollection<DynamicViewModel<Guid, int voption>>>
+          |> Seq.tryFind (fun vm -> vm |> IViewModel.currentModel |> getId = getId sm)
           |> ValueOption.ofOption
         )
         |> ValueOption.toObj
@@ -1431,3 +1456,175 @@ module SubModelSelectedItem =
 
       test <@ vm.Dispatches = [ set (selectedSubModel |> ValueOption.map getId) m ] @>
     }
+
+  [<Fact>]
+  let ``attempting to select a nonexistent item throws RuntimeBinderException`` () =
+    let selectedItemName = "Foo"
+    let subModelSeqName = "Bar"
+    let bindings =
+      [ selectedItemName |> Binding.subModelSelectedItem (subModelSeqName, Some, ignore)
+        subModelSeqName |> Binding.subModelSeq ((fun _ -> []), ignore, (fun () -> [])) ]
+    let mutable error : string option = None
+    let loggingArgs =
+      { LoggingViewModelArgs.none
+        with
+          log =
+            { new Microsoft.Extensions.Logging.ILogger
+              with
+                member _.BeginScope _ = { new IDisposable with member _.Dispose() = () }
+                member _.IsEnabled _ = true
+                member _.Log (_, _, state, ex, formatter) = error <- formatter.Invoke(state, ex) |> Some } }
+    let viewModelArgs = ViewModelArgs.create 0.0 ignore "main" loggingArgs
+    let vm = DynamicViewModel(viewModelArgs, bindings)
+
+    raises<Microsoft.CSharp.RuntimeBinder.RuntimeBinderException> <@ vm.Get selectedItemName @>
+    test <@ error.Value.Contains "TryGetMember FAILED: Failed to find an element" @>
+
+
+
+module CacheEffect =
+
+  [<Fact>]
+  let ``model mapping called exactly once when Get called twice`` () =
+
+    Property.check <| property {
+      let! name = GenX.auto<string>
+      let! model = GenX.auto<int>
+      let! bindingComponsitionOrder = Gen.bool
+
+      let mapping = InvokeTester id
+      let cachingAndMapping =
+        if bindingComponsitionOrder
+        then Binding.mapModel mapping.Fn >> Binding.addCaching
+        else Binding.addCaching >> Binding.mapModel mapping.Fn
+      let binding =
+        name
+        |> Binding.OneWay.id
+        |> cachingAndMapping
+      let vm = TestVm(model, binding)
+
+      vm.Get name |> ignore // populate cache
+      vm.Get name |> ignore
+
+      test <@ 1 = mapping.Count @>
+    }
+
+
+  [<Fact>]
+  let ``second Get returns new model after first Get and then Update`` () =
+    let name = ""
+    let model = 0
+    let newModel = 1
+    let binding =
+      name
+      |> Binding.OneWay.id
+      |> Binding.addCaching
+    let vm = TestVm(model, binding)
+
+    vm.Get name |> ignore   // populate cache
+    vm.UpdateModel newModel // clear cache
+    let actual = vm.Get name |> unbox
+
+    test <@ newModel = actual @>
+
+
+  [<Fact>]
+  let ``cache not cleared on Set`` () =
+    let name = ""
+    let initialModel = 0
+    let newModel = 1
+    let mapping = InvokeTester (fun x -> x)
+    let binding =
+      name
+      |> Binding.TwoWay.id
+      |> Binding.mapModel mapping.Fn
+      |> Binding.addCaching
+    let vm = TestVm(initialModel, binding)
+
+    vm.Get name |> ignore // populate cache
+    vm.Set name newModel
+    mapping.Reset()       // Set calls mapping function, so reset count
+    let actual = vm.Get name |> unbox
+
+    test <@ initialModel = actual @>
+    test <@ 0 = mapping.Count @>
+
+
+
+module LazyEffect =
+
+  [<Fact>]
+  let ``model mapping called exactly once on initialize`` () =
+    let name = ""
+    let model = 0
+    let mapping = InvokeTester id
+    let binding =
+      name
+      |> Binding.TwoWay.id<int>
+      |> Binding.addLazy (=)
+      |> Binding.addLazy (=)
+      |> Binding.mapModel mapping.Fn
+
+    TestVm(model, binding) |> ignore
+
+    test <@ 1 = mapping.Count @>
+
+
+  [<Fact>]
+  let ``model mapping called exactly twice on update when new model is equal`` () =
+    let name = ""
+    let model = 0
+    let mapping = InvokeTester id
+    let binding =
+      name
+      |> Binding.TwoWay.id<int>
+      |> Binding.addLazy (=)
+      |> Binding.addLazy (=)
+      |> Binding.mapModel mapping.Fn
+    let vm = TestVm(model, binding)
+    mapping.Reset ()
+
+    vm.UpdateModel model
+
+    test <@ 2 = mapping.Count @>
+
+
+  [<Fact>]
+  let ``model mapping called exactly twice on update when new model is unequal`` () =
+    let name = ""
+    let initialModel = 0
+    let newModel = 1
+    let mapping = InvokeTester id
+    let binding =
+      name
+      |> Binding.TwoWay.id<int>
+      |> Binding.addLazy (=)
+      |> Binding.addLazy (=)
+      |> Binding.mapModel mapping.Fn
+    let vm = TestVm(initialModel, binding)
+    mapping.Reset ()
+
+    vm.UpdateModel newModel
+
+    test <@ 2 = mapping.Count @>
+
+
+
+module AlterMsgStream =
+
+  [<Fact>]
+  let ``message stream alteration only invoked once when set called twice`` () =
+    let name = ""
+    let model = 0
+    let get = ignore
+    let set _ _ = ()
+    let alteration = InvokeTester id
+    let binding =
+      twoWay get set name
+      |> Binding.alterMsgStream alteration.Fn
+    let vm = TestVm(model, binding)
+
+    vm.Set name ()
+    vm.Set name ()
+
+    test <@ 1 = alteration.Count @>

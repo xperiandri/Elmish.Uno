@@ -1,18 +1,20 @@
-﻿module Elmish.Uno.Tests.MergeTests
+module MergeTests.M
 
 open System
 open System.Collections.ObjectModel
 open System.Collections.Specialized
+
 open Xunit
 open Hedgehog
 open Swensen.Unquote
+
 open Elmish.Uno
 
 
 let getIdAsId = id
 let createAsId a _ = a
-let updateNoOp _ = ()
-let merge x = x |> updateObservableCollection
+let updateNoOp _ _ _ = ()
+let internal merge x = x |> Merge.keyed
 
 
 let private trackCC (observableCollection: ObservableCollection<_>) =
@@ -33,13 +35,13 @@ let ``starting from empty, when items merged, should contain those items and cal
 
     let observableCollection = ObservableCollection<_> ()
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array
 
     testObservableCollectionContainsDataInArray observableCollection array
     test <@ createTracker.Count = array.Length @>
-    test <@ updateTracker.Count = array.Length @>
+    test <@ updateTracker.Count = 0 @>
   }
 
 [<Fact>]
@@ -49,10 +51,10 @@ let ``starting with random items, when merging the same items, should still cont
 
     let observableCollection = ObservableCollection<_> array
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
     let ccEvents = trackCC observableCollection
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array
 
     testObservableCollectionContainsDataInArray observableCollection array
     test <@ createTracker.Count = 0 @>
@@ -69,7 +71,7 @@ let ``starting with random items, when merging random items, should contain the 
 
     let observableCollection = ObservableCollection<_> array1
 
-    merge createAsId updateNoOp (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createAsId updateNoOp (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
   }
@@ -84,13 +86,13 @@ let ``starting with random items, when merging after an addition, should contain
     let observableCollection = ObservableCollection<_> list1
     let array2 = list2 |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 1 @>
-    test <@ updateTracker.Count = array2.Length @>
+    test <@ updateTracker.Count = array2.Length - 1 @>
   }
 
 [<Fact>]
@@ -103,9 +105,9 @@ let ``starting with random items, when merging after a removal, should contain t
     let observableCollection = ObservableCollection<_> list1
     let array2 = list2 |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -118,17 +120,17 @@ let ``starting with random items, when merging after a move, should contain the 
     let! list = GenX.auto<Guid list>
     let! movedItem = Gen.guid
     let! additionalItem = Gen.guid
-    let! i1 = (0, list.Length + 1) ||> Range.constant |> Gen.int
-    let! i2 = (0, list.Length + 1) ||> Range.constant |> Gen.int |> GenX.notEqualTo i1
+    let! i1 = (0, list.Length + 1) ||> Range.constant |> Gen.int32
+    let! i2 = (0, list.Length + 1) ||> Range.constant |> Gen.int32 |> GenX.notEqualTo i1
 
     let list = additionalItem :: list
     let list1 = list |> List.insert i1 movedItem
     let array2 = list |> List.insert i2 movedItem |> List.toArray
     let observableCollection = ObservableCollection<_> list1
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -141,7 +143,7 @@ let ``starting with random items, when merging after a replacement, should conta
     let! list1Head = Gen.guid
     let! list1Tail = GenX.auto<Guid list>
     let! list2Replacement = Gen.guid
-    let! replcementIndex = (0, list1Tail.Length) ||> Range.constant |> Gen.int
+    let! replcementIndex = (0, list1Tail.Length) ||> Range.constant |> Gen.int32
 
     let list1 = list1Head :: list1Tail
     let observableCollection = ObservableCollection<_> list1
@@ -150,20 +152,20 @@ let ``starting with random items, when merging after a replacement, should conta
       |> List.replace replcementIndex list2Replacement
       |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 1 @>
-    test <@ updateTracker.Count = array2.Length @>
+    test <@ updateTracker.Count = array2.Length - 1 @>
   }
 
 [<Fact>]
 let ``starting with random items, when merging after swapping two adjacent items, should contain the merged items and never call create and call update exactly once for each item`` () =
   Property.check <| property {
     let! list1 = Gen.guid |> Gen.list (Range.constant 2 50)
-    let! firstSwapIndex = (0, list1.Length - 2) ||> Range.constant |> Gen.int
+    let! firstSwapIndex = (0, list1.Length - 2) ||> Range.constant |> Gen.int32
 
     let observableCollection = ObservableCollection<_> list1
     let array2 =
@@ -171,9 +173,9 @@ let ``starting with random items, when merging after swapping two adjacent items
       |> List.swap firstSwapIndex (firstSwapIndex + 1)
       |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -184,8 +186,8 @@ let ``starting with random items, when merging after swapping two adjacent items
 let ``starting with random items, when merging after swapping two items, should contain the merged items and never call create and call update exactly once for each item`` () =
   Property.check <| property {
     let! list1 = Gen.guid |> Gen.list (Range.constant 2 50)
-    let! i = (0, list1.Length - 1) ||> Range.constant |> Gen.int
-    let! j = (0, list1.Length - 1) ||> Range.constant |> Gen.int |> GenX.notEqualTo i
+    let! i = (0, list1.Length - 1) ||> Range.constant |> Gen.int32
+    let! j = (0, list1.Length - 1) ||> Range.constant |> Gen.int32 |> GenX.notEqualTo i
 
     let observableCollection = ObservableCollection<_> list1
     let array2 =
@@ -193,9 +195,9 @@ let ``starting with random items, when merging after swapping two items, should 
       |> List.swap i j
       |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -211,9 +213,9 @@ let ``starting with random items, when merging after shuffling, should contain t
     let observableCollection = ObservableCollection<_> list1
     let array2 = list2 |> List.toArray
     let createTracker = InvokeTester2 createAsId
-    let updateTracker = InvokeTester updateNoOp
+    let updateTracker = InvokeTester3 updateNoOp
 
-    merge createTracker.Fn updateTracker.Fn (observableCollection, getIdAsId) (array2, getIdAsId)
+    merge getIdAsId getIdAsId createTracker.Fn updateTracker.Fn (observableCollection |> CollectionTarget.create) array2
 
     testObservableCollectionContainsDataInArray observableCollection array2
     test <@ createTracker.Count = 0 @>
@@ -230,7 +232,9 @@ type TestClass (id: int, data: string) =
     that :? TestClass
 
 [<Fact>]
-let ``starting with two TestClass instances, when merging after removing the last one, should trigger CC.Remove for removed item`` () =
+let ``starting with two TestClass instances, when merging after removing the last one, should trigger CC-Remove for removed item`` () =
+  // In test name, using "CC-Remove" instead of "CC.Remove" to avoid this bug:
+  // https://developercommunity.visualstudio.com/t/test-explorer-doesnt-show-tests-correctly-when-dot/297822
   Property.check <| property {
     let! id1 = GenX.auto<int>
     let! id2 = GenX.auto<int> |> GenX.notEqualTo id1
@@ -245,7 +249,7 @@ let ``starting with two TestClass instances, when merging after removing the las
     let ccEvents = trackCC observableCollection
     let getId (tc: TestClass) = tc.Id
 
-    merge createAsId updateNoOp (observableCollection, getId) (array2, getId)
+    merge getId getId createAsId updateNoOp (observableCollection |> CollectionTarget.create) array2
 
     test <@ ((ccEvents
       |> Seq.filter (fun e -> e.Action = NotifyCollectionChangedAction.Remove)
@@ -270,10 +274,10 @@ let ``starting with two TestClass instances, when merging after updating the las
     let getId (tc: TestClass) = tc.Id
 
     let mutable mTarget = None
-    let update idx =
-      mTarget <- Some observableCollection.[idx]
+    let update target _ _ =
+      mTarget <- Some target
 
-    merge createAsId update (observableCollection, getId) (array2, getId)
+    merge getId getId createAsId update (observableCollection |> CollectionTarget.create) array2
 
     let actual = mTarget
     test <@ actual.Value.Id = tc2.Id @>

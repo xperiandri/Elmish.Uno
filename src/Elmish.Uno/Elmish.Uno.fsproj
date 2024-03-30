@@ -44,27 +44,32 @@
   <ItemGroup>
     <None Include="$(RepoRoot)\logo\elmish-uno-logo-128x128.png" Pack="true" PackagePath="\" />
     <None Include="$(RepoRoot)\README.md" Pack="true" PackagePath="\" />
+    <Compile Include="DynamicCustomProperty.fs" />
+    <Compile Include="InternalUtils.fs" />
+    <Compile Include="Merge.fs" />
+    <Compile Include="Command.fs" />
+    <Compile Include="Utils.fs" />
+    <Compile Include="WindowState.fs" />
+    <Compile Include="ViewModelArgs.fs" />
+    <Compile Include="BindingData.fs" />
+    <Compile Include="BindingVmHelpers.fs" />
+    <Compile Include="ViewModels.fs" />
+    <Compile Include="Binding.fs" />
+    <Compile Include="ViewModelModule.fs" />
+    <Compile Include="UnoProgram.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Elmish.Uno.Tests</_Parameter1>
     </AssemblyAttribute>
-    <Compile Include="InternalUtils.fs" />
-    <Compile Include="InternalTypes.fs" />
-    <Compile Include="Config.fs" />
-    <Compile Include="Binding.fs" />
-    <Compile Include="Utils.fs" />
-    <Compile Include="DynamicCustomProperty.fs" />
-    <Compile Include="ViewModel.fs" />
-    <Compile Include="ViewModelModule.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Elmish" />
     <PackageReference Include="FSharp.Collections.Immutable" />
     <PackageReference Include="Uno.WinUI" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.Contains('windows10'))" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.Contains('windows10'))" />
   </ItemGroup>

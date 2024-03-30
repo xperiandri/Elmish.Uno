@@ -191,7 +191,7 @@ FAQ
 
 Not at all! 🙂
 
-It’s true that static views aren’t as composable as dynamic views. It’s also true that at the time of writing, there are no solid, production-ready dynamic UI libraries for WPF (though there are no lack of half-finished attempts or proof-of-concepts: [Elmish.WPF.Dynamic](https://github.com/cmeeren/Elmish.WPF.Dynamic), [Fabulous.WPF](https://github.com/TimLariviere/Fabulous.WPF), [Skylight](https://github.com/gerardtoconnor/Skylight), [Uil](https://github.com/elmish/Uil)). Heck, it’s even true that Elmish.WPF was originally created with static views due to the difficulty of creating a dynamic UI library, as described in [issue #1](https://github.com/elmish/Elmish.WPF/issues/1).
+It’s true that static views aren’t as composable as dynamic views. It’s also true that at the time of writing, there are no solid, production-ready dynamic UI libraries for WPF (though there are no lack of half-finished attempts or proof-of-concepts: [Elmish.Uno.Dynamic](https://github.com/cmeeren/Elmish.Uno.Dynamic), [Fabulous.WPF](https://github.com/TimLariviere/Fabulous.WPF), [Skylight](https://github.com/gerardtoconnor/Skylight), [Uil](https://github.com/elmish/Uil)). Heck, it’s even true that Elmish.Uno was originally created with static views due to the difficulty of creating a dynamic UI library, as described in [issue #1](https://github.com/elmish/Elmish.Uno/issues/1).
 
 However, Elmish.Uno’s static-view-based solution has several unique benefits:
 
@@ -199,7 +199,7 @@ However, Elmish.Uno’s static-view-based solution has several unique benefits:
 - Huge mindshare – there are tons of relevant XAML and MVVM resources on the net which can help with the UI and data binding part if you get stuck
 - Automatic support for all 3rd party WPF UI libraries like [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit), since it just uses XAML and bindings (support for 3rd party libraries is commonly a major pain point for dynamic UI solutions)
 - You can use the XAML designer (including design-time data binding)
-- Automatically puts all the power of WPF at your fingertips, whereas dynamic UI solutions have [inherent limitations](https://github.com/cmeeren/Elmish.WPF.Dynamic/tree/e9f04b6e330754f045df093368fa4917c892399d#current-limitations) that are not easy to work around
+- Automatically puts all the power of WPF at your fingertips, whereas dynamic UI solutions have [inherent limitations](https://github.com/cmeeren/Elmish.Uno.Dynamic/tree/e9f04b6e330754f045df093368fa4917c892399d#current-limitations) that are not easy to work around
 
 In short, for WPF apps, a solution based on static XAML views is currently the way to go.
 
@@ -210,9 +210,9 @@ Not at all. The above example, as well as the samples, keep all non-UI code in a
 An alternative with a clearer separation of UI and core logic can be implemented by splitting the F# project into two projects:
 
 * A core library containing the model definitions and `update` functions.
-  * This library can include a reference to Elmish (e.g. for the `Cmd` module helpers), but not to Elmish.WPF, which depends on WPF and has a UI-centred API (specifying bindings). This will ensure your core logic (such as the `update` function) is free from any UI concerns, and allow you to re-use the core library should you want to port your app to another Elmish-based solution (e.g. Fable.React).
-* An Elmish.WPF project that contains the `bindings` (or `view`) function and the call to `Program.runElmishLoop`.
-  * This project would reference the core library and `Elmish.WPF`.
+  * This library can include a reference to Elmish (e.g. for the `Cmd` module helpers), but not to Elmish.Uno, which depends on WPF and has a UI-centred API (specifying bindings). This will ensure your core logic (such as the `update` function) is free from any UI concerns, and allow you to re-use the core library should you want to port your app to another Elmish-based solution (e.g. Fable.React).
+* An Elmish.Uno project that contains the `bindings` (or `view`) function and the call to `Program.runElmishLoop`.
+  * This project would reference the core library and `Elmish.Uno`.
 
 Another alternative is to turn the sample code on its head and have the F# project be a console app containing your entry point (with a call to `Program.runWindow`) and referencing the C#/XAML project (instead of the other way around, as demonstrated above).
 
@@ -225,7 +225,7 @@ Since the commands (`Cmd<Msg>`) returned by `init` and `update` are lists of fun
 * Create a `CmdMsg` union type with cases for each command you want to execute in the app.
 * Make `init` and `update` return `model * CmdMsg list` instead of `model * Cmd<Msg>`. Since `init` and `update` now return data, they are much easier to test.
 * Create a trivial/too-boring-to-test `cmdMsgToCmd` function that transforms a `CmdMsg` to the corresponding `Cmd`.
-* Finally, create “normal” versions of `init` and `update` that you can use when creating `Program`. Elmish.WPF provides `Program.mkProgramWpfWithCmdMsg` that does this for you (but there’s no magic going on – it’s really easy to do yourself).
+* Finally, create “normal” versions of `init` and `update` that you can use when creating `Program`. Elmish.Uno provides `Program.mkProgramWpfWithCmdMsg` that does this for you (but there’s no magic going on – it’s really easy to do yourself).
 
 The [FileDialogsCmdMsg sample](https://github.com/XperiAndri/Elmish.Uno/tree/master/src/Samples) demonstrates this approach. For more information, see the [Fabulous documentation](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/update.html#replacing-commands-with-command-messages-for-better-testability). For reference, here is [the discussion that led to this pattern](https://github.com/fsprojects/Fabulous/pull/320#issuecomment-491522737).
 
@@ -273,13 +273,13 @@ where `T` is the type of the parent object that contains `local:MyControl` (or a
 
 #### Can I open new windows/dialogs?
 
-Sure! Just use `Binding.subModelWin`. It works like `Binding.subModel`, but has a `WindowState` wrapper around the returned model to control whether the window is closed, hidden, or visible. You can use both modal and non-modal windows/dialogs, and everything is a part of the Elmish core loop. Check out the [NewWindow sample](https://github.com/elmish/Elmish.WPF/tree/master/src/Samples).
+Sure! Just use `Binding.subModelWin`. It works like `Binding.subModel`, but has a `WindowState` wrapper around the returned model to control whether the window is closed, hidden, or visible. You can use both modal and non-modal windows/dialogs, and everything is a part of the Elmish core loop. Check out the [NewWindow sample](https://github.com/elmish/Elmish.Uno/tree/master/src/Samples).
 
 Note that if you use `App.xaml` startup, you may want to set `ShutdownMode="OnMainWindowClose"` in `App.xaml` if that’s the desired behavior.
 
 #### How can I use Save File / Open File dialogs?
 
-There’s a few things to remember regarding opening on the UI thread and not blocking the Elmish dispatch loop. Check out the [FileDialogs sample](https://github.com/elmish/Elmish.WPF/tree/master/src/Samples). In short, write a function like below, and call it using `Cmd.OfAsync`.
+There’s a few things to remember regarding opening on the UI thread and not blocking the Elmish dispatch loop. Check out the [FileDialogs sample](https://github.com/elmish/Elmish.Uno/tree/master/src/Samples). In short, write a function like below, and call it using `Cmd.OfAsync`.
 
 ```f#
 let save text =

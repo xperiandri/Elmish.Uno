@@ -96,9 +96,10 @@
     <PackageVersion Include="FSharpx.Extras" Version="3.0" />
   </ItemGroup>
   <ItemGroup Label="Build and Test">
+    <PackageVersion Include="BenchmarkDotNet" Version="0.13.2" />
     <PackageVersion Include="FSharp.Interop.Dynamic" Version="5.0.1.268" />
-    <PackageVersion Include="Hedgehog" Version="0.8.3" />
-    <PackageVersion Include="Hedgehog.Experimental" Version="0.1.5" />
+    <PackageVersion Include="Hedgehog" Version="0.12.1" />
+    <PackageVersion Include="Hedgehog.Experimental" Version="0.6.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Unquote" Version="6.1.0" />
     <PackageVersion Include="xunit.core" Version="2.7.0" />
