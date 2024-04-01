@@ -1,5 +1,6 @@
 ﻿namespace Elmish.Uno
 
+open System
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.Logging.Abstractions
 open Microsoft.UI.Dispatching
@@ -7,9 +8,9 @@ open Microsoft.UI.Xaml
 open Elmish
 
 
-type UnoProgram<'model, 'msg, 'viewModel> =
+type UnoProgram<'arg, 'model, 'msg, 'viewModel> =
   internal {
-    ElmishProgram: Program<unit, 'model, 'msg, unit>
+    ElmishProgram: Program<'arg, 'model, 'msg, unit>
     CreateViewModel: ViewModelArgs<'model,'msg> -> 'viewModel
     UpdateViewModel: 'viewModel * 'model -> unit
     LoggerFactory: ILoggerFactory
@@ -18,13 +19,14 @@ type UnoProgram<'model, 'msg, 'viewModel> =
     PerformanceLogThreshold: int
   }
 
+type UnoProgram<'model, 'msg, 'viewModel> = UnoProgram<unit, 'model, 'msg, 'viewModel>
 type UnoProgram<'model, 'msg> = UnoProgram<'model, 'msg, obj>
 
 
 [<RequireQualifiedAccess>]
 module UnoProgram =
 
-  let private mapVm fOut fIn (p: UnoProgram<'model, 'msg, 'viewModel0>) : UnoProgram<'model, 'msg, 'viewModel1> =
+  let private mapVm fOut fIn (p: UnoProgram<'arg, 'model, 'msg, 'viewModel0>) : UnoProgram<'arg, 'model, 'msg, 'viewModel1> =
     { ElmishProgram = p.ElmishProgram
       CreateViewModel = p.CreateViewModel >> fOut
       UpdateViewModel = (fun (vm, m) -> p.UpdateViewModel(fIn vm, m))
@@ -32,14 +34,14 @@ module UnoProgram =
       ErrorHandler = p.ErrorHandler
       PerformanceLogThreshold = p.PerformanceLogThreshold }
 
-  let private createWithBindings (getBindings: unit -> Binding<'model,'msg> list) program =
+  let private createWithBindings (bindings: Binding<'model,'msg> list) program : UnoProgram<'arg, 'model, 'msg, IViewModel<'model, 'msg>> =
     { ElmishProgram = program
-      CreateViewModel = fun args -> DynamicViewModel<'model,'msg>(args, getBindings ())
+      CreateViewModel = fun args -> DynamicViewModel<'model,'msg>(args, bindings)
       UpdateViewModel = IViewModel.updateModel
       LoggerFactory = NullLoggerFactory.Instance
       ErrorHandler = fun _ _ -> ()
       PerformanceLogThreshold = 1 }
-    |> mapVm box unbox
+    |> mapVm (fun vm -> vm :> _) unbox
 
   let private createWithVm (createVm: ViewModelArgs<'model, 'msg> -> #IViewModel<'model, 'msg>) program =
     { ElmishProgram = program
@@ -52,24 +54,24 @@ module UnoProgram =
 
   /// Creates a UnoProgram that does not use commands.
   let mkSimple
-      (init: unit -> 'model)
+      (init: 'arg -> 'model)
       (update: 'msg  -> 'model -> 'model)
-      (bindings: unit -> Binding<'model, 'msg> list) =
+      (bindings: Binding<'model, 'msg> list) =
     Program.mkSimple init update (fun _ _ -> ())
     |> createWithBindings bindings
 
 
   /// Creates a UnoProgram that uses commands
   let mkProgram
-      (init: unit -> 'model * Cmd<'msg>)
+      (init: 'arg -> 'model * Cmd<'msg>)
       (update: 'msg  -> 'model -> 'model * Cmd<'msg>)
-      (bindings: unit -> Binding<'model, 'msg> list) =
+      (bindings: Binding<'model, 'msg> list) =
     Program.mkProgram init update (fun _ _ -> ())
     |> createWithBindings bindings
 
   /// Creates a UnoProgram that does not use commands.
   let mkSimpleT
-      (init: unit -> 'model)
+      (init: 'arg -> 'model)
       (update: 'msg  -> 'model -> 'model)
       (createVm: ViewModelArgs<'model, 'msg> -> 'viewModel) =
     Program.mkSimple init update (fun _ _ -> ())
@@ -78,7 +80,7 @@ module UnoProgram =
 
   /// Creates a UnoProgram that uses commands
   let mkProgramT
-      (init: unit -> 'model * Cmd<'msg>)
+      (init: 'arg -> 'model * Cmd<'msg>)
       (update: 'msg  -> 'model -> 'model * Cmd<'msg>)
       (createVm: ViewModelArgs<'model, 'msg> -> 'viewModel) =
     Program.mkProgram init update (fun _ _ -> ())
@@ -116,9 +118,10 @@ module UnoProgram =
   /// <param name="element"></param>
   /// <param name="program"></param>
   /// <returns></returns>
-  let startElmishLoop
+  [<CompiledName "StartElmishLoop">]
+  let startElmishLoopWith
       (element: FrameworkElement)
-      (program: UnoProgram<'model, 'msg, 'viewModel>)
+      (program: UnoProgram<'arg, 'model, 'msg, 'viewModel>)
       arg
       =
     let mutable viewModel = None
@@ -135,16 +138,16 @@ module UnoProgram =
      * Capture the dispatch function before wrapping it with Dispatcher.InvokeAsync
      * so that the UI can synchronously dispatch messages.
      * In additional to being slightly more efficient,
-     * it also helps keep Uno in the correct state.
-     * https://github.com/elmish/Elmish.Uno/issues/371
-     * https://github.com/elmish/Elmish.Uno/issues/373
+     * it also helps keep WinUI in the correct state.
+     * https://github.com/elmish/Elmish.WPF/issues/371
+     * https://github.com/elmish/Elmish.WPF/issues/373
      *
      * This is definitely a hack.
      * Maybe something with Elmish can change so this hack can be avoided.
      *)
     let mutable dispatch = Unchecked.defaultof<Dispatch<'msg>>
 
-    let elmishDispatcher = Window.Current.DispatcherQueue
+    let elmishDispatcher = DispatcherQueue.GetForCurrentThread()
     let mutable threader =
       if element.DispatcherQueue = elmishDispatcher then
         SingleThreaded
@@ -153,7 +156,7 @@ module UnoProgram =
 
     // Dispatch that comes in from a view model message (setter or Uno ICommand). These may come from UI thread, so must be streated specially
     let dispatchFromViewModel msg =
-      if element.DispatcherQueue = Window.Current.DispatcherQueue then // if the message is from the UI thread
+      if element.DispatcherQueue = DispatcherQueue.GetForCurrentThread() then // if the message is from the UI thread
         match threader with
         | SingleThreaded -> dispatch msg // Dispatch directly if `elmishDispatcher` is the same as the UI thread
         | Threaded_NoUIDispatch -> // If `elmishDispatcher` is different, invoke dispatch on it then wait around for it to finish executing, then execute the continuation on the current (UI) thread
@@ -260,6 +263,90 @@ module UnoProgram =
     |> Program.withSetState setUiState
     |> Program.runWithDispatch cmdDispatch arg
 
+  [<CompiledName "StartElmishLoop">]
+  let startElmishLoop
+      (element: FrameworkElement)
+      (program: UnoProgram<'model, 'msg, 'viewModel>)
+      = startElmishLoopWith element program ()
+
+  [<CompiledName "CreateVmArgs">]
+  let createVmArgsWith
+      (getVm: Func<'viewModel>)
+      (program: UnoProgram<'arg, 'model, 'msg, IViewModel<'model, 'msg>>)
+      arg
+      =
+
+    let updateLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Update")
+    let bindingsLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Bindings")
+    let performanceLogger = program.LoggerFactory.CreateLogger("Elmish.Uno.Performance")
+
+    let measure callName f = BindingVmHelpers.Helpers2.measure performanceLogger LogLevel.Debug program.PerformanceLogThreshold "" "main" callName f
+
+    let program = { program with UpdateViewModel = measure "updateViewModel" program.UpdateViewModel }
+
+    (*
+     * Capture the dispatch function before wrapping it with Dispatcher.InvokeAsync
+     * so that the UI can synchronously dispatch messages.
+     * In additional to being slightly more efficient,
+     * it also helps keep Uno in the correct state.
+     * https://github.com/elmish/Elmish.Uno/issues/371
+     * https://github.com/elmish/Elmish.Uno/issues/373
+     *
+     * This is definitely a hack.
+     * Maybe something with Elmish can change so this hack can be avoided.
+     *)
+    let mutable dispatch = Unchecked.defaultof<Dispatch<'msg>>
+
+    let elmishDispatcher = DispatcherQueue.GetForCurrentThread()
+
+    // Dispatch that comes in from a view model message (setter or Uno ICommand). These may come from UI thread, so must be streated specially
+    let dispatchFromViewModel msg =
+      elmishDispatcher.TryEnqueue(fun () -> dispatch msg) |> ignore // handle as a command message
+
+    let args =
+      let initial, cmd = Program.init program.ElmishProgram arg
+      { initialModel = initial
+        dispatch = dispatchFromViewModel
+        loggingArgs =
+          { performanceLogThresholdMs = program.PerformanceLogThreshold
+            nameChain = "main"
+            log = bindingsLogger
+            logPerformance = performanceLogger } }
+
+    let setUiState model _syncDispatch =
+      elmishDispatcher.TryEnqueue(fun () -> program.UpdateViewModel (getVm.Invoke(), model)) |> ignore
+
+    let cmdDispatch (innerDispatch: Dispatch<'msg>) : Dispatch<'msg> =
+      let innerDispatch = measure "dispatch" innerDispatch
+      dispatch <- innerDispatch
+      (*
+       * Have commands asynchronously dispatch messages.
+       * This avoids race conditions like those that can occur when shutting down.
+       * https://github.com/elmish/Elmish.WPF/issues/353
+       *)
+      fun msg -> elmishDispatcher.TryEnqueue(fun () -> dispatch msg) |> ignore
+
+    let logMsgAndModel (msg: 'msg) (model: 'model) _ =
+      updateLogger.LogTrace("New message: {Message}\nUpdated state:\n{Model}", msg, model)
+
+    let errorHandler (msg: string, ex: exn) =
+      updateLogger.LogError(ex, msg)
+      program.ErrorHandler msg ex
+
+    program.ElmishProgram
+    |> if updateLogger.IsEnabled LogLevel.Trace then Program.withTrace logMsgAndModel else id
+    |> Program.withErrorHandler errorHandler
+    |> Program.withSetState setUiState
+    |> Program.runWithDispatch cmdDispatch arg
+
+    args
+
+  [<CompiledName "CreateVmArgs">]
+  let createVmArgs
+      getVm
+      (program: UnoProgram<unit, 'model, 'msg, IViewModel<'model, 'msg>>)
+      =
+    createVmArgsWith getVm program ()
 
   /// Starts the Elmish and Uno dispatch loops. Will instantiate Application and set its
   /// MainWindow if it is not already running, and then run the specified window. This is a
@@ -275,7 +362,7 @@ module UnoProgram =
      * 3. Show the window now that the DataContext is set.
      * 4. Run the current application, which must be last because it is blocking.
      *)
-    startElmishLoop (window.Content :?> FrameworkElement) program ()
+    startElmishLoop (window.Content :?> FrameworkElement) program
     window.Activate()
 
   /// Same as mkProgram, except that init and update don't return Cmd<'msg>
@@ -287,7 +374,7 @@ module UnoProgram =
   let mkProgramWithCmdMsg
       (init: unit -> 'model * 'cmdMsg list)
       (update: 'msg -> 'model -> 'model * 'cmdMsg list)
-      (bindings: unit -> Binding<'model, 'msg> list)
+      (bindings: Binding<'model, 'msg> list)
       (toCmd: 'cmdMsg -> Cmd<'msg>) =
     let convert (model, cmdMsgs) =
       model, (cmdMsgs |> List.map toCmd |> Cmd.batch)
