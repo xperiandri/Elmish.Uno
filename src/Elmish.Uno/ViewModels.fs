@@ -291,22 +291,22 @@ and GetCustomProperty(name: string) =
         (fun vm -> vm.TryGetMemberCore(name, rootBinding)),
         (fun vm value -> vm.TrySetMemberCore(name, rootBinding, value) |> ignore)) :> _
     | OneWaySeq _ ->
-      DynamicCustomProperty<DynamicViewModel<'model,'msg>, ObservableCollection<obj>>(name,
+      DynamicCustomProperty<DynamicViewModel<'model,'msg>, System.Collections.IList>(name,
         fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
     | Cmd _ ->
       DynamicCustomProperty<DynamicViewModel<'model,'msg>, System.Windows.Input.ICommand>(name,
         fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
     | SubModel _
     | SubModelWin _ ->
-      DynamicCustomProperty<DynamicViewModel<'model,'msg>, DynamicViewModel<obj, obj>>(name,
-        fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
+      DynamicCustomProperty<DynamicViewModel<'model,'msg>, obj>(name,
+        fun vm -> vm.TryGetMemberCore(name, rootBinding)) :> _
     | SubModelSeqUnkeyed _
     | SubModelSeqKeyed _ ->
-      DynamicCustomProperty<DynamicViewModel<'model,'msg>, ObservableCollection<DynamicViewModel<obj, obj>>>(name,
+      DynamicCustomProperty<DynamicViewModel<'model,'msg>, System.Collections.IList>(name,
         fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
     | SubModelSelectedItem _ ->
-      DynamicCustomProperty<DynamicViewModel<'model,'msg>, DynamicViewModel<obj, obj>>(name,
-        fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
+      DynamicCustomProperty<DynamicViewModel<'model,'msg>, obj>(name,
+        fun vm -> vm.TryGetMemberCore(name, rootBinding)) :> _
 
   member internal this.Recursive<'model, 'msg, 'bindingModel, 'bindingMsg>
       (rootBinding: VmBinding<'model, 'msg, obj>,
