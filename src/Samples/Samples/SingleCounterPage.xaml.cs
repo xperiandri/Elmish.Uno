@@ -22,6 +22,6 @@ public partial class SingleCounterPage : Page
         Contract.Assume(e != null);
         var parameters = e.Parameter as IReadOnlyDictionary<string, object>;
         var count = Convert.ToInt32(parameters?["count"], CultureInfo.InvariantCulture);
-        ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program, count);
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program, count);
     }
 }

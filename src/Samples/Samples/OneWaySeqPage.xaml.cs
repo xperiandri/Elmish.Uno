@@ -1,15 +1,15 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.OneWaySeq;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.OneWaySeq.Program;
 
-namespace Elmish.Uno.Samples.OneWaySeq
+public partial class OneWaySeqPage : Page
 {
-    public partial class OneWaySeqPage : Page
+    public OneWaySeqPage()
     {
-        public OneWaySeqPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        DataContext = new ElmishProgram.ViewModel();
+        //UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

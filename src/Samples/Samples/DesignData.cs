@@ -30,22 +30,22 @@ using ValidationProgram = Elmish.Uno.Samples.Validation.Program;
 
 internal class DesignData
 {
-    public object SingleCounter => ViewModel.DesignInstance(SingleCounterProgram.DesignModel, SingleCounterProgram.Program);
-    public object OneWaySeq => ViewModel.DesignInstance(OneWaySeqProgram.DesignModel, OneWaySeqProgram.Program);
-    public object SubModel => ViewModel.DesignInstance(SubModelProgram.DesignModel, SubModelProgram.Program);
-    public object SubModelClock => ViewModel.DesignInstance(SubModelClockProgram.DesignModel, SubModelClockProgram.Bindings());
-    public object SubModelCounterWithClock => ViewModel.DesignInstance(SubModelCounterWithClockProgram.DesignModel, SubModelCounterWithClockProgram.Bindings());
-    public object SubModelOpt => ViewModel.DesignInstance(SubModelOptProgram.DesignModel, SubModelOptProgram.Program);
-    public object SubModelOptForm1 => ViewModel.DesignInstance(SubModelOptForm1Program.DesignModel, SubModelOptForm1Program.Bindings());
-    public object SubModelOptForm2 => ViewModel.DesignInstance(SubModelOptForm2Program.DesignModel, SubModelOptForm2Program.Bindings());
-    public object SubModelSelectedItem => ViewModel.DesignInstance(SubModelSelectedItemProgram.DesignModel, SubModelSelectedItemProgram.Program);
-    public object SubModelSeq => ViewModel.DesignInstance(SubModelSeqProgram.DesignModel, SubModelSeqProgram.Program);
-    public object UiBoundCmdParam => ViewModel.DesignInstance(UiBoundCmdParamProgram.DesignModel, UiBoundCmdParamProgram.Program);
-    public object Validation => ViewModel.DesignInstance(ValidationProgram.DesignModel, ValidationProgram.Program);
-    public object FileDialogs => ViewModel.DesignInstance(FileDialogsProgram.DesignModel, FileDialogsProgram.Program);
-    public object FileDialogsCmdMsg => ViewModel.DesignInstance(FileDialogsCmdMsgProgram.DesignModel, FileDialogsCmdMsgProgram.Program);
-    public object EventBindingsAndBehaviors => ViewModel.DesignInstance(EventBindingsAndBehaviorsProgram.DesignModel, EventBindingsAndBehaviorsProgram.Program);
-    public object NewWindow => ViewModel.DesignInstance(NewWindowProgram.DesignModel, NewWindowProgram.Bindings);
-    public object NewWindow1 => ViewModel.DesignInstance(NewWindow1Program.DesignModel, NewWindow1Program.Bindings());
-    public object NewWindow2 => ViewModel.DesignInstance(NewWindow2Program.DesignModel, NewWindow2Program.Bindings());
+    public object SingleCounter => SingleCounterProgram.DesignInstance;
+    public object OneWaySeq => OneWaySeqProgram.DesignInstance;
+    public object SubModel => SubModelProgram.DesignInstance;
+    public object SubModelClock => SubModelClockProgram.DesignInstance;
+    public object SubModelCounterWithClock => SubModelCounterWithClockProgram.DesignInstance;
+    public object SubModelOpt => SubModelOptProgram.DesignInstance;
+    public object SubModelOptForm1 => SubModelOptForm1Program.DesignInstance;
+    public object SubModelOptForm2 => SubModelOptForm2Program.DesignInstance;
+    public object SubModelSelectedItem => SubModelSelectedItemProgram.DesignInstance;
+    public object SubModelSeq => SubModelSeqProgram.DesignInstance;
+    public object UiBoundCmdParam => UiBoundCmdParamProgram.DesignInstance;
+    public object Validation => ValidationProgram.DesignInstance;
+    public object FileDialogs => FileDialogsProgram.DesignInstance;
+    public object FileDialogsCmdMsg => FileDialogsCmdMsgProgram.DesignInstance;
+    public object EventBindingsAndBehaviors => EventBindingsAndBehaviorsProgram.DesignInstance;
+    public object NewWindow => NewWindowProgram.DesignInstance;
+    public object NewWindow1 => NewWindow1Program.DesignInstance;
+    public object NewWindow2 => NewWindow2Program.DesignInstance;
 }

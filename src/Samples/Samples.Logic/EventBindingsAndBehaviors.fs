@@ -67,13 +67,9 @@ let bindings : Binding<Model, Msg> list = [
   "MousePosition" |> Binding.oneWay (fun m -> sprintf "%dx%d" m.MousePosition.X m.MousePosition.Y)
 ]
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("Program")>]
 let program =
-    Program.mkSimpleUno init update bindings
-    |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple init update bindings

@@ -1,15 +1,14 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.SubModelSeq;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.SubModelSeq.Program;
 
-namespace Elmish.Uno.Samples.SubModelSeq
+public partial class SubModelSeqPage : Page
 {
-    public partial class SubModelSeqPage : Page
+    public SubModelSeqPage()
     {
-        public SubModelSeqPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

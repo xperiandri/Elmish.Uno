@@ -31,13 +31,13 @@ module Clock =
     | ToggleUtc -> { m with UseUtc = not m.UseUtc }
 
   [<CompiledName("Bindings")>]
-  let bindings () : Binding<Model, Msg> list = [
+  let bindings : Binding<Model, Msg> list = [
     "Time" |> Binding.oneWay getTime
     "ToggleUtc" |> Binding.cmd ToggleUtc
   ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = initial
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 
 module CounterWithClock =
@@ -62,13 +62,13 @@ module CounterWithClock =
     | ClockMsg msg -> { m with Clock = Clock.update msg m.Clock }
 
   [<CompiledName("Bindings")>]
-  let bindings () : Binding<Model, Msg> list = [
-    "Counter" |> Binding.subModel((fun m -> m.Counter), snd, CounterMsg, fun () -> Counter.bindings)
+  let bindings : Binding<Model, Msg> list = [
+    "Counter" |> Binding.subModel((fun m -> m.Counter), snd, CounterMsg, Counter.bindings)
     "Clock" |> Binding.subModel((fun m -> m.Clock), snd, ClockMsg, Clock.bindings)
   ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = initial
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 module App =
 
@@ -123,16 +123,14 @@ let timer onTick =
 let subscribe model =
     [ ["timer"], timer CounterWithClock.ClockMsg ]
 
-[<CompiledName("DesignModel")>]
 let designModel : App.Model =
   { ClockCounter1 = CounterWithClock.initial
     ClockCounter2 = CounterWithClock.initial }
 
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance designModel App.bindings
+
 [<CompiledName("Program")>]
 let program =
-  Program.mkSimpleUno App.init App.update App.bindings
-  |> Program.withSubscription subscribe
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple App.init App.update App.bindings
+  |> UnoProgram.withSubscription subscribe

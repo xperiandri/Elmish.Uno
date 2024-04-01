@@ -31,13 +31,9 @@ let bindings : Binding<Model, Msg> list = [
     (fun (p : obj) m -> not (isNull p) && p :?> int <= m.EnabledMaxLimit))
 ]
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkSimpleUno init update bindings
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple init update bindings

@@ -1,15 +1,14 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.EventBindingsAndBehaviors;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.EventBindingsAndBehaviors.Program;
 
-namespace Elmish.Uno.Samples.EventBindingsAndBehaviors
+public partial class EventBindingsAndBehaviorsPage : Page
 {
-    public partial class EventBindingsAndBehaviorsPage : Page
+    public EventBindingsAndBehaviorsPage()
     {
-        public EventBindingsAndBehaviorsPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

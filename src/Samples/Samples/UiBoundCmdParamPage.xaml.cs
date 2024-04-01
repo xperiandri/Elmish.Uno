@@ -1,15 +1,14 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.UiBoundCmdParam;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.UiBoundCmdParam.Program;
 
-namespace Elmish.Uno.Samples.UiBoundCmdParam
+public partial class UiBoundCmdParamPage : Page
 {
-    public partial class UiBoundCmdParamPage : Page
+    public UiBoundCmdParamPage()
     {
-        public UiBoundCmdParamPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

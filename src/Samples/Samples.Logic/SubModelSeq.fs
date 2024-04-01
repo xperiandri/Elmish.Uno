@@ -222,7 +222,7 @@ module Bindings =
     "Decrement" |> Binding.cmd(Counter.Decrement |> CounterMsg |> LeafMsg |> InMsg)
     "StepSize" |> Binding.twoWay(
       (fun (_, { Self = s }) -> float <| (s.Data.Value : Counter.Model).StepSize),
-      (fun v _ -> v |> int |> Counter.SetStepSize |> CounterMsg |> LeafMsg |> InMsg))
+      (fun v -> v |> int |> Counter.SetStepSize |> CounterMsg |> LeafMsg |> InMsg))
     "Reset" |> Binding.cmdIf(
       Counter.Reset |> CounterMsg |> LeafMsg |> InMsg,
       (fun (_, { Self = s }) -> Counter.canReset s.Data.Value))
@@ -264,13 +264,9 @@ module Bindings =
   ]
 
 
-[<CompiledName("DesignModel")>]
-let designModel = App.init ()
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance (App.init ()) Bindings.rootBindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkSimpleUno App.init App.update Bindings.rootBindings
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple App.init App.update Bindings.rootBindings

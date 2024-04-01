@@ -14,7 +14,7 @@ module Form1 =
     | TextInput of string
     | Submit
 
-  let init =
+  let initial =
     { Text = "" }
 
   let update msg m =
@@ -23,13 +23,13 @@ module Form1 =
     | Submit -> m  // handled by parent
 
   [<CompiledName("Bindings")>]
-  let bindings () : Binding<Model, Msg> list = [
+  let bindings : Binding<Model, Msg> list = [
     "Text" |> Binding.twoWay ((fun m -> m.Text), TextInput)
     "Submit" |> Binding.cmd Submit
   ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = init
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 
 module Form2 =
@@ -43,7 +43,7 @@ module Form2 =
     | Text2Input of string
     | Submit
 
-  let init =
+  let initial =
     { Input1 = ""
       Input2 = "" }
 
@@ -54,14 +54,14 @@ module Form2 =
     | Submit -> m  // handled by parent
 
   [<CompiledName("Bindings")>]
-  let bindings () : Binding<Model, Msg> list = [
+  let bindings : Binding<Model, Msg> list = [
     "Input1" |> Binding.twoWay ((fun m -> m.Input1), Text1Input)
     "Input2" |> Binding.twoWay ((fun m -> m.Input2), Text2Input)
     "Submit" |> Binding.cmd Submit
   ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = init
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 module App =
 
@@ -85,8 +85,8 @@ module App =
 
   let update msg m =
     match msg with
-    | ShowForm1 -> { m with Dialog = Some <| Form1 Form1.init }
-    | ShowForm2 -> { m with Dialog = Some <| Form2 Form2.init }
+    | ShowForm1 -> { m with Dialog = Some <| Form1 Form1.initial }
+    | ShowForm2 -> { m with Dialog = Some <| Form2 Form2.initial }
     | Form1Msg Form1.Submit -> { m with Dialog = None }
     | Form1Msg msg' ->
         match m.Dialog with
@@ -125,13 +125,9 @@ module App =
   ]
 
 
-[<CompiledName("DesignModel")>]
-let designModel = App.initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance App.initial App.bindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkSimpleUno App.init App.update App.bindings
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple App.init App.update App.bindings

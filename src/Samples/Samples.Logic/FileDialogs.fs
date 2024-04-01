@@ -111,14 +111,10 @@ let subscribe model =
     [ ["timer"], timer SetTime ]
 
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkProgramUno init update bindings
-  |> Program.withSubscription subscribe
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true }
+  UnoProgram.mkProgram init update bindings
+  |> UnoProgram.withSubscription subscribe

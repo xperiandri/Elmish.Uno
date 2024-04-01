@@ -1,12 +1,8 @@
 ﻿module Elmish.Uno.Samples.NewWindow.Program
 
 open System
-open System.Windows
 open Elmish
 open Elmish.Uno
-open Windows.ApplicationModel.Core
-open Windows.UI.Core
-open Windows.UI.ViewManagement
 open Microsoft.UI.Xaml
 open Microsoft.UI.Xaml.Controls
 
@@ -17,18 +13,18 @@ module Win1 =
   type Msg =
   | TextInput of string
 
-  let init = { Text = "" }
+  let initial = { Text = "" }
 
   let update msg m =
     match msg with
     | TextInput s -> { m with Text = s }
 
   [<CompiledName("Bindings")>]
-  let bindings () =
-    [ "Text" |> Binding.twoWay ((fun m -> m.Text), (fun v m -> TextInput v)) ]
+  let bindings =
+    [ "Text" |> Binding.twoWay ((fun m -> m.Text), TextInput) ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = init
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 
 module Win2 =
@@ -41,7 +37,7 @@ module Win2 =
   | Text1Input of string
   | Text2Input of string
 
-  let init =
+  let initial =
     { Input1 = ""
       Input2 = "" }
 
@@ -51,13 +47,13 @@ module Win2 =
     | Text2Input s -> { m with Input2 = s }
 
   [<CompiledName("Bindings")>]
-  let bindings () = [
-    "Input1" |> Binding.twoWay ((fun m -> m.Input1), (fun v m -> Text1Input v))
-    "Input2" |> Binding.twoWay ((fun m -> m.Input2), (fun v m -> Text2Input v))
+  let bindings = [
+    "Input1" |> Binding.twoWay ((fun m -> m.Input1), Text1Input)
+    "Input2" |> Binding.twoWay ((fun m -> m.Input2), Text2Input)
   ]
 
-  [<CompiledName("DesignModel")>]
-  let designModel = init
+  [<CompiledName("DesignInstance")>]
+  let designInstance = ViewModel.designInstance initial bindings
 
 
 type Model =
@@ -65,8 +61,8 @@ type Model =
     Win2: Win2.Model }
 
 let initial =
-  { Win1 = Win1.init
-    Win2 = Win2.init }
+  { Win1 = Win1.initial
+    Win2 = Win2.initial }
 
 let init () = initial, Cmd.none
 
@@ -101,13 +97,9 @@ let bindings = [
   "Win2" |> Binding.subModel ((fun m -> m.Win2), snd, Win2Msg, Win2.bindings)
 ]
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("CreateProgram")>]
 let createProgram<'win1, 'win2> getViewModel =
-    Program.mkProgramUno init (update typeof<'win1> typeof<'win2> getViewModel) bindings
-    |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true }
+  UnoProgram.mkProgram init (update typeof<'win1> typeof<'win2> getViewModel) bindings

@@ -20,17 +20,16 @@ let validateInt42 =
   requireNotEmpty
   >> Result.bind parseInt
   >> Result.bind (requireExactly 42)
-  >> Result.mapError box
 
 
 let validatePassword (s: string) =
   [
     if s.All(fun c -> Char.IsDigit c |> not) then
-      "Must contain a digit" |> box
+      "Must contain a digit"
     if s.All(fun c -> Char.IsLower c |> not) then
-      "Must contain a lowercase letter" |> box
+      "Must contain a lowercase letter"
     if s.All(fun c -> Char.IsUpper c |> not) then
-      "Must contain an uppercase letter" |> box
+      "Must contain an uppercase letter"
   ]
 
 
@@ -59,25 +58,19 @@ let bindings : Binding<Model, Msg> list = [
   "Value" |> Binding.twoWayValidate(
     (fun m -> m.Value),
     NewValue,
-    (fun m -> validateInt42 m.Value),
-    id)
+    (fun m -> validateInt42 m.Value))
   "Password" |> Binding.twoWayValidate(
     (fun m -> m.Password),
     NewPassword,
-    (fun m -> validatePassword m.Password),
-    id)
+    (fun m -> validatePassword m.Password))
   "Submit" |> Binding.cmdIf(
     (fun _ -> Submit),
     (fun m -> (match validateInt42 m.Value with Ok _ -> true | Error _ -> false) && (validatePassword m.Password |> List.isEmpty)))
 ]
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkSimpleUno init update bindings
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true; Measure = true }
+  UnoProgram.mkSimple init update bindings

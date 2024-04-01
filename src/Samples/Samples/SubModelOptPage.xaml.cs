@@ -1,15 +1,14 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.SubModelOpt;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.SubModelOpt.Program;
 
-namespace Elmish.Uno.Samples.SubModelOpt
+public partial class SubModelOptPage : Page
 {
-    public partial class SubModelOptPage : Page
+    public SubModelOptPage()
     {
-        public SubModelOptPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

@@ -1,15 +1,14 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿namespace Elmish.Uno.Samples.FileDialogsCmdMsg;
+
+using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.FileDialogsCmdMsg.Program;
 
-namespace Elmish.Uno.Samples.FileDialogsCmdMsg
+public partial class FileDialogsCmdMsgPage : Page
 {
-    public partial class FileDialogsCmdMsgPage : Page
+    public FileDialogsCmdMsgPage()
     {
-        public FileDialogsCmdMsgPage()
-        {
-            InitializeComponent();
-            ViewModel.StartLoop(ElmishProgram.Config, this, ElmishProgram.Program);
-        }
+        InitializeComponent();
+        UnoProgram.StartElmishLoop(this, ElmishProgram.Program);
     }
 }

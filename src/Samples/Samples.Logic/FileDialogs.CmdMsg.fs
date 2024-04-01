@@ -132,14 +132,10 @@ let subscribe model =
 
 
 
-[<CompiledName("DesignModel")>]
-let designModel = initial
+[<CompiledName("DesignInstance")>]
+let designInstance = ViewModel.designInstance initial bindings
 
 [<CompiledName("Program")>]
 let program =
-  Program.mkProgramUnoWithCmdMsg init update bindings toCmd
-  |> Program.withSubscription subscribe
-  |> Program.withConsoleTrace
-
-[<CompiledName("Config")>]
-let config = { ElmConfig.Default with LogConsole = true }
+  UnoProgram.mkProgramWithCmdMsg init update bindings toCmd
+  |> UnoProgram.withSubscription subscribe
