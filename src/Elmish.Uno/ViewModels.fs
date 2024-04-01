@@ -4,11 +4,17 @@ open System
 open System.Dynamic
 open System.Collections.Generic
 open System.Collections.ObjectModel
-open System.ComponentModel
 open Microsoft.Extensions.Logging
 open Microsoft.UI.Xaml.Data
 
 open BindingVmHelpers
+
+type private INotifyPropertyChanged = System.ComponentModel.INotifyPropertyChanged
+type private PropertyChangedEventHandler = System.ComponentModel.PropertyChangedEventHandler
+type private PropertyChangedEventArgs = System.ComponentModel.PropertyChangedEventArgs
+
+type private INotifyDataErrorInfo = System.ComponentModel.INotifyDataErrorInfo
+type private DataErrorsChangedEventArgs = System.ComponentModel.DataErrorsChangedEventArgs
 
 /// Represents all necessary data used to create a binding.
 type Binding<'model, 'msg, 't> =
@@ -69,9 +75,9 @@ type internal ViewModelHelper<'model, 'msg> =
       x.LoggingArgs.log.LogTrace("[{BindingNameChain}] GetErrors {BindingName}", x.LoggingArgs.nameChain, name)
       x.ValidationErrors
       |> IReadOnlyDictionary.tryFind name
-      |> Option.map (fun errors -> errors.Value)
-      |> Option.defaultValue []
-      |> (fun x -> upcast x)
+      |> ValueOption.map (fun errors -> errors.Value |> Seq.cast<obj>)
+      |> ValueOption.defaultValue Seq.empty
+      |> (fun x -> x)
 
 module internal ViewModelHelper =
 
@@ -118,15 +124,15 @@ module internal ViewModelHelper =
     initializedBindings
     |> IReadOnlyDictionary.tryFind name
     |> function
-      | Some b ->
+      | ValueSome b ->
         match FuncsFromSubModelSeqKeyed().Recursive(b |> MapOutputType.unboxVm) with
-        | Some x -> Some x
+        | Some x -> ValueSome x
         | None -> log.LogError("SubModelSelectedItem binding referenced binding {SubModelSeqBindingName} but it is not a SubModelSeq binding", name)
-                  None
-      | None -> log.LogError("SubModelSelectedItem binding referenced binding {SubModelSeqBindingName} but no binding was found with that name", name)
-                None
+                  ValueNone
+      | ValueNone -> log.LogError("SubModelSelectedItem binding referenced binding {SubModelSeqBindingName} but no binding was found with that name", name)
+                     ValueNone
 
-type [<AllowNullLiteral>] internal DynamicViewModel<'model, 'msg>
+type [<AllowNullLiteral>] DynamicViewModel<'model, 'msg>
       ( args: ViewModelArgs<'model, 'msg>,
         bindings: Binding<'model, 'msg> list)
       as this =
@@ -187,19 +193,27 @@ type [<AllowNullLiteral>] internal DynamicViewModel<'model, 'msg>
       helper <- { helper with Model = newModel }
       ViewModelHelper.raiseEvents eventsToRaise helper
 
-  member _.TryGetMemberCore (name: string, binding) =
+  member internal _.TryGetMemberCore (name: string, binding: VmBinding<'model, 'msg, obj>, result: byref<_>) =
     try
       match Get(nameChain).Recursive(helper.Model, binding) with
-      | Ok v -> v
+      | Ok v ->
+        result <- v
+        true
       | Error e ->
-          match e with
-          | GetError.OneWayToSource -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Binding {BindingName} is read-only", nameChain, name)
-          | GetError.SubModelSelectedItem d -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Failed to find an element of the SubModelSeq binding {SubModelSeqBindingName} with ID {ID} in the getter for the binding {BindingName}", d.NameChain, d.SubModelSeqBindingName, d.Id, name)
-          | GetError.ToNullError (ValueOption.ToNullError.ValueCannotBeNull nonNullTypeName) -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Binding {BindingName} is null, but type {Type} is non-nullable", nameChain, name, nonNullTypeName)
-          null
+        match e with
+        | GetError.OneWayToSource -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Binding {BindingName} is read-only", nameChain, name)
+        | GetError.SubModelSelectedItem d -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Failed to find an element of the SubModelSeq binding {SubModelSeqBindingName} with ID {ID} in the getter for the binding {BindingName}", d.NameChain, d.SubModelSeqBindingName, d.Id, name)
+        | GetError.ToNullError (ValueOption.ToNullError.ValueCannotBeNull nonNullTypeName) -> log.LogError("[{BindingNameChain}] TryGetMember FAILED: Binding {BindingName} is null, but type {Type} is non-nullable", nameChain, name, nonNullTypeName)
+        result <- null
+        false
     with e ->
       log.LogError(e, "[{BindingNameChain}] TryGetMember FAILED: Exception thrown while processing binding {BindingName}", nameChain, name)
       reraise ()
+
+  member internal vm.TryGetMemberCore (name: string, binding: VmBinding<'model, 'msg, obj>) =
+    let mutable result = null
+    let _ = vm.TryGetMemberCore(name, binding, &result)
+    result
 
   override vm.TryGetMember (binder, result) =
     let name = binder.Name
@@ -209,10 +223,9 @@ type [<AllowNullLiteral>] internal DynamicViewModel<'model, 'msg>
         log.LogError("[{BindingNameChain}] TryGetMember FAILED: Property {BindingName} doesn't exist", nameChain, name)
         false
     | true, binding ->
-      result <- vm.TryGetMemberCore(name, binding)
-      result <> null
+      vm.TryGetMemberCore(name, binding, &result)
 
-  member _.TrySetMemberCore (name, binding, value) =
+  member internal _.TrySetMemberCore (name, binding: VmBinding<'model, 'msg, obj>, value) =
     try
       let success = Set(value).Recursive(helper.Model, binding)
       if not success then
@@ -256,7 +269,7 @@ type [<AllowNullLiteral>] internal DynamicViewModel<'model, 'msg>
       System.Diagnostics.Debugger.Break()
       null
     | true, binding ->
-      GetCustomProperty(name).Recursive(this, binding)
+      GetCustomProperty(name).Recursive(binding, binding)
 
   interface ICustomPropertyProvider with
 
@@ -268,9 +281,9 @@ type [<AllowNullLiteral>] internal DynamicViewModel<'model, 'msg>
 
     member this.Type = this.CurrentModel.GetType()
 
-and [<Struct>] GetCustomProperty<'t>(name: string) =
+and GetCustomProperty(name: string) =
 
-  member _.Base (vm: DynamicViewModel<'model, 'msg>, rootBinding: VmBinding<'model, 'msg, 't>, vmBinding: BaseVmBinding<'model, 'msg, 't>) : ICustomProperty =
+  member internal _.Base (rootBinding: VmBinding<'model, 'msg, obj>, vmBinding: BaseVmBinding<'bindingModel, 'bindingMsg, obj>) : ICustomProperty =
     match vmBinding with
     | OneWay _ -> DynamicCustomProperty<DynamicViewModel<'model,'msg>, obj>(name, fun vm -> vm.TryGetMemberCore(name, rootBinding)) :> _
     | TwoWay _ ->
@@ -291,21 +304,20 @@ and [<Struct>] GetCustomProperty<'t>(name: string) =
     | SubModelSeqKeyed _ ->
       DynamicCustomProperty<DynamicViewModel<'model,'msg>, ObservableCollection<DynamicViewModel<obj, obj>>>(name,
         fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
-    | SubModelSelectedItem b ->
+    | SubModelSelectedItem _ ->
       DynamicCustomProperty<DynamicViewModel<'model,'msg>, DynamicViewModel<obj, obj>>(name,
         fun vm -> vm.TryGetMemberCore(name, rootBinding) :?> _) :> _
 
-  member this.Recursive<'model, 'msg, 't>
-      (vm: DynamicViewModel<'model, 'msg>,
-       rootBinding: VmBinding<'model, 'msg, 't>,
-       binding: VmBinding<'model, 'msg, 't>)
+  member internal this.Recursive<'model, 'msg, 'bindingModel, 'bindingMsg>
+      (rootBinding: VmBinding<'model, 'msg, obj>,
+       binding: VmBinding<'bindingModel, 'bindingMsg, obj>)
       : ICustomProperty =
     match binding with
-    | BaseVmBinding b -> this.Base(vm, rootBinding, b)
-    | Cached b -> this.Recursive(vm, rootBinding, b.Binding)
-    | Validatation b -> this.Recursive(vm, rootBinding, b.Binding)
-    | Lazy b -> this.Recursive(vm, rootBinding, b.Binding)
-    | AlterMsgStream b -> this.Recursive(vm, rootBinding, b.Binding)
+    | BaseVmBinding b -> this.Base(rootBinding, b)
+    | Cached b -> this.Recursive(rootBinding, b.Binding)
+    | Validatation b -> this.Recursive(rootBinding, b.Binding)
+    | Lazy b -> this.Recursive<'model, 'msg, obj, obj>(rootBinding, b.Binding)
+    | AlterMsgStream b -> this.Recursive<'model, 'msg, obj, obj>(rootBinding, b.Binding)
 
 
 open System.Runtime.CompilerServices

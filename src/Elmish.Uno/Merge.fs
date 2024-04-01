@@ -224,11 +224,11 @@ module Merge =
       |> List.collect (fun (Kvp (id, (sIdx, s))) ->
         removals
         |> Dictionary.tryFind id
-        |> Option.map (fun (tIdx, t) ->
+        |> ValueOption.map (fun (tIdx, t) ->
             removals.Remove id |> ignore
             additions.Remove id |> ignore
             (tIdx, sIdx, t, s) |> List.singleton)
-        |> Option.defaultValue [])
+        |> ValueOption.defaultValue [])
 
     let actuallyRemove () =
       Seq.empty

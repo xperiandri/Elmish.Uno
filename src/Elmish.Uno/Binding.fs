@@ -106,16 +106,6 @@ module Binding =
       |> createBindingT
 
   /// <summary>
-  ///   Strongly-typed bindings that update the model from the view.
-  /// </summary>
-  module OneWayToSourceT =
-
-    /// Elemental instance of a one-way-to-source binding.
-    let id<'model, 'a> : string -> Binding<'model, 'a, 'a> =
-      OneWayToSource.id
-      |> createBindingT
-
-  /// <summary>
   ///   Strongly-typed bindings that dispatch messages from the view.
   /// </summary>
   module CmdT =
@@ -206,28 +196,6 @@ module Binding =
     let vopt<'a, 'msg> : string -> Binding<'a voption, 'msg> =
       id<obj, 'msg>
       >> mapModel ValueOption.box
-
-
-  module OneWayToSource =
-
-    /// Elemental instance of a one-way-to-source binding.
-    let id<'model, 'a> : string -> Binding<'model, 'a> =
-      OneWayToSource.id
-      |> createBinding
-
-    /// Creates a one-way-to-source binding to an optional value. The binding
-    /// automatically converts between a missing value in the model and
-    /// a <c>null</c> value in the view.
-    let vopt<'model, 'a> : string -> Binding<'model, 'a voption> =
-      id<'model, obj>
-      >> mapMsg ValueOption.unbox
-
-    /// Creates a one-way-to-source binding to an optional value. The binding
-    /// automatically converts between a missing value in the model and
-    /// a <c>null</c> value in the view.
-    let opt<'model, 'a> : string -> Binding<'model, 'a option> =
-      id<'model, obj>
-      >> mapMsg Option.unbox
 
 
   module TwoWay =
@@ -690,39 +658,6 @@ type Binding private () =
     >> Binding.addLazy equals
     >> Binding.mapModel get
     >> Binding.addCaching
-
-
-  /// <summary>Creates a one-way-to-source binding.</summary>
-  /// <param name="set">Returns the message to dispatch.</param>
-  static member oneWayToSource
-      (set: 'a -> 'model -> 'msg)
-      : string -> Binding<'model, 'msg> =
-    Binding.OneWayToSource.id<'model, 'a>
-    >> Binding.mapMsgWithModel set
-
-  /// <summary>
-  ///   Creates a one-way-to-source binding to an optional value. The binding
-  ///   automatically converts between a missing value in the model and
-  ///   a <c>null</c> value in the view.
-  /// </summary>
-  /// <param name="set">Returns the message to dispatch.</param>
-  static member oneWayToSourceOpt
-      (set: 'a option -> 'model -> 'msg)
-      : string -> Binding<'model, 'msg> =
-    Binding.OneWayToSource.opt
-    >> Binding.mapMsgWithModel set
-
-  /// <summary>
-  ///   Creates a one-way-to-source binding to an optional value. The binding
-  ///   automatically converts between a missing value in the model and
-  ///   a <c>null</c> value in the view.
-  /// </summary>
-  /// <param name="set">Returns the message to dispatch.</param>
-  static member oneWayToSourceOpt
-      (set: 'a voption -> 'model -> 'msg)
-      : string -> Binding<'model, 'msg> =
-    Binding.OneWayToSource.vopt
-    >> Binding.mapMsgWithModel set
 
 
   /// <summary>
@@ -1676,6 +1611,69 @@ type Binding private () =
 
   /// <summary>
   ///   Creates a binding to a sub-model/component that has its own bindings and
+  ///   message type. You typically bind this to the <c>DataContext</c> of a
+  ///   <c>UserControl</c> or similar.
+  /// </summary>
+  /// <param name="getSubModel">Gets the sub-model from the model.</param>
+  /// <param name="toBindingModel">
+  ///   Converts the models to the model used by the bindings.
+  /// </param>
+  /// <param name="toMsg">
+  ///   Converts the messages used in the bindings to parent model messages
+  ///   (e.g. a parent message union case that wraps the child message type).
+  /// </param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  [<System.Obsolete("In version 5, this method will be removed.  Use \"Binding.SubModel.required\" followed by model and message mapping functions as needed.  For an example, see how this method is implemented.")>]
+  static member subModel
+      (getSubModel: 'model -> 'subModel,
+       toBindingModel: 'model * 'subModel -> 'bindingModel,
+       toMsg: 'bindingMsg -> 'msg,
+       bindings: unit -> Binding<'bindingModel, 'bindingMsg> list)
+      : string -> Binding<'model, 'msg> =
+    Binding.SubModel.required bindings
+    >> Binding.mapModel (fun m -> toBindingModel (m, getSubModel m))
+    >> Binding.mapMsg toMsg
+
+  /// <summary>
+  ///   Creates a binding to a sub-model/component that has its own bindings and
+  ///   message type. You typically bind this to the <c>DataContext</c> of a
+  ///   <c>UserControl</c> or similar.
+  /// </summary>
+  /// <param name="getSubModel">Gets the sub-model from the model.</param>
+  /// <param name="toMsg">
+  ///   Converts the messages used in the bindings to parent model messages
+  ///   (e.g. a parent message union case that wraps the child message type).
+  /// </param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  [<System.Obsolete("In version 5, this method will be removed.  Use \"Binding.SubModel.required\" followed by model and message mapping functions as needed.  For an example, see how this method is implemented.")>]
+  static member subModel
+      (getSubModel: 'model -> 'subModel,
+       toMsg: 'subMsg -> 'msg,
+       bindings: unit -> Binding<'model * 'subModel, 'subMsg> list)
+      : string -> Binding<'model, 'msg> =
+    Binding.SubModel.required bindings
+    >> Binding.mapModel (fun m -> (m, getSubModel m))
+    >> Binding.mapMsg toMsg
+
+
+  /// <summary>
+  ///   Creates a binding to a sub-model/component that has its own bindings.
+  ///   You typically bind this to the <c>DataContext</c> of a
+  ///   <c>UserControl</c> or similar.
+  /// </summary>
+  /// <param name="getSubModel">Gets the sub-model from the model.</param>
+  /// <param name="bindings">Returns the bindings for the sub-model.</param>
+  [<System.Obsolete("In version 5, the type of the argument \"bindings\" will be changed to \"unit -> Binding<'model, 'msg> list\".  To avoid a compile error when upgrading, replace this method call with its implementation.")>]
+  static member subModel
+      (getSubModel: 'model -> 'subModel,
+       bindings: unit -> Binding<'model * 'subModel, 'msg> list)
+      : string -> Binding<'model, 'msg> =
+    Binding.SubModel.required bindings
+    >> Binding.mapModel (fun m -> (m, getSubModel m))
+
+
+  /// <summary>
+  ///   Creates a binding to a sub-model/component that has its own bindings and
   ///   message type, and may not exist. If it does not exist, bindings to this
   ///   model will return <c>null</c> unless <paramref name="sticky" /> is
   ///   <c>true</c>, in which case the last non-<c>null</c> model will be
@@ -2358,39 +2356,6 @@ type Binding private () =
 module Extensions =
 
   type Binding with
-
-    /// <summary>Creates a one-way-to-source binding.</summary>
-    /// <param name="set">Returns the message to dispatch.</param>
-    static member oneWayToSource
-        (set: 'a -> 'msg)
-        : string -> Binding<'model, 'msg> =
-      Binding.OneWayToSource.id<'model, 'a>
-      >> Binding.mapMsg set
-
-    /// <summary>
-    ///   Creates a one-way-to-source binding to an optional value. The binding
-    ///   automatically converts between a missing value in the model and
-    ///   a <c>null</c> value in the view.
-    /// </summary>
-    /// <param name="set">Returns the message to dispatch.</param>
-    static member oneWayToSourceOpt
-        (set: 'a option -> 'msg)
-        : string -> Binding<'model, 'msg> =
-      Binding.OneWayToSource.opt
-      >> Binding.mapMsg set
-
-    /// <summary>
-    ///   Creates a one-way-to-source binding to an optional value. The binding
-    ///   automatically converts between a missing value in the model and
-    ///   a <c>null</c> value in the view.
-    /// </summary>
-    /// <param name="set">Returns the message to dispatch.</param>
-    static member oneWayToSourceOpt
-        (set: 'a voption -> 'msg)
-        : string -> Binding<'model, 'msg> =
-      Binding.OneWayToSource.vopt
-      >> Binding.mapMsg set
-
 
     /// <summary>Creates a two-way binding.</summary>
     /// <param name="get">Gets the value from the model.</param>

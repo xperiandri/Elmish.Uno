@@ -8,7 +8,10 @@
     <OutputType>Library</OutputType>
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
-    <NoWarn>FS0988</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);FS0988;NETSDK1206</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FSharp.Interop.Dynamic" />
+    <PackageReference Include="FSharp.Interop.Dynamic" NoWarn="NU1603" />
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Hedgehog" />
     <PackageReference Include="Hedgehog.Experimental" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

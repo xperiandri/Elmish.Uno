@@ -90,22 +90,22 @@ module ValueOption =
 [<RequireQualifiedAccess>]
 module ByRefPair =
 
-  let toOption (b, a) =
-    if b then Some a else None
+  let toValueOption (b, a) =
+    if b then ValueSome a else ValueNone
 
 
 [<RequireQualifiedAccess>]
 module Dictionary =
 
   let tryFind key (d: Dictionary<_, _>) =
-    key |> d.TryGetValue |> ByRefPair.toOption
+    key |> d.TryGetValue |> ByRefPair.toValueOption
 
 
 [<RequireQualifiedAccess>]
 module IReadOnlyDictionary =
 
   let tryFind key (d: IReadOnlyDictionary<_, _>) =
-    key |> d.TryGetValue |> ByRefPair.toOption
+    key |> d.TryGetValue |> ByRefPair.toValueOption
 
 
 [<RequireQualifiedAccess>]

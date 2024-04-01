@@ -346,7 +346,7 @@ type FuncsFromSubModelSeqKeyed() =
 type Initialize<'t>
       (loggingArgs: LoggingViewModelArgs,
        name: string,
-       getFunctionsForSubModelSelectedItem: string -> SelectedItemBinding<obj, obj, 't, obj> option) =
+       getFunctionsForSubModelSelectedItem: string -> SelectedItemBinding<obj, obj, 't, obj> voption) =
 
   let { log = log
         logPerformance = logPerformance
@@ -475,12 +475,13 @@ type Initialize<'t>
           let d = d |> BindingData.SubModelSelectedItem.measureFunctions measure measure2
           d.SubModelSeqBindingName
           |> getFunctionsForSubModelSelectedItem
-          |> Option.map (fun selectedItemBinding ->
+          |> ValueOption.map (fun selectedItemBinding ->
               { Get = d.Get
                 Set = fun obj m -> d.Set obj m |> dispatch
                 SubModelSeqBindingName = d.SubModelSeqBindingName
                 SelectedItemBinding = selectedItemBinding }
               |> SubModelSelectedItem)
+          |> ValueOption.toOption
 
   member this.Recursive<'model, 'msg>
       (initialModel: 'model,
@@ -664,7 +665,7 @@ type Update<'t>
 
 type [<Struct>] Get<'t>(nameChain: string) =
 
-  member _.Base (model: 'model, binding: BaseVmBinding<'model, 'msg, 't>) =
+  member this.Base (model: 'model, binding: BaseVmBinding<'model, 'msg, 't>) =
     match binding with
     | OneWay { OneWayData = d } -> d.Get model |> Ok
     | TwoWay b -> b.Get model |> Ok
@@ -679,18 +680,20 @@ type [<Struct>] Get<'t>(nameChain: string) =
     | SubModelSeqUnkeyed { Vms = vms }
     | SubModelSeqKeyed { Vms = vms } -> vms.GetCollection () |> Ok
     | SubModelSelectedItem b ->
+        let toResult nameChain binding viewModel =
+            match viewModel with
+            | ValueNone -> ValueNone |> Ok // deselecting successful
+            | ValueSome (id, mVm) ->
+                match mVm with
+                | Some vm -> vm |> ValueSome |> Ok // selecting successful
+                | None -> // selecting failed
+                    { NameChain = nameChain
+                      SubModelSeqBindingName = binding.SubModelSeqBindingName
+                      Id = id.ToString() }
+                    |> GetError.SubModelSelectedItem
+                    |> Error
         b.TypedGet model
-        |> function
-          | ValueNone -> ValueNone |> Ok // deselecting successful
-          | ValueSome (id, mVm) ->
-              match mVm with
-              | Some vm -> vm |> ValueSome |> Ok // selecting successful
-              | None -> // selecting failed
-                  { NameChain = nameChain
-                    SubModelSeqBindingName = b.SubModelSeqBindingName
-                    Id = id.ToString() }
-                  |> GetError.SubModelSelectedItem
-                  |> Error
+        |> toResult nameChain b
         |> Result.bind (ValueOption.toNull >> Result.mapError GetError.ToNullError)
 
   member this.Recursive<'model, 'msg>

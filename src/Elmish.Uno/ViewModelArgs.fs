@@ -13,10 +13,10 @@ type internal LoggingViewModelArgs =
 module internal LoggingViewModelArgs =
 
   let getNameChainFor nameChain name =
-    sprintf "%s.%s" nameChain name
+    $"{nameChain}.{name}"
 
   let getNameChainForItem nameChain collectionBindingName itemId =
-    sprintf "%s.%s.%s" nameChain collectionBindingName itemId
+    $"{nameChain}.{collectionBindingName}.{itemId}"
 
   let map nameChain v = { v with nameChain = nameChain }
 

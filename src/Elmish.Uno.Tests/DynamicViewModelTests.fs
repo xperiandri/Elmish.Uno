@@ -1,4 +1,4 @@
-module DynamicViewModelTests.M
+﻿module DynamicViewModelTests.M
 
 open System
 open System.Collections.Concurrent
@@ -14,7 +14,15 @@ open Hedgehog
 open Swensen.Unquote
 
 open Elmish.Uno
+open Microsoft.UI.Xaml.Data
 
+
+type private INotifyPropertyChanged = System.ComponentModel.INotifyPropertyChanged
+type private PropertyChangedEventHandler = System.ComponentModel.PropertyChangedEventHandler
+type private PropertyChangedEventArgs = System.ComponentModel.PropertyChangedEventArgs
+
+type private INotifyDataErrorInfo = System.ComponentModel.INotifyDataErrorInfo
+type private DataErrorsChangedEventArgs = System.ComponentModel.DataErrorsChangedEventArgs
 
 [<AutoOpen>]
 module Extensions =
@@ -102,6 +110,7 @@ type internal TestVm<'model, 'msg>(model, bindings) as this =
 [<AutoOpen>]
 module Helpers =
 
+  let identifierNameGen = Gen.alphaNum |> Gen.string (Range.exponential 1 50)
 
   let internal oneWay x = x |> Binding.oneWay
   let internal oneWayLazy x = x |> Func3.curry Binding.oneWayLazy
@@ -122,11 +131,9 @@ module Helpers =
   let internal cmdParam
       name
       (exec: 'a -> 'model -> 'msg voption)
-      (canExec: 'a -> 'model -> bool)
-      (autoRequery: bool) =
+      (canExec: 'a -> 'model -> bool) =
     ({ Exec = unbox >> exec
-       CanExec = unbox >> canExec
-       AutoRequery = autoRequery }
+       CanExec = unbox >> canExec }
      |> CmdData
      |> BaseBindingData
      |> createBinding) name
@@ -169,7 +176,7 @@ module OneWay =
   [<Fact>]
   let ``when retrieved, should always return the value returned by get`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -178,18 +185,22 @@ module OneWay =
       let binding = oneWay get name
       let vm = TestVm(m1, binding)
 
+      let dynamicProperty = (vm :> ICustomPropertyProvider).GetCustomProperty(name)
+
       test <@ vm.Get name = get m1 @>
+      test <@ dynamicProperty.GetValue(vm) = get m1 @>
 
       vm.UpdateModel m2
 
       test <@ vm.Get name = get m2 @>
+      test <@ dynamicProperty.GetValue(vm) = get m2 @>
   }
 
 
   [<Fact>]
   let ``when model is updated, should trigger PC once iff the return value of get changes`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -212,7 +223,7 @@ module OneWay =
       | _ -> a
 
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
 
       let binding = oneWay id name |> Binding.addSticky isEven
@@ -225,7 +236,7 @@ module OneWay =
   [<Fact>]
   let ``when model updated, event is not called before view model property is updated`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int> |> GenX.notEqualTo m1
 
@@ -254,7 +265,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when retrieved initially, should return the value returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
 
       let get = string<int>
@@ -271,7 +282,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when retrieved after update and equals returns false, should return the value returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -290,7 +301,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when retrieved after update and equals returns true, should return the previous value returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -310,7 +321,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when retrieved, updated, and retrieved again, should call map once after the update iff equals returns false`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
       let! eq = Gen.bool
@@ -334,7 +345,7 @@ module OneWayLazy =
   [<Fact>]
   let ``map should never be called during model update`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -354,7 +365,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when retrieved several times between updates, map is called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -380,7 +391,7 @@ module OneWayLazy =
   [<Fact>]
   let ``when model is updated, should trigger PC once iff equals is false`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
       let! eq = Gen.bool
@@ -409,7 +420,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``when retrieved initially, should return an ObservableCollection with the values returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<Guid list>
 
       let get = id
@@ -428,7 +439,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``given equals returns false, when retrieved after update, should return an ObservableCollection with the new values returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -450,7 +461,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``given equals returns true, when retrieved after update, should return an ObservableCollection with the previous values returned by map`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -472,7 +483,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``during VM instantiation, get should be called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! eq = Gen.bool
 
@@ -492,7 +503,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``during VM instantiation, map should have be called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! eq = Gen.bool
 
@@ -512,7 +523,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``given equals returns true, during model update, map should be called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -535,7 +546,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``when equals returns false, during model update, map should be called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -558,7 +569,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``during model update, get should be called at most twice`` () = // once on current model and once on new model
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
       let! eq = Gen.bool
@@ -582,7 +593,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``when retrieved several times after VM initialization, map is called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
 
       let get = id
@@ -604,7 +615,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``when retrieved several times after update, map is called at most once`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -630,7 +641,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``for any behavior of equals or itemEquals, when model is updated, should never trigger PC`` () =  // because this binding should only trigger CC
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
       let! eq = Gen.bool
@@ -654,7 +665,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``given equals returns true, when model is updated, should never trigger CC`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -677,7 +688,7 @@ module OneWaySeqLazy =
   [<Fact>]
   let ``given equals returns false and itemEquals returns false, when model is updated, should contain expected items in collection`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = Gen.guid |> Gen.list (Range.constant 1 50)
       let! m2 = Gen.guid |> Gen.list (Range.constant 1 50)
 
@@ -703,7 +714,7 @@ module TwoWay =
   [<Fact>]
   let ``when retrieved, should always return the value returned by get`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -713,18 +724,22 @@ module TwoWay =
       let binding = twoWay get set name
       let vm = TestVm(m1, binding)
 
+      let dynamicProperty = (vm :> ICustomPropertyProvider).GetCustomProperty(name)
+
       test <@ vm.Get name = get m1 @>
+      test <@ dynamicProperty.GetValue(vm) = get m1 @>
 
       vm.UpdateModel m2
 
       test <@ vm.Get name = get m2 @>
+      test <@ dynamicProperty.GetValue(vm) = get m2 @>
   }
 
 
   [<Fact>]
   let ``when model is updated, should trigger PC once iff the return value of get changes`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -742,7 +757,7 @@ module TwoWay =
   [<Fact>]
   let ``when set, should call dispatch once with the value returned by set`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
 
@@ -755,6 +770,10 @@ module TwoWay =
       vm.Set name p
 
       test <@ vm.Dispatches = [set p m] @>
+
+      let dynamicProperty = (vm :> ICustomPropertyProvider).GetCustomProperty(name)
+      dynamicProperty.SetValue(vm, p)
+      test <@ vm.Dispatches = [set p m; set p m] @>
     }
 
 
@@ -765,7 +784,7 @@ module TwoWayValidate =
   [<Fact>]
   let ``when retrieved, should always return the value returned by get`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -776,18 +795,22 @@ module TwoWayValidate =
       let binding = twoWayValidate name get set validate
       let vm = TestVm(m1, binding)
 
+      let dynamicProperty = (vm :> ICustomPropertyProvider).GetCustomProperty(name)
+
       test <@ vm.Get name = get m1 @>
+      test <@ dynamicProperty.GetValue(vm) = get m1 @>
 
       vm.UpdateModel m2
 
       test <@ vm.Get name = get m2 @>
+      test <@ dynamicProperty.GetValue(vm) = get m2 @>
   }
 
 
   [<Fact>]
   let ``when model is updated, should trigger PC once iff the return value of get changes`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -807,7 +830,7 @@ module TwoWayValidate =
   [<Fact>]
   let ``when set, should call dispatch once with the value returned by set`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
 
@@ -821,13 +844,17 @@ module TwoWayValidate =
       vm.Set name p
 
       test <@ vm.Dispatches = [set p m] @>
+
+      let dynamicProperty = (vm :> ICustomPropertyProvider).GetCustomProperty(name)
+      dynamicProperty.SetValue(vm, p)
+      test <@ vm.Dispatches = [set p m; set p m] @>
     }
 
 
   [<Fact>]
   let ``when model is updated, should trigger ErrorsChanged iff the value returned by validate changes`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -847,7 +874,7 @@ module TwoWayValidate =
   [<Fact>]
   let ``when validate returns ValueNone, HasErrors should return false and GetErrors should return an empty collection`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -872,7 +899,7 @@ module TwoWayValidate =
   [<Fact>]
   let ``when validate returns ValueSome, HasErrors should return true and GetErrors should return a collection with a single element equal to the inner value returned by validate`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -897,7 +924,7 @@ module TwoWayValidate =
   [<Fact>]
   let ``when validate returns no ValueNone after returning ValueSome, HasErrors should return false and GetErrors should return an empty collection`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int> |> GenX.notEqualTo m1
 
@@ -929,7 +956,7 @@ module Cmd =
   [<Fact>]
   let ``the retrieved command's Execute should call dispatch once with the inner value returned by exec`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<obj> |> GenX.withNull
 
@@ -950,7 +977,7 @@ module Cmd =
   [<Fact>]
   let ``the retrieved command's CanExecute should return the value returned by canExec`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<obj> |> GenX.withNull
 
@@ -967,7 +994,7 @@ module Cmd =
   [<Fact>]
   let ``when model is updated, should trigger CanExecuteChanged iff the output of canExec changes`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -987,7 +1014,7 @@ module Cmd =
   [<Fact>]
   let ``when model is updated, should never trigger PC`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
 
@@ -1010,15 +1037,14 @@ module CmdParam =
   [<Fact>]
   let ``the retrieved command's Execute should call dispatch once with the inner value returned by exec`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m, binding)
 
       (vm.Get name : ICommand).Execute(p)
@@ -1032,15 +1058,14 @@ module CmdParam =
   [<Fact>]
   let ``the retrieved command's CanExecute should return the value returned by canExec`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<int>
       let! p = GenX.auto<string>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m, binding)
 
       test <@ (vm.Get name : ICommand).CanExecute(p) = canExec p m @>
@@ -1050,15 +1075,14 @@ module CmdParam =
   [<Fact>]
   let ``when model is updated, should always trigger CanExecuteChanged`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m1, binding)
 
       vm.TrackCecTriggersFor name
@@ -1071,15 +1095,14 @@ module CmdParam =
   [<Fact>]
   let ``when model is updated, should never trigger PC`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<int>
       let! m2 = GenX.auto<int>
-      let! autoRequery = Gen.bool
 
       let exec (p: string) m = if p.Length + m < 0 then ValueNone else ValueSome (string m + p)
       let canExec (p: string) m = p.Length + m < 0
 
-      let binding = cmdParam name exec canExec autoRequery
+      let binding = cmdParam name exec canExec
       let vm = TestVm(m1, binding)
 
       vm.UpdateModel m2
@@ -1095,7 +1118,7 @@ module SubModel =
   [<Fact>]
   let ``when retrieved and getModel returns ValueSome, should return a ViewModel whose CurrentModel is the inner value returned by getModel`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<byte * int>
       let! m2 = GenX.auto<byte * int>
       let! sticky = Gen.bool
@@ -1117,7 +1140,7 @@ module SubModel =
   [<Fact>]
   let ``when retrieved initially and getModel returns ValueNone, should return null`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<byte * int>
       let! sticky = Gen.bool
 
@@ -1134,7 +1157,7 @@ module SubModel =
   [<Fact>]
   let ``when retrieved after update and getModel changes between ValueSome and ValueNone, should return null if sticky is false, otherwise the last non-null value`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<byte * int>
       let! m2 = GenX.auto<byte * int> |> GenX.notEqualTo m1
       let! m3 = GenX.auto<byte * int> |> GenX.notEqualTo m1  |> GenX.notEqualTo m2
@@ -1168,7 +1191,7 @@ module SubModel =
   [<Fact>]
   let ``when model is updated, should trigger PC once iff getModel changes from ValueNone to ValueSome, or from ValueSome to ValueNone when sticky is false`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<byte * int>
       let! m2 = GenX.auto<byte * int> |> GenX.notEqualTo m1
       let! sticky = Gen.bool
@@ -1195,7 +1218,7 @@ module SubModel =
   [<Fact>]
   let ``smoke test: when a sub-model OneWay binding is retrieved, returns the value returned by get`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! subName = GenX.auto<string>
       let! m = GenX.auto<byte * int>
       let! sticky = Gen.bool
@@ -1215,7 +1238,7 @@ module SubModel =
   [<Fact>]
   let ``smoke test: when a sub-model TwoWay binding is set, dispatches the value returned by set transformed by toMsg`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! subName = GenX.auto<string>
       let! m = GenX.auto<byte * int>
       let! p = GenX.auto<string>
@@ -1239,7 +1262,7 @@ module SubModel =
   [<Fact>]
   let ``setMsgWithModel given current model after new submodel created`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! subName = GenX.auto<string>
       let! initialModel = GenX.auto<int>
       let! newModel = GenX.auto<int> |> GenX.notEqualTo initialModel
@@ -1273,7 +1296,7 @@ module SubModelSeq =
   [<Fact>]
   let ``when retrieved, should return an ObservableCollection with ViewModels whose CurrentModel is the corresponding value returned by getModels`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<Guid list>
 
       let getModels = id
@@ -1290,7 +1313,7 @@ module SubModelSeq =
   [<Fact>]
   let ``when model is updated, should never trigger PC`` () =  // because this binding should only trigger CC
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m1 = GenX.auto<Guid list>
       let! m2 = GenX.auto<Guid list>
 
@@ -1310,7 +1333,7 @@ module SubModelSeq =
   [<Fact>]
   let ``given elements are the same, when model is updated, should not trigger CC`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! m = GenX.auto<Guid list>
 
       let getModels = id
@@ -1331,7 +1354,7 @@ module SubModelSeq =
   [<Fact>]
   let ``smoke test: when a sub-model OneWay binding is retrieved, returns the value returned by get`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! subName = GenX.auto<string>
       let! m = GenX.auto<Guid list>
 
@@ -1358,7 +1381,7 @@ module SubModelSeq =
   [<Fact>]
   let ``smoke test: when a sub-model TwoWay binding is set, dispatches the value returned by set transformed by toMsg`` () =
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! subName = GenX.auto<string>
       let! m = GenX.auto<Guid list>
       let! p = GenX.auto<string>
@@ -1389,8 +1412,8 @@ module SubModelSelectedItem =
   [<Fact>]
   let ``Should return the VM corresponding to the ID that has been set`` () =
     Property.check <| property {
-      let! subModelSeqName = GenX.auto<string>
-      let! selectedItemName = GenX.auto<string> |> GenX.notEqualTo subModelSeqName
+      let! subModelSeqName = identifierNameGen
+      let! selectedItemName = identifierNameGen |> GenX.notEqualTo subModelSeqName
       let! m = GenX.auto<int * Guid list>
       let! selectedSubModel =
         match snd m with
@@ -1422,8 +1445,8 @@ module SubModelSelectedItem =
   [<Fact>]
   let ``when set, should dispatch the message returned by set`` () =
     Property.check <| property {
-      let! subModelSeqName = GenX.auto<string>
-      let! selectedItemName = GenX.auto<string> |> GenX.notEqualTo subModelSeqName
+      let! subModelSeqName = identifierNameGen
+      let! selectedItemName = identifierNameGen |> GenX.notEqualTo subModelSeqName
       let! m = GenX.auto<int * Guid list>
       let! selectedSubModel =
         match snd m with
@@ -1488,7 +1511,7 @@ module CacheEffect =
   let ``model mapping called exactly once when Get called twice`` () =
 
     Property.check <| property {
-      let! name = GenX.auto<string>
+      let! name = identifierNameGen
       let! model = GenX.auto<int>
       let! bindingComponsitionOrder = Gen.bool
 

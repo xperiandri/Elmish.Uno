@@ -1,4 +1,4 @@
-module StaticViewModelTests.M
+﻿module StaticViewModelTests.M
 
 open System
 open System.Collections.Concurrent
@@ -104,11 +104,9 @@ module Helpers =
   let internal cmdParam
       name
       (exec: 'a -> 'model -> 'msg voption)
-      (canExec: 'a -> 'model -> bool)
-      (autoRequery: bool) =
+      (canExec: 'a -> 'model -> bool) =
     ({ Exec = unbox >> exec
-       CanExec = unbox >> canExec
-       AutoRequery = autoRequery }
+       CanExec = unbox >> canExec }
      |> CmdData
      |> BaseBindingData
      |> createBinding) name
@@ -270,7 +268,7 @@ module OneWayLazy =
 
       let binding = oneWayLazy get equals map.Fn
       let vm = TestVm(m1, binding)
-      
+
       let _ = vm.GetProperty
       vm.UpdateModel m2
       map.Reset ()
@@ -314,7 +312,7 @@ module OneWayLazy =
 
       let binding = oneWayLazy get equals map.Fn
       let vm = TestVm(m1, binding)
-      
+
       let _ = vm.GetProperty
       let _ = vm.GetProperty
       test <@ map.Count <= 1 @>
