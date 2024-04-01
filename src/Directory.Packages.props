@@ -88,7 +88,7 @@
   <ItemGroup Label="FSharp">
     <PackageVersion Include="Elmish" Version="$(ElmishVersion)" />
     <PackageVersion Include="Elmish.Uno" Version="1.0.0-ci" />
-    <PackageVersion Include="FSharp.Collections.Immutable" Version="2.0.0-ci-4000372498" />
+    <PackageVersion Include="FSharp.Collections.Immutable" Version="2.0.0-ci-853395216" />
     <PackageVersion Include="FSharp.Control.FusionTasks" Version="2.5.0" />
     <PackageVersion Include="FSharp.Control.Reactive" Version="5.0.2" />
     <PackageVersion Include="FSharpPlus" Version="1.2.0" />
