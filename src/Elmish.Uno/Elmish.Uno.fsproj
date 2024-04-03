@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(TargetFrameworks);$(DotNetVersion)-windows10.0.22621</TargetFrameworks>
-    <TargetFrameworks>$(TargetFrameworks);$(DotNetVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(DotNetVersion)-windows10.0.22621;$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion);$(TargetFrameworks)</TargetFrameworks>
     <TargetFrameworks Condition="'$(OverrideTargetFramework)'!=''">$(OverrideTargetFramework)</TargetFrameworks>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -41,6 +41,10 @@
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="$(RepoRoot)\logo\elmish-uno-logo-128x128.png" Pack="true" PackagePath="\" />
     <None Include="$(RepoRoot)\README.md" Pack="true" PackagePath="\" />
@@ -63,6 +67,7 @@
 
   <ItemGroup>
     <PackageReference Include="Elmish" />
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="FSharp.Collections.Immutable" />
     <PackageReference Include="Uno.WinUI" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.Contains('windows10'))" />
