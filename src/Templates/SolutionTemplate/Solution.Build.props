@@ -1,0 +1,16 @@
+﻿<Project>
+  <PropertyGroup>
+    <AssemblyBaseName>SolutionTemplate</AssemblyBaseName>
+    <RootNamespace>SolutionTemplate</RootNamespace>
+    <Company>XperiAndri</Company>
+    <Product>SolutionTemplate</Product>
+    <Authors>Elmish.Uno</Authors>
+    <Copyright>Copyright © XperiAndri</Copyright>
+    <CSharpLangVersion>10.0</CSharpLangVersion>
+    <FSharpLangVersion>6.0</FSharpLangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+</Project>

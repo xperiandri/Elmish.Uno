@@ -1,6 +1,8 @@
-﻿using Microsoft.Xaml.Interactivity;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿#pragma warning disable CA1001 // Types that own disposable fields should be disposable
+
+using Microsoft.Xaml.Interactivity;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace Elmish.Uno.Samples.EventBindingsAndBehaviors
 {

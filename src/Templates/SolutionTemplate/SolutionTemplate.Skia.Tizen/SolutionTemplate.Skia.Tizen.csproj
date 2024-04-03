@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Tizen.NET.Sdk/1.1.6">
+  <Import Project="..\Solution.Build.props" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>tizen50</TargetFramework>
+    <LangVersion>$(CSharpLangVersion)</LangVersion>
+    <OutputType>Exe</OutputType>
+    <DefineConstants>$(DefineConstants);__TIZEN__;</DefineConstants>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>NU1701;NU1702;DF0033</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="lib\" />
+    <Folder Include="res\" />
+  </ItemGroup>
+  <ItemGroup Condition="exists('..\SolutionTemplate.UWP')">
+    <EmbeddedResource Include="..\SolutionTemplate.UWP\Package.appxmanifest" LogicalName="Package.appxmanifest" />
+    <Content Include="..\SolutionTemplate.UWP\Assets\StoreLogo.png" Link="Assets\StoreLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Uno.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="SkiaSharp.Views" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" />
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" />
+    <PackageReference Include="Uno.UI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Skia.Tizen" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
+  </ItemGroup>
+  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
+</Project>

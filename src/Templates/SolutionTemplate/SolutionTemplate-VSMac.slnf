@@ -1,0 +1,21 @@
+{
+  "solution": {
+    "path": "SolutionTemplate.sln",
+    "projects": [
+    #//#if (Mobile)
+      "SolutionTemplate.Mobile\\SolutionTemplate.Mobile.csproj",
+    #//#endif
+      "SolutionTemplate.Shared\\SolutionTemplate.Shared.shproj",
+    #//#if (skia-gtk)
+      "SolutionTemplate.Skia.Gtk\\SolutionTemplate.Skia.Gtk.csproj",
+    #//#endif
+    #//#if (skia-linux-fb)
+      "SolutionTemplate.Skia.Linux.FrameBuffer\\SolutionTemplate.Skia.Linux.FrameBuffer.csproj",
+    #//#endif
+    #//#if (WebAssembly)
+      "SolutionTemplate.Wasm\\SolutionTemplate.Wasm.csproj",
+    #//#endif
+      "SolutionTemplate\\SolutionTemplate.fsproj"
+    ]
+  }
+}

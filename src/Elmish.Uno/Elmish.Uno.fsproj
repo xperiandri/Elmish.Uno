@@ -1,42 +1,56 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
+﻿<Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(DotNetVersion)-windows10.0.22621;$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(DotNetVersion);$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OverrideTargetFramework)'!=''">$(OverrideTargetFramework)</TargetFrameworks>
+
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <DebugType>Embedded</DebugType>
-    <EmbedAllSources>True</EmbedAllSources>
-    <Authors>XperiAndri,dim-37</Authors>
-    <Description>F# bindings for using Elmish in Uno</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/XperiAndri/Elmish.Uno</PackageProjectUrl>
-    <PackageTags>Uno F# fsharp Elmish Elm</PackageTags>
-    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
+    <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <!--
+      If you encounter this error message:
+
+        error NETSDK1148: A referenced assembly was compiled using a newer version of Microsoft.Windows.SDK.NET.dll.
+        Please update to a newer .NET SDK in order to reference this assembly.
+
+      This means that the two packages below must be aligned with the "build" version number of
+      the "Microsoft.Windows.SDK.BuildTools" package above, and the "revision" version number
+      must be the highest found in https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref.
+    -->
+    <!-- <WindowsSdkPackageVersion>10.0.22621.31</WindowsSdkPackageVersion> -->
+
+    <Description>Elmish implementation for WInUI and Uno Platform</Description>
+
+    <RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))</RepoRoot>
+    <RepositoryUrl>https://github.com/fsprojects/FSharp.Data.GraphQL</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <Version>1.0.0</Version>
-    <PackageReleaseNotes></PackageReleaseNotes>-->
+    <PackageTags>FSharp Elmish Uno WinUI</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>elmish-uno-logo-128x128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/xperiandri/Elmish.Uno/</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="elmish-uno-logo-128x128.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Elmish.Uno.Mobile</_Parameter1>
-    </AssemblyAttribute>
+    <None Include="$(RepoRoot)\logo\elmish-uno-logo-128x128.png" Pack="true" PackagePath="\" />
+    <None Include="$(RepoRoot)\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Elmish.Uno.Tests</_Parameter1>
     </AssemblyAttribute>
@@ -45,16 +59,21 @@
     <Compile Include="Config.fs" />
     <Compile Include="Binding.fs" />
     <Compile Include="Utils.fs" />
+    <Compile Include="DynamicCustomProperty.fs" />
     <Compile Include="ViewModel.fs" />
+    <Compile Include="ViewModelModule.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmish" Version="[3.0.3, 3.99]" />
+    <PackageReference Include="Elmish" />
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="FSharp.Collections.Immutable" />
+    <PackageReference Include="Uno.WinUI" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Condition="$(TargetFramework.Contains('windows10'))" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Condition="$(TargetFramework.Contains('windows10'))" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.*" />
-  </ItemGroup>
+  <Target Name="XamlPreCompile" Condition="$(TargetFramework.Contains('windows10'))" />
 
 </Project>

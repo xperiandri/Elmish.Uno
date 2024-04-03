@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Elmish.Uno;
 using ElmishProgram = Elmish.Uno.Samples.SubModelSeq.Program;
 

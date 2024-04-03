@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFramework>$(DotNetVersion)</TargetFramework>
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Library</OutputType>
     <!--Turn on warnings for unused values (arguments and let bindings) -->
     <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
+    <NoWarn>FS0988</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,13 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FSharp.Interop.Dynamic" Version="5.0.1.268" />
-    <PackageReference Include="Hedgehog" Version="0.8.3" />
-    <PackageReference Include="Hedgehog.Experimental" Version="0.1.5" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.*" />
-    <PackageReference Include="Unquote" Version="5.0.0" />
-    <PackageReference Include="xunit.core" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="FSharp.Interop.Dynamic" />
+    <PackageReference Include="Hedgehog" />
+    <PackageReference Include="Hedgehog.Experimental" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Unquote" />
+    <PackageReference Include="xunit.core" />
+    <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -35,10 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Elmish.Uno\Elmish.Uno.fsproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.*" />
   </ItemGroup>
 
 </Project>

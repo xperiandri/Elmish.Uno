@@ -6,42 +6,38 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
   xmlns:ttriggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   d:DataContext="{d:DesignInstance Type=samples:DesignData,
                                    IsDesignTimeCreatable=True}"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <Grid
-    Padding="0,25"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Top"
-    d:DataContext="{Binding FileDialogsCmdMsg}">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
+  <Grid d:DataContext="{Binding FileDialogsCmdMsg}" utoolkit:VisibleBoundsPadding.PaddingMask="All">
 
-    <StackPanel x:Name="contentPanel">
-      <TextBox
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel x:Name="contentPanel" Padding="10">
+      <TextBox x:Name="textBox"
         Width="200"
         Height="100"
-        Margin="0,5,10,5"
         AcceptsReturn="True"
         Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
         TextWrapping="Wrap" />
+      <Border Height="10" />
       <TextBlock Text="{Binding StatusMsg}" TextWrapping="Wrap" />
-      <TextBlock Text="Clock (to show that dialogs do not block the dispatch loop):" />
+      <TextBlock Text="Clock (to show that dialogs do not block the dispatch loop):" TextWrapping="WrapWholeWords" />
       <TextBlock Text="{Binding CurrentTime}" />
     </StackPanel>
-    <StackPanel Name="actionsPanel" Grid.Column="1">
+    <StackPanel Name="actionsPanel" HorizontalAlignment="Right">
       <Button
-        Width="50"
-        Margin="0,5,10,5"
+        Margin="5"
         Command="{Binding Save}"
         Content="Save" />
       <Button
-        Width="50"
-        Margin="0,5,10,5"
+        Margin="5"
         Command="{Binding Load}"
         Content="Load" />
     </StackPanel>
@@ -56,7 +52,7 @@
             <Setter Target="contentPanel.(Grid.Column)" Value="0" />
             <Setter Target="contentPanel.(Grid.Row)" Value="0" />
             <Setter Target="actionsPanel.(Grid.Column)" Value="0" />
-            <Setter Target="actionsPanel.(Grid.Row)" Value="1" />
+            <Setter Target="actionsPanel.(Grid.Row)" Value="0" />
             <Setter Target="actionsPanel.Orientation" Value="Vertical" />
           </VisualState.Setters>
         </VisualState>
@@ -66,10 +62,12 @@
           </VisualState.StateTriggers>
           <VisualState.Setters>
             <Setter Target="contentPanel.(Grid.Column)" Value="0" />
-            <Setter Target="contentPanel.(Grid.Row)" Value="1" />
+            <Setter Target="contentPanel.(Grid.Row)" Value="0" />
             <Setter Target="actionsPanel.(Grid.Column)" Value="0" />
-            <Setter Target="actionsPanel.(Grid.Row)" Value="0" />
+            <Setter Target="actionsPanel.(Grid.Row)" Value="1" />
             <Setter Target="actionsPanel.Orientation" Value="Horizontal" />
+            <Setter Target="textBox.(FrameworkElement.Width)" Value="NaN"/>
+            <Setter Target="textBox.(FrameworkElement.Height)" Value="400"/>
           </VisualState.Setters>
         </VisualState>
       </VisualStateGroup>

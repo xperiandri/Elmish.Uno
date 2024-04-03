@@ -5,11 +5,15 @@
   xmlns:cmp="using:Elmish.Uno.Samples.Components"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <Grid d:DataContext="{Binding SubModelSeq}" Padding="0,10">
+  <Grid d:DataContext="{Binding SubModelSeq}"
+        utoolkit:VisibleBoundsPadding.PaddingMask="All"
+        Padding="0,10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -31,16 +35,16 @@
         Command="{Binding ToggleGlobalState}"
         Content="Toggle global state" />
     </StackPanel>
-    <TreeView Grid.Row="1" ItemsSource="{Binding Counters}">
-      <TreeView.ItemContainerStyle>
-        <Style TargetType="TreeViewItem">
+    <muxc:TreeView Grid.Row="1" ItemsSource="{Binding Counters}">
+      <muxc:TreeView.ItemContainerStyle>
+        <Style TargetType="muxc:TreeViewItem">
           <Setter Property="IsExpanded" Value="True" />
           <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
-      </TreeView.ItemContainerStyle>
-      <TreeView.ItemTemplate>
+      </muxc:TreeView.ItemContainerStyle>
+      <muxc:TreeView.ItemTemplate>
         <DataTemplate>
-          <TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
+          <muxc:TreeViewItem x:Name="treeViewItem" ItemsSource="{Binding ChildCounters}">
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -93,9 +97,9 @@
                 <Run Text="{Binding GlobalState}" />
               </TextBlock>
             </Grid>
-          </TreeViewItem>
+          </muxc:TreeViewItem>
         </DataTemplate>
-      </TreeView.ItemTemplate>
-    </TreeView>
+      </muxc:TreeView.ItemTemplate>
+    </muxc:TreeView>
   </Grid>
 </Page>

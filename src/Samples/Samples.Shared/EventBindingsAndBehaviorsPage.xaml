@@ -8,10 +8,12 @@
   xmlns:local="using:Elmish.Uno.Samples.EventBindingsAndBehaviors"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
   <StackPanel d:DataContext="{Binding EventBindingsAndBehaviors}"
+    utoolkit:VisibleBoundsPadding.PaddingMask="All"
     Padding="10"
     HorizontalAlignment="Center">
     <TextBlock
@@ -54,10 +56,10 @@
     </StackPanel>
     <Button
       Width="100"
-      Height="25"
       Margin="0,20,0,0"
       Command="{Binding ToggleVisibility}"
-      Content="{Binding ButtonText}" />
+      Content="{Binding ButtonText}"
+      d:Content="Button text"/>
     <TextBlock
       Margin="0,10,0,10"
       Text="This input will receive focus automatically each time it appears."

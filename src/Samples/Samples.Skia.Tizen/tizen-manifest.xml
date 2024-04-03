@@ -2,7 +2,7 @@
 <manifest xmlns="http://tizen.org/ns/packages" api-version="5" package="com.example.Samples.Skia.Tizen" version="1.0.0">
   <profile name="common" />
   <ui-application appid="com.example.Samples.Skia.Tizen"
-					exec="Samples.Skia.Tizen.dll"
+					exec="Samples.dll"
 					type="dotnet"
 					multiple="false"
 					taskmanage="true"

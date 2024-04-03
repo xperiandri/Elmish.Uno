@@ -5,10 +5,11 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <Grid d:DataContext="{Binding UiBoundCmdParam}">
+  <Grid d:DataContext="{Binding UiBoundCmdParam}" utoolkit:VisibleBoundsPadding.PaddingMask="All">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />

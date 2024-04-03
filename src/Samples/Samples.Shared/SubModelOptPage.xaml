@@ -6,15 +6,12 @@
   xmlns:local="using:Elmish.Uno.Samples.SubModelOpt"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
-  xmlns:tconv="using:Microsoft.Toolkit.Uwp.UI.Converters"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <Page.Resources>
-    <tconv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-  </Page.Resources>
-
   <Grid d:DataContext="{Binding SubModelOpt}"
+        utoolkit:VisibleBoundsPadding.PaddingMask="All"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch">
     <StackPanel Margin="0,15,0,0">
@@ -32,16 +29,16 @@
     <Rectangle
       Fill="Black"
       Opacity="0.6"
-      Visibility="{Binding DialogVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" />
+      Visibility="{Binding DialogVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}" />
     <Border
       Width="350"
       Height="200"
       BorderBrush="Black"
       BorderThickness="2"
-      Visibility="{Binding DialogVisible, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}">
+      Visibility="{Binding DialogVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
       <StackPanel Background="White">
-        <local:Form1 DataContext="{Binding Form1}" Visibility="{Binding DataContext.Form1Visible, ElementName=PopupPanel, Converter={StaticResource VisibilityConverter}}" />
-        <local:Form2 DataContext="{Binding Form2}" Visibility="{Binding DataContext.Form2Visible, ElementName=PopupPanel, Converter={StaticResource VisibilityConverter}}" />
+        <local:Form1 DataContext="{Binding Form1}" Visibility="{Binding DataContext.Form1Visible, ElementName=PopupPanel, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <local:Form2 DataContext="{Binding Form2}" Visibility="{Binding DataContext.Form2Visible, ElementName=PopupPanel, Converter={StaticResource BoolToVisibilityConverter}}" />
       </StackPanel>
     </Border>
   </Grid>

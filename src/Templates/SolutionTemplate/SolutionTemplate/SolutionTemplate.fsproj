@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Solution.Build.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>$(FSharpLangVersion)</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>$(AssemblyBaseName).Programs</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json" />
+    <Compile Include="Helpers\Elmish.fs" />
+    <Compile Include="Helpers\ObjAndStructConversions.fs" />
+    <Compile Include="Helpers\Windows.fs" />
+    <Compile Include="Constants.fs" />
+    <Compile Include="Options.fs" />
+    <Compile Include="Pages.fs" />
+    <Compile Include="Models\Notification.fs" />
+    <Compile Include="Programs\Messages.fs" />
+    <Compile Include="Programs\Notifications.Program.fs" />
+    <Compile Include="Programs\App.Program.fs" />
+    <Compile Include="Configuration.fs" />
+  </ItemGroup>
+
+  <ItemGroup />
+
+  <ItemGroup>
+    <PackageReference Include="Elmish" />
+    <PackageReference Include="Elmish.Uno" />
+    <PackageReference Include="FSharp.Collections.Immutable" />
+    <PackageReference Include="FSharp.Control.FusionTasks" />
+    <PackageReference Include="FSharp.Control.Reactive" />
+    <PackageReference Include="FSharpPlus" />
+    <PackageReference Include="FSharpx.Extras" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <PackageReference Include="System.Collections.Immutable" />
+    <PackageReference Include="Uno.Core" />
+    <PackageReference Include="Uno.Extensions.Configuration" />
+    <PackageReference Include="Uno.Extensions.Hosting" />
+    <PackageReference Include="Uno.Extensions.Localization" />
+    <PackageReference Include="Xamarin.Essentials" />
+  </ItemGroup>
+
+</Project>

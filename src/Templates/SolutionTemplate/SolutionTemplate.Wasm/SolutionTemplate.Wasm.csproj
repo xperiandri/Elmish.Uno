@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\Solution.Build.props" />
+  <PropertyGroup>
+    <LangVersion>$(CSharpLangVersion)</LangVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>$(CSharpLangVersion)</LangVersion>
+    <!-- .editorcofig bases suppressions do not work in WASM for some unknown reasons -->
+    <NoWarn>NU1701;DF0033</NoWarn>
+    <AssemblyName>$(AssemblyBaseName)</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <WasmShellILLinkerEnabled>true</WasmShellILLinkerEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Assets\SplashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Include="..\SolutionTemplate.Shared\**\*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WasmCSS\Fonts.css" />
+    <EmbeddedResource Include="WasmScripts\AppManifest.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <LinkerDescriptor Include="LinkerConfig.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+    This item group is required by the project template because of the
+    new SDK-Style project, otherwise some files are not added automatically.
+
+    You can safely remove this ItemGroup completely.
+    -->
+    <None Include="Program.cs" />
+    <None Include="LinkerConfig.xml" />
+    <None Include="wwwroot\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Uno.Extensions.Hosting" />
+    <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" />
+    <PackageReference Include="Uno.Microsoft.Toolkit" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI" />
+    <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" />
+    <PackageReference Include="Uno.UI.RemoteControl" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.WebAssembly" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" />
+    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolutionTemplate\SolutionTemplate.fsproj" />
+  </ItemGroup>
+  <Import Project="..\SolutionTemplate.Shared\SolutionTemplate.Shared.projitems" Label="Shared" />
+</Project>

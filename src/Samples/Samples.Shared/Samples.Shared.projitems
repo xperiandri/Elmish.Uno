@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -18,6 +18,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Components\Counter.xaml.cs">
+      <DependentUpon>Counter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ValidationControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DesignData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventBindingsAndBehaviorsPage.xaml.cs">
       <DependentUpon>EventBindingsAndBehaviorsPage.xaml</DependentUpon>
@@ -50,7 +54,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SingleCounterPage.xaml.cs">
       <DependentUpon>SingleCounterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Triggers\OrientationStateTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SubModelOptPage.xaml.cs">
       <DependentUpon>SubModelOptPage.xaml</DependentUpon>
     </Compile>
@@ -69,15 +72,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)SubModelSeqPage.xaml.cs">
       <DependentUpon>SubModelSeqPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Components\Counter.xaml.cs">
-      <DependentUpon>Counter.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)SubModel\Clock.xaml.cs">
       <DependentUpon>Clock.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)SubModel\CounterWithClock.xaml.cs">
       <DependentUpon>CounterWithClock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Triggers\OrientationStateTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UiBoundCmdParamPage.xaml.cs">
       <DependentUpon>UiBoundCmdParamPage.xaml</DependentUpon>
     </Compile>
@@ -86,6 +87,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Components\Counter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)EventBindingsAndBehaviorsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,15 +155,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Components\Counter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)SubModel\Clock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)SubModel\CounterWithClock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -176,8 +181,5 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Components\" />
   </ItemGroup>
 </Project>

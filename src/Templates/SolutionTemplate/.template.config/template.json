@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "SecretCircle",
+  "classifications": [ "Web", "Uno Platform", "WebAssembly", "Android", "iOS", "Windows", "macOS", "Catalyst" ],
+  "name": "Elmish Uno Solution Template on .NET 6",
+  "shortName": "elmish-unoapp-net6",
+  "defaultName": "SolutionTemplate",
+  "identity": "Elmish.Uno.ProjectTemplates.Dotnet6.SolutionTemplate",
+  "tags": {
+    "language": "F#",
+    "type": "project"
+  },
+  "sourceName": "SolutionTemplate",
+  "preferNameDirectory": true,
+  "guids": [
+    "7727D8AD-8883-427D-A77A-7C8639ACE4AF",
+    "438B0CF0-79E5-47B9-A367-9A295E3C3F48",
+    "6279C845-92F8-4333-AB99-3D213163593C"
+  ],
+  "symbols": {
+    "windowsPublisherName": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "O=XperiAndri",
+      "description": "Provides the value to use for the Windows head publisher",
+      "defaultValue": "O=MyCompany"
+    },
+    "WebAssembly": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Enables the WebAssembly platform support project"
+    },
+    "Mobile": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Enables Android, iOS, Catalyst, macOS"
+    },
+    "skia-wpf": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Enables the Skia/WPF platform support project"
+    },
+    "skia-gtk": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Enables the Skia/GTK platform support project"
+    },
+    "skia-tizen": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Enables the Skia/Tizen platform support project"
+    }
+  },
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

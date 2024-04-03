@@ -1,0 +1,60 @@
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'releases/*'
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+
+    runs-on: windows-2022
+
+    steps:
+
+    - name: Check-out
+      uses: actions/checkout@v4
+      with:
+        # This is necessary so that we have the tags.
+        fetch-depth: 0
+
+    - name: Set Build Version
+      run: |
+        $version = "$env:GITHUB_REF_NAME".Substring("releases/".Length)
+        $File = (
+          Select-Xml -XPath "/Project/PropertyGroup[@Label='NuGet']/Version" -Path "src\Elmish.Uno\Elmish.Uno.fsproj"
+        )[0].Node
+        $File.InnerText = $version
+        $File.OwnerDocument.Save((Join-Path $PWD.ProviderPath "src\Elmish.Uno\Elmish.Uno.fsproj"))
+        echo "VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      shell: pwsh
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install local tools
+      run: dotnet tool restore
+
+    - name: Restore NuGet packages
+      run: dotnet restore Elmish.Uno.sln
+
+    - name: Build
+      run: dotnet build --no-restore Elmish.Uno.sln --configuration Release -maxcpucount
+
+    - name: Test
+      run: dotnet test --no-build --configuration Release src/Elmish.Uno.Tests/Elmish.Uno.Tests.fsproj
+
+    - name: Pack
+      run: |
+        cd src/Elmish.Uno
+        dotnet pack --no-build --configuration Release /p:ContinuousIntegrationBuild=true -o ../../nuget
+
+    - name: Publish to NuGet
+      run: |
+        dotnet nuget push nuget/Elmish.Uno.${{env.VERSION}}.{nupkg,snupkg} -s "nuget.org" -k ${{secrets.NUGET_SECRET}} --skip-duplicate

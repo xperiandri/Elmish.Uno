@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MicrosoftExtensionsVersion>6.0.*</MicrosoftExtensionsVersion>
+    <ToolkitVersion>7.1.*</ToolkitVersion>
+    <UnoUIVersion>4.5.*</UnoUIVersion>
+    <UnoExtensionsVersion>2.*</UnoExtensionsVersion>
+  </PropertyGroup>
+  <ItemGroup Label="Microsoft">
+    <PackageReference Update="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Debug" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageReference Update="System.Collections.Immutable" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup Label="Uno and UWP">
+    <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform">
+      <!--
+      If, in the same solution, you are referencing a project that uses https://github.com/onovotny/MSBuildSdkExtras,
+      you need to make sure that the version provided here matches https://github.com/novotnyllc/MSBuildSdkExtras/blob/main/Source/MSBuild.Sdk.Extras/DefaultItems/ImplicitPackages.targets#L11.
+      This is not an issue when libraries are referenced through nuget packages. See https://github.com/unoplatform/uno/issues/446 for more details.
+      -->
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Update="Microsoft.Toolkit" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Microsoft.Toolkit.Uwp.UI.Controls" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Microsoft.UI.Xaml" Version="2.8.*" />
+    <PackageReference Update="Uno.Core" Version="4.0.*" />
+    <PackageReference Update="Uno.UI" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.RemoteControl" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.Skia.Gtk" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.Skia.Tizen" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.Skia.Wpf" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UI.WebAssembly" Version="$(UnoUIVersion)" />
+    <PackageReference Update="Uno.UniversalImageLoader" Version="1.9.*" />
+    <PackageReference Update="Uno.Microsoft.Toolkit" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Uno.Microsoft.Toolkit.Uwp" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Uno.Microsoft.Toolkit.Uwp.UI" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="$(ToolkitVersion)" />
+    <PackageReference Update="Uno.Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.*" />
+    <PackageReference Update="Uno.Extensions.Configuration" Version="$(UnoExtensionsVersion)" />
+    <PackageReference Update="Uno.Extensions.Hosting" Version="$(UnoExtensionsVersion)" />
+    <PackageReference Update="Uno.Extensions.Hosting.UWP" Version="$(UnoExtensionsVersion)" />
+    <PackageReference Update="Uno.Extensions.Localization" Version="$(UnoExtensionsVersion)" />
+    <PackageReference Update="Uno.Extensions.Logging.OSLog" Version="1.4.*" />
+    <PackageReference Update="Uno.Extensions.Logging.UWP" Version="1.4.*" />
+    <PackageReference Update="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.*" />
+    <PackageReference Update="Uno.Wasm.Bootstrap" Version="7.*" />
+    <PackageReference Update="Uno.Wasm.Bootstrap.DevServer" Version="7.*" />
+    <PackageReference Update="SkiaSharp.Views" Version="2.88.*" />
+    <PackageReference Update="SkiaSharp.Views.WPF" Version="2.88.*" />
+  </ItemGroup>
+  <ItemGroup Label="Xamarin">
+    <PackageReference Update="Xamarin.AndroidX.AppCompat" Version="1.5.*" />
+    <PackageReference Update="Xamarin.AndroidX.Core" Version="1.9.*" />
+    <PackageReference Update="Xamarin.AndroidX.Fragment" Version="1.5.*" />
+    <PackageReference Update="Xamarin.AndroidX.Legacy.Support.V4" Version="1.0.*" />
+    <PackageReference Update="Xamarin.AndroidX.RecyclerView" Version="1.2.*" />
+    <PackageReference Update="Xamarin.Essentials" Version="1.7.*" />
+    <PackageReference Update="Xamarin.Google.Android.Material" Version="1.7.*" />
+  </ItemGroup>
+  <ItemGroup Label="FSharp">
+    <PackageReference Update="Elmish" Version="3.1.0" />
+    <PackageReference Update="Elmish.Uno" Version="1.0.0-ci-*" />
+    <PackageReference Update="FSharp.Collections.Immutable" Version="2.0.0-ci-*" />
+    <PackageReference Update="FSharp.Control.FusionTasks" Version="2.5.*" />
+    <PackageReference Update="FSharp.Control.Reactive" Version="5.0.5" />
+    <PackageReference Update="FSharpPlus" Version="1.2.*" />
+    <PackageReference Update="FSharpx.Extras" Version="3.*" />
+    <PackageReference Update="FSharp.Core" Version="6.0.*" Condition="'$(DefaultLanguageSourceExtension)'=='.fs'"/>
+    <PackageReference Include="FSharp.Core" Version="6.0.*" Condition="'$(DefaultLanguageSourceExtension)'!='.fs'"/>
+  </ItemGroup>
+  <ItemGroup Label="Analyzers" Condition="'$(DefaultLanguageSourceExtension)'!='.fs'">
+    <PackageReference Include="DisposableFixer" Version="3.*" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.*" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.*" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

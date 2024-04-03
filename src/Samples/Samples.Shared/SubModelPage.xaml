@@ -6,10 +6,11 @@
   xmlns:local="using:Elmish.Uno.Samples.SubModel"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:samples="using:Elmish.Uno.Samples"
+  xmlns:utoolkit="using:Uno.UI.Toolkit"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
   mc:Ignorable="d">
 
-  <StackPanel d:DataContext="{Binding SubModel}">
+  <StackPanel d:DataContext="{Binding SubModel}" utoolkit:VisibleBoundsPadding.PaddingMask="All">
     <TextBlock
       Margin="0,25,0,5"
       HorizontalAlignment="Center"
