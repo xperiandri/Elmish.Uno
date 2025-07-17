@@ -351,7 +351,7 @@ module Binding =
     /// <param name="canExec">Indicates whether the command can execute.</param>
     /// <param name="exec">Returns the message to dispatch.</param>
     let model
-        (canExec : 'param -> 'model -> bool)
+        (canExec : 'param | null -> 'model -> bool)
         (exec: 'param -> 'model -> 'msg voption)
         : string -> Binding<'model, 'msg, ICommand> =
       CmdT.id (fun p model -> exec (unbox p) model) (fun p model  -> canExec (unbox p) model)

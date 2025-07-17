@@ -1369,10 +1369,10 @@ type BindingT private () =
   /// <param name="execWithModel">Indicates whether the command can execute.</param>
   static member cmdParamIf
       (execWithModel: 'param -> 'model -> 'msg,
-       canExec: 'param -> 'model -> bool)
+       canExecWithModel: 'param | null -> 'model -> bool)
       : string -> Binding<'model, 'msg, ICommand> =
     Binding.CmdParamT.model
-      canExec
+      canExecWithModel
       (fun p m -> execWithModel p m |> ValueSome)
 
   /// <summary>
@@ -1384,10 +1384,10 @@ type BindingT private () =
   /// <param name="canExec">Indicates whether the command can execute.</param>
   static member cmdParamIf
       (exec: 'param -> 'msg,
-       canExec: 'param -> 'model -> bool)
+       canExecWithModel: 'param | null -> 'model -> bool)
       : string -> Binding<'model, 'msg, ICommand> =
     Binding.CmdParamT.model
-      canExec
+      canExecWithModel
       (fun p _ -> exec p |> ValueSome)
 
   /// <summary>
@@ -1397,7 +1397,7 @@ type BindingT private () =
   /// </summary>
   /// <param name="execWithModel">Returns the message to dispatch.</param>
   static member cmdParamIf
-      (execWithModel: 'param -> 'model -> 'msg voption)
+      (execWithModel: 'param | null -> 'model -> 'msg voption)
       : string -> Binding<'model, 'msg, ICommand> =
     Binding.CmdParamT.model
       (fun p m -> execWithModel p m |> ValueOption.isSome)
@@ -1410,7 +1410,7 @@ type BindingT private () =
   /// </summary>
   /// <param name="execWithModel">Returns the message to dispatch.</param>
   static member cmdParamIf
-      (execWithModel: 'param -> 'model -> 'msg option)
+      (execWithModel: 'param | null -> 'model -> 'msg option)
       : string -> Binding<'model, 'msg, ICommand> =
     Binding.CmdParamT.model
       (fun p m -> execWithModel p m |> Option.isSome)
@@ -1426,7 +1426,7 @@ type BindingT private () =
   /// </summary>
   /// <param name="execWithModel">Returns the message to dispatch.</param>
   static member cmdParamIf
-      (execWithModel: 'param -> 'model -> Result<'msg, 'ignored>)
+      (execWithModel: 'param | null -> 'model -> Result<'msg, 'ignored>)
       : string -> Binding<'model, 'msg, ICommand> =
     Binding.CmdParamT.model
       (fun p m -> execWithModel p m |> Result.isOk)
@@ -3229,7 +3229,7 @@ module ExtensionsT =
     /// </summary>
     /// <param name="exec">Returns the message to dispatch.</param>
     static member cmdParamIf
-        (exec: 'param  -> Result<'msg, 'ignored>)
+        (exec: 'param | null  -> Result<'msg, 'ignored>)
         : string -> Binding<'model, 'msg, ICommand> =
       Binding.CmdParamT.model
         (fun p _ -> exec p |> Result.isOk)
@@ -3244,7 +3244,7 @@ module ExtensionsT =
     /// <param name="canExec">Indicates whether the command can execute.</param>
     static member cmdParamIf
         (exec: 'param -> 'msg,
-         canExec: 'param -> bool)
+         canExec: 'param | null -> bool)
         : string -> Binding<'model, 'msg, ICommand> =
       Binding.CmdParamT.model
         (fun p _ -> canExec p)
