@@ -23,7 +23,7 @@
     <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Dialog 1</TextBlock>
 
     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-      <Button Command="{Binding Dialog1Show}"  Content="Show"  Width="70" Margin="5" />
+      <Button Command="{Binding Dialog1Show}" CommandParameter="ABC" Content="Show"  Width="70" Margin="5" />
       <Button Command="{Binding Dialog1Close}" Content="Close" Width="70" Margin="5" />
     </StackPanel>
     <TextBlock

@@ -18,7 +18,7 @@ type Model = {
       = { Dialog1 = WindowState.Closed; Dialog2 = ValueNone }
 
 type Msg =
-    | Dialog1Show
+    | Dialog1Show of Param : string
     | Dialog1Close
     | Dialog1Msg of Dialog1.Dialog1Msg
     | Dialog1SetInput of string
@@ -46,7 +46,7 @@ module Program =
 
     let update msg (m: Model) =
         match msg with
-        | Dialog1Show -> { m with Dialog1 = WindowState.Visible (Dialog1.Program.init ()) }, Cmd.none
+        | Dialog1Show _ -> { m with Dialog1 = WindowState.Visible (Dialog1.Program.init ()) }, Cmd.none
         | Dialog1Close -> { m with Dialog1 = WindowState.Closed }, Cmd.none
         | Dialog1SetInput s -> { m with Dialog1 = WindowState.set s m.Dialog1 }, Cmd.none
         | Dialog2Show -> { m with Dialog2 = ValueSome (Dialog2.Program.init ()) }, Cmd.none
@@ -61,7 +61,7 @@ module Bindings =
     let private viewModel = Unchecked.defaultof<NewDialogStaticViewModel>
 
     let dialog1ShowBinding =
-        BindingT.cmd Dialog1Show (nameof viewModel.Dialog1Show)
+        BindingT.cmdParamIf (Dialog1Show, (fun p m -> true)) (nameof viewModel.Dialog1Show)
 
     let dialog1CloseBinding =
         BindingT.cmd Dialog1Close (nameof viewModel.Dialog1Close)
